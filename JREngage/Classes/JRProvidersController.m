@@ -139,8 +139,8 @@
     
     if (!hidesCancelButton)
     {
-        UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] 
-                                          initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        UIBarButtonItem *cancelButton = [[[GTIOBarButtonItem alloc] 
+                                          initWithTitle:@"cancel"
                                           target:sessionData
                                           action:@selector(triggerAuthenticationDidCancel:)] autorelease];
         
@@ -159,6 +159,8 @@
 //        placeholderItem.width = 85;
 //        self.navigationItem.leftBarButtonItem = placeholderItem;
     }
+    
+    self.navigationItem.backBarButtonItem = [GTIOBarButtonItem backButton];
 
     if (!infoBar)
 	{

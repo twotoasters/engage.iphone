@@ -124,8 +124,8 @@
     
     if (!hidesCancelButton)
     {
-        UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] 
-                                          initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        UIBarButtonItem *cancelButton = [[[GTIOBarButtonItem alloc] 
+                                          initWithTitle:@"cancel"
                                           target:sessionData
                                           action:@selector(triggerPublishingDidCancel:)] autorelease];
         
@@ -135,8 +135,8 @@
         self.navigationItem.leftBarButtonItem.style = UIBarButtonItemStyleBordered;
     }
     
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] 
-									initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+    UIBarButtonItem *editButton = [[[GTIOBarButtonItem alloc] 
+									initWithTitle:@"edit"
 									target:self
 									action:@selector(editButtonPressed:)] autorelease];
 	

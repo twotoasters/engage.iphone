@@ -388,7 +388,7 @@ static JRUserInterfaceMaestro* singleton = nil;
             ((NSString*)[customInterface objectForKey:kJRProviderTableTitleString]).length)
             myProvidersController.title = [customInterface objectForKey:kJRProviderTableTitleString];
         else
-            myProvidersController.title = @"Providers";        
+            myProvidersController.title = @"Providers";
     }
     @catch (NSException *exception)
     {
