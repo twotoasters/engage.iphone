@@ -66,6 +66,10 @@
     return self;
 }
 
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)viewDidLoad 
 {
 	DLog(@"");
@@ -100,6 +104,8 @@
 
         [self.view addSubview:infoBar];
 	}
+    UIBarButtonItem* backButton = [[[GTIOBarButtonItem alloc]initWithTitle:@"back" target:self action:@selector(back) backButton:YES] autorelease];
+    self.navigationItem.leftBarButtonItem = backButton;
     
     self.navigationItem.backBarButtonItem.target = sessionData;
     self.navigationItem.backBarButtonItem.action = @selector(triggerAuthenticationDidStartOver:);    
