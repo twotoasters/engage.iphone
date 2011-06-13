@@ -57,7 +57,7 @@
 
         iPad = style / 2;
         hidesPoweredBy = style % 2;
-        y_origin_hidden = self.frame.origin.y + height;
+        y_origin_hidden = self.frame.origin.y + 2 * height + self.frame.size.height;
         
 		if (hidesPoweredBy)
 			[self setFrame:CGRectMake(self.frame.origin.x, y_origin_hidden, width, height)];
