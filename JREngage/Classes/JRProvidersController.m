@@ -385,7 +385,7 @@ Please try again later."
 				 initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cachedCell"] autorelease];
 	
 	JRProvider* provider = [sessionData getBasicProviderAtIndex:indexPath.row];
-
+    
     if (!provider)
         return cell;
 	
