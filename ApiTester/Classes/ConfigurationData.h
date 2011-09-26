@@ -13,33 +13,33 @@
 
 typedef enum
 {
-    kCDTestsNone,
-    kCDSignInTests,
-    kCDSharingTests,
+    CDNone,
+    CDSignIn,
+    CDSharing,
 } SignInOrSharing;
 
 typedef enum
 {
-    kCDSignInTestNone,
-    kCDBasicSignInTest,
-    kCDCustomInterfaceSignInTest,
-    kCDProviderConfigurationSignInTest,
+    CDSignInTestTypeNone,
+    CDSignInTestTypeBasic,
+    CDSignInTestTypeCustomInterface,
+    CDSignInTestTypeProviderConfiguration,
 } SignInTestType;
 
 typedef enum
 {
-    kCDSharingTestNone,
-    kCDBasicSharingTest,
-    kCDEmailSmsSharingTest,
-    kCDCustomInterfaceSharingTest,
-    kCDActivityChangesSharingTest,
+    CDSharingTestTypeNone,
+    CDSharingTestTypeBasic,
+    CDSharingTestTypeEmailSms,
+    CDSharingTestTypeCustomInterface,
+    CDSharingTestTypeActivityChanges,
 } SharingTestType;
 
 typedef enum
 {
-    kCDLibraryNav,
-    kCDAppNav,
-    kCDCustomNav,
+    CDNavigationControllerTypeLibrary,
+    CDNavigationControllerTypeApplication,
+    CDNavigationControllerTypeCustom,
 } NavigationControllerType;
 
 @interface ConfigurationData : NSObject <JREngageDelegate>

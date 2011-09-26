@@ -105,15 +105,15 @@ static ConfigurationData *sharedConfigurationData = nil;
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType
 {
-    if (signInOrSharing == kCDSignInTests) 
+    if (signInOrSharing == CDSignIn) 
     {
-        if (signInTestType == kCDCustomInterfaceSignInTest)
+        if (signInTestType == CDSignInTestTypeCustomInterface)
         {
             [self buildAuthenticationCustomInterface];
             [jrEngage showAuthenticationDialogWithCustomInterfaceOverrides:customInterface];
         }
     }
-    else if (signInOrSharing == kCDSharingTests)
+    else if (signInOrSharing == CDSharing)
     {
         
     }

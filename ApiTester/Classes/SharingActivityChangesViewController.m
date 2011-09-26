@@ -1,39 +1,28 @@
 //
-//  RootViewController.m
+//  SharingActivityChangesViewController.m
 //  ApiTester
 //
-//  Created by lilli on 9/23/11.
+//  Created by lilli on 9/26/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "RootViewController.h"
+#import "SharingActivityChangesViewController.h"
 
 
-@implementation RootViewController
+@implementation SharingActivityChangesViewController
 
 
 #pragma mark -
 #pragma mark View lifecycle
 
-
-- (void)viewDidLoad 
-{
+/*
+- (void)viewDidLoad {
     [super viewDidLoad];
 
-    config = [ConfigurationData sharedConfigurationData];
-    
-    UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
-    titleLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    titleLabel.textAlignment = UITextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.text = @"Sign-In or Sharing?";
-    
-    self.navigationItem.titleView = titleLabel;
-    self.title = @"Start";    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,36 +36,35 @@
 */
 /*
 - (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 */
 /*
 - (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
+    [super viewDidDisappear:animated];
 }
 */
-
 /*
- // Override to allow orientations other than the default portrait orientation.
+// Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations.
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    // Return YES for supported orientations.
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
- */
+*/
 
 
 #pragma mark -
 #pragma mark Table view data source
 
-// Customize the number of sections in the table view.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    // Return the number of sections.
+    return <#number of sections#>;
 }
 
 
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    // Return the number of rows in the section.
+    return <#number of rows in section#>;
 }
 
 
@@ -90,10 +78,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	if (indexPath.row == 0)
-        cell.textLabel.text = @"Test Sign-In";
-    else
-        cell.textLabel.text = @"Test Sharing";
+    // Configure the cell...
     
     return cell;
 }
@@ -143,18 +128,14 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	if (indexPath.row == 0)
-        config.signInOrSharing = CDSignIn;
-    else
-        config.signInOrSharing = CDSharing;
-	
-    TestTypesViewController *level1ViewController = [[TestTypesViewController alloc] 
-                                                     initWithNibName:@"TestTypesViewController" 
-                                                     bundle:nil];
-
-	[self.navigationController pushViewController:level1ViewController animated:YES];
-	[level1ViewController release];
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+    // ...
+    // Pass the selected object to the new view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    [detailViewController release];
+    */
 }
 
 
@@ -165,7 +146,7 @@
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
-    // Relinquish ownership any cached data, images, etc that aren't in use.
+    // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 
 - (void)viewDidUnload {

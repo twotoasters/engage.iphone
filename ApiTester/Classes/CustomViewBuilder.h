@@ -11,7 +11,7 @@
 
 @interface CustomViewBuilder : NSObject { }
 + (UIColor*)authenticationBackgroundColor;
-+ (UIImage*)authenticationBackgroundImageView;
++ (UIImageView*)authenticationBackgroundImageView;
 + (UIView*)providerTableTitleView;
 + (NSString*)providerTableTitleString;
 + (UIView*)providerTableHeaderView;

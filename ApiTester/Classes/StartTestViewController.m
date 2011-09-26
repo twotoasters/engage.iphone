@@ -47,13 +47,13 @@
 {
     [super viewWillAppear:animated];
     
-    if (config.signInOrSharing == kCDSignInTests)
+    if (config.signInOrSharing == CDSignIn)
     {
         titleLabel.text = @"Test Sign-In";
         [startButton setTitle:@"Start the Sign-In Test" forState:UIControlStateNormal];
 //        [startButton setTitle:@"Start the Sign-In Test" forState:UIControlStateSelected];
     }
-    else if (config.signInOrSharing == kCDSharingTests)
+    else if (config.signInOrSharing == CDSharing)
     {
         titleLabel.text = @"Test Sharing";
         [startButton setTitle:@"Start the Sharing Test" forState:UIControlStateNormal];
@@ -65,15 +65,15 @@
 {
     if (navigationRadio.selectedSegmentIndex == 0)
     {
-        [config startTestWithNavigationController:kCDLibraryNav];
+        [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
     }
     else if (navigationRadio.selectedSegmentIndex == 1)
     {
-        [config startTestWithNavigationController:kCDAppNav];        
+        [config startTestWithNavigationController:CDNavigationControllerTypeApplication];        
     }
     else
     {
-        [config startTestWithNavigationController:kCDCustomNav];
+        [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
     }
 }
 

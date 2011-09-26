@@ -49,11 +49,11 @@
 {
     [super viewWillAppear:animated];
 
-    if (config.signInOrSharing == kCDSignInTests)
+    if (config.signInOrSharing == CDSignIn)
     {
         titleLabel.text = @"Sign-In Test Types";
     }
-    else if (config.signInOrSharing == kCDSharingTests)
+    else if (config.signInOrSharing == CDSharing)
     {
         titleLabel.text = @"Sharing Test Types";
     }
@@ -95,9 +95,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-    if (config.signInOrSharing == kCDSignInTests)
+    if (config.signInOrSharing == CDSignIn)
         return [signInTestTypes count]/2;
-    else if (config.signInOrSharing == kCDSharingTests)
+    else if (config.signInOrSharing == CDSharing)
         return [sharingTestTypes count]/2;
     else
         return 0;
@@ -114,9 +114,9 @@
     
     NSArray *array;
     
-    if (config.signInOrSharing == kCDSignInTests)
+    if (config.signInOrSharing == CDSignIn)
         array = signInTestTypes;
-    else if (config.signInOrSharing == kCDSharingTests)
+    else if (config.signInOrSharing == CDSharing)
         array = sharingTestTypes;
     
     cell.textLabel.text = [array objectAtIndex:(indexPath.row * 2)];
@@ -172,38 +172,38 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UIViewController *level2ViewController;
     
-    if (config.signInOrSharing == kCDSignInTests)
+    if (config.signInOrSharing == CDSignIn)
         switch (indexPath.row)
         {
             case 0:
-                config.signInTestType = kCDBasicSignInTest;
+                config.signInTestType = CDSignInTestTypeBasic;
                 level2ViewController = [[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil];
                 break;
             case 1:
-                config.signInTestType = kCDCustomInterfaceSignInTest;
+                config.signInTestType = CDSignInTestTypeCustomInterface;
                 level2ViewController = [[SignInCustomInterfaceViewController alloc] initWithNibName:@"SignInCustomInterfaceViewController" bundle:nil];
                 break;
             case 2:
-                config.signInTestType = kCDProviderConfigurationSignInTest;
+                config.signInTestType = CDSignInTestTypeProviderConfiguration;
                 break;
             default:
                 break;
         }
-    else if (config.signInOrSharing == kCDSharingTests)
+    else if (config.signInOrSharing == CDSharing)
         switch (indexPath.row)
         {
             case 0:
-                config.sharingTestType = kCDBasicSharingTest;
+                config.sharingTestType = CDSharingTestTypeBasic;
                 level2ViewController = [[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil];
                 break;
             case 1:
-                config.sharingTestType = kCDEmailSmsSharingTest;
+                config.sharingTestType = CDSharingTestTypeEmailSms;
                 break;
             case 2:
-                config.sharingTestType = kCDCustomInterfaceSignInTest;
+                config.sharingTestType = CDSharingTestTypeCustomInterface;
                 break;
             case 3:
-                config.sharingTestType = kCDActivityChangesSharingTest;
+                config.sharingTestType = CDSharingTestTypeActivityChanges;
                 break;
             default:
                 break;
