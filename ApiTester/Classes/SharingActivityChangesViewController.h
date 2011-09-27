@@ -7,10 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TestConfigurationTableViewCell.h"
+#import "JRActivityObject.h"
+#import "ConfigurationData.h"
 
-
-@interface SharingActivityChangesViewController : UITableViewController {
-
+@interface SharingActivityChangesViewController : UIViewController 
+{
+    UIPickerView *picker;
+    UITableView  *table;
+    
+    NSMutableArray *activityArray;
+    NSInteger selectedActivity;
+    
+    NSArray *cellTitles;
+    ConfigurationData *config;
 }
-
+@property (retain, nonatomic) IBOutlet UIPickerView *picker;
+@property (retain, nonatomic) IBOutlet UITableView  *table;
 @end

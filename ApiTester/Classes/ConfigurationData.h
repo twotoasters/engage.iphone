@@ -60,6 +60,15 @@ typedef enum
     BOOL providerTableSectionFooterView;
     BOOL providerTableSectionHeaderTitleString;
     BOOL providerTableSectionFooterTitleString;
+        
+    BOOL activityAddImage;
+    BOOL activityAddSong;
+    BOOL activityAddVideo;
+    BOOL activityAddUrl;
+    
+    NSString *activityAction;
+    NSString *activityTitle;
+    NSString *activityDescription;
     
     NSMutableDictionary *customInterface;
     
@@ -80,6 +89,15 @@ typedef enum
 @property BOOL providerTableSectionFooterView;
 @property BOOL providerTableSectionHeaderTitleString;
 @property BOOL providerTableSectionFooterTitleString;
+
+@property BOOL activityAddImage;
+@property BOOL activityAddSong;
+@property BOOL activityAddVideo;
+@property BOOL activityAddUrl;
+
+@property (retain) NSString *activityAction;
+@property (retain) NSString *activityTitle;
+@property (retain) NSString *activityDescription;
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType;
 @end

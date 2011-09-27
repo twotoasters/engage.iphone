@@ -10,6 +10,10 @@
 #import "ConfigurationData.h"
 #import "StartTestViewController.h"
 #import "SignInCustomInterfaceViewController.h"
+#import "SignInProviderConfigViewController.h"
+#import "SharingEmailSmsViewController.h"
+#import "SharingCustomInterfaceViewController.h"
+#import "SharingActivityChangesViewController.h"
 
 @interface TestTypesViewController : UITableViewController 
 {

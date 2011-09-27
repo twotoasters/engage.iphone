@@ -25,6 +25,15 @@
 @synthesize providerTableSectionHeaderTitleString;
 @synthesize providerTableSectionFooterTitleString;
 
+@synthesize activityAddImage;
+@synthesize activityAddSong;
+@synthesize activityAddVideo;
+@synthesize activityAddUrl;
+
+@synthesize activityAction;
+@synthesize activityTitle;
+@synthesize activityDescription;
+
 #pragma mark singleton_methods
 static NSString * const appId = @"appcfamhnpkagijaeinl";
 static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
@@ -100,8 +109,19 @@ static ConfigurationData *sharedConfigurationData = nil;
     
     if (providerTableSectionFooterTitleString)
         [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
-    
 }
+
+#define VALID_CONTENT
+#ifdef  VALID_CONTENT
+static NSString * const activityUrl = @"http://www.google.com";
+static NSString * const activityImageSrc = @"http://www.janrain.com/sites/default/themes/janrain/logo.png";
+static NSString * const activityImageHref = @"http://www.janrain.com";
+static NSString * const activitySongSrc = @"http://www.myspace.com/music/song-embed?songid=25313324&getSwf=true";
+static NSString * const activityVideoSwfsrc = @"http://vimeo.com/23496497";
+static NSString * const activityVideoImgsrc = @"http://b.vimeocdn.com/ts/153/117/153117150_100.jpg";
+#else
+#endif
+
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType
 {
@@ -115,6 +135,30 @@ static ConfigurationData *sharedConfigurationData = nil;
     }
     else if (signInOrSharing == CDSharing)
     {
+        JRActivityObject *activity;
+        
+        if (activityAddUrl)
+            activity = [JRActivityObject activityObjectWithAction:activityAction andUrl:activityUrl];
+        else
+            activity = [JRActivityObject activityObjectWithAction:activityAction];
+        
+        NSMutableArray *media = [NSMutableArray arrayWithCapacity:3];
+        
+        if (activityAddImage)
+            [media addObject:[JRImageMediaObject imageMediaObjectWithSrc:activityImageSrc andHref:activityImageHref]];
+
+        if (activityAddSong)
+            [media addObject:[JRMp3MediaObject mp3MediaObjectWithSrc:activitySongSrc]];
+
+        if (activityAddVideo)
+            [media addObject:[JRFlashMediaObject flashMediaObjectWithSwfsrc:activityVideoSwfsrc andImgsrc:activityVideoImgsrc]];
+
+        if (activityTitle)
+            activity.title = activityTitle; 
+        
+        if (activityDescription)    
+            activity.description = activityDescription;
+        
         
     }
 }

@@ -185,6 +185,7 @@
                 break;
             case 2:
                 config.signInTestType = CDSignInTestTypeProviderConfiguration;
+                level2ViewController = [[SignInProviderConfigViewController alloc] initWithNibName:@"SignInProviderConfigViewController" bundle:nil];
                 break;
             default:
                 break;
@@ -198,12 +199,15 @@
                 break;
             case 1:
                 config.sharingTestType = CDSharingTestTypeEmailSms;
+                level2ViewController = [[SharingEmailSmsViewController alloc] initWithNibName:@"SharingEmailSmsViewController" bundle:nil];
                 break;
             case 2:
                 config.sharingTestType = CDSharingTestTypeCustomInterface;
+                level2ViewController = [[SharingCustomInterfaceViewController alloc] initWithNibName:@"SharingCustomInterfaceViewController" bundle:nil];
                 break;
             case 3:
                 config.sharingTestType = CDSharingTestTypeActivityChanges;
+                level2ViewController = [[SharingActivityChangesViewController alloc] initWithNibName:@"SharingActivityChangesViewController" bundle:nil];
                 break;
             default:
                 break;

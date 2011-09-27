@@ -17,18 +17,25 @@ typedef enum {
     TCTableViewCellStyleSwitch,
 } TCTableViewCellStyle;
 
+typedef enum {
+    TCTableViewCellPreviewStyleLong,
+    TCTableViewCellPreviewStyleSquare,
+} TCTableViewCellPreviewStyle;
+
 @interface TestConfigurationTableViewCell : UITableViewCell
 {
     UISwitch *cellSwitch;
     UILabel  *cellTitle;
     UILabel  *cellSubtitle;
     UIButton *cellPreview;
+    
+    TCTableViewCellPreviewStyle previewStyle;
 }
 @property (nonatomic, retain) UISwitch *cellSwitch;
 @property (nonatomic, retain) UILabel  *cellTitle;
 @property (nonatomic, retain) UILabel  *cellSubtitle;
 @property (nonatomic, retain) UIButton *cellPreview;
-
+@property TCTableViewCellPreviewStyle previewStyle;
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 - (void)switchChanged:(id)sender;
 @end

@@ -157,8 +157,8 @@ typedef enum
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-        
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{        
     TestConfigurationTableViewCell *cell = 
         (TestConfigurationTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]];
     

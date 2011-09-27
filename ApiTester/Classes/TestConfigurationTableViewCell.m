@@ -22,6 +22,7 @@
 @synthesize cellTitle;
 @synthesize cellSubtitle;
 @synthesize cellPreview;
+@synthesize previewStyle;
 
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 {
@@ -66,6 +67,10 @@
     
     [cellTitle setBackgroundColor:[UIColor clearColor]];
     [cellSubtitle setBackgroundColor:[UIColor clearColor]];
+
+//    [cellTitle setBackgroundColor:[UIColor redColor]];
+//    [cellSubtitle setBackgroundColor:[UIColor redColor]];
+
 //    [cellSwitch setBackgroundColor:[UIColor redColor]];
 //    [cellPreview setBackgroundColor:[UIColor lightGrayColor]];
    
@@ -82,21 +87,49 @@
     DLog(@"%@", self.reuseIdentifier);
     [super layoutSubviews];
 
-//    static BOOL thisIsTheInitialLayout = YES;
-//    
-//    if (thisIsTheInitialLayout)
-//    {
-        [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
-        
+    [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
+
+    CGRect cellFrame = self.frame;
+    if (cellFrame.size.height > 90)
+    {        
         cellTitle.frame = CGRectMake(10, 7, 196, 33);
         cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-        cellSubtitle.frame = CGRectMake(10, 42, 300, 30);        
-        cellPreview.frame = CGRectMake(10, 80, 300, 24);
+        cellSubtitle.frame = CGRectMake(10, 42, 300, 30);
         
-//        thisIsTheInitialLayout = NO;
-//    }
-        
-    //[self switchChanged:cellSwitch];
+        switch (previewStyle)
+        {
+            case TCTableViewCellPreviewStyleLong:
+                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+                break;
+            case TCTableViewCellPreviewStyleSquare:
+                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+                break;
+            default:
+                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+                break;
+        }        
+    }
+    else
+    {
+        cellTitle.frame = CGRectMake(10, 7, 196, 19);
+        cellSubtitle.frame = CGRectMake(10, 28, 300, 17);        
+
+        switch (previewStyle)
+        {
+            case TCTableViewCellPreviewStyleLong:
+                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+                cellPreview.frame = CGRectMake(10, 53, 300, 24);
+                break;
+            case TCTableViewCellPreviewStyleSquare:
+                cellSwitch.frame = CGRectMake(180, 10, 94, 27);
+                cellPreview.frame = CGRectMake(280, 10, 27, 27);
+                break;
+            default:
+                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+                cellPreview.frame = CGRectMake(10, 53, 300, 24);
+                break;
+        }
+    }
 }
 
 - (void)switchChanged:(id)sender
