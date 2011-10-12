@@ -95,9 +95,9 @@ typedef enum
 @property BOOL activityAddVideo;
 @property BOOL activityAddUrl;
 
-@property (retain) NSString *activityAction;
-@property (retain) NSString *activityTitle;
-@property (retain) NSString *activityDescription;
+@property (copy) NSString *activityAction;
+@property (copy) NSString *activityTitle;
+@property (copy) NSString *activityDescription;
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType;
 @end

@@ -191,56 +191,57 @@ typedef enum
 {
     for (int i = 0; i < [cellTitles count]/2; i++)
     {
-        TestConfigurationTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        TestConfigurationTableViewCell *cell = 
+            (TestConfigurationTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
                                                 
-        if (cell.cellSwitch.on == YES)
-        {
+//        if (cell.cellSwitch.on == YES)
+//        {
             switch ((CellIndex)i)
             {
                 case CIAuthenticationBackgroundColor:
                     if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
-                    else  [config setAuthenticationBackgroundColor:YES];
+                    else  [config setAuthenticationBackgroundColor:NO];
                     break;
                 case CIAuthenticationBackgroundImageView:
                     if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
-                    else  [config setAuthenticationBackgroundImageView:YES];
+                    else  [config setAuthenticationBackgroundImageView:NO];
                     break;
                 case CIProviderTableTitleView:
                     if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
-                    else  [config setProviderTableTitleView:YES];
+                    else  [config setProviderTableTitleView:NO];
                     break;
                 case CIProviderTableTitleString:
                     if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
-                    else  [config setProviderTableTitleString:YES];
+                    else  [config setProviderTableTitleString:NO];
                     break;
                 case CIProviderTableHeaderView:
                     if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
-                    else  [config setProviderTableHeaderView:YES];
+                    else  [config setProviderTableHeaderView:NO];
                     break;
                 case CIProviderTableFooterView:
                     if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
-                    else  [config setProviderTableFooterView:YES];
+                    else  [config setProviderTableFooterView:NO];
                     break;
                 case CIProviderTableSectionHeaderView:
                     if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
-                    else  [config setProviderTableSectionHeaderView:YES];
+                    else  [config setProviderTableSectionHeaderView:NO];
                     break;
                 case CIProviderTableSectionFooterView:
                     if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
-                    else  [config setProviderTableSectionFooterView:YES];
+                    else  [config setProviderTableSectionFooterView:NO];
                     break;
                 case CIProviderTableSectionHeaderTitleString:
                     if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
-                    else  [config setProviderTableSectionHeaderTitleString:YES];
+                    else  [config setProviderTableSectionHeaderTitleString:NO];
                     break;
                 case CIProviderTableSectionFooterTitleString:
                     if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
-                    else  [config setProviderTableSectionFooterTitleString:YES];
+                    else  [config setProviderTableSectionFooterTitleString:NO];
                     break;
                 default:
                     break;
             }
-        }
+//        }
     }
     
     StartTestViewController *startTestViewController = 

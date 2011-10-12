@@ -20,21 +20,28 @@
 @interface PickerActivity : NSObject
 {
     NSString *pickerTitle;
-    JRActivityObject *activity;
+    NSString *activityTitle;
+    NSString *activityDescription;
+    
+//    JRActivityObject *activity;
 }
-@property (retain) NSString *pickerTitle;
-@property (retain) JRActivityObject *activity;
-- (id)initWithPickerTitle:(NSString*)newPickerTitle andActivity:(JRActivityObject*)newActivity;
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle andActivity:(JRActivityObject*)newActivity;
+@property (readonly) NSString *pickerTitle;
+@property (readonly) NSString *activityTitle;
+@property (readonly) NSString *activityDescription;
+//@property (retain) JRActivityObject *activity;
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;// andActivity:(JRActivityObject*)newActivity;
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;// andActivity:(JRActivityObject*)newActivity;
 @end
 
 @implementation PickerActivity
 @synthesize pickerTitle;
-@synthesize activity;
+@synthesize activityTitle;
+@synthesize activityDescription;
+//@synthesize activity;
 
-- (id)initWithPickerTitle:(NSString*)newPickerTitle andActivity:(JRActivityObject*)newActivity
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription// andActivity:(JRActivityObject*)newActivity
 {
-    if (newPickerTitle == nil || newActivity == nil)
+    if (newPickerTitle == nil)// || newActivity == nil)
     {
         [self release];
         return nil;
@@ -42,21 +49,25 @@
     
     if (self = [super init]) 
     {
-        pickerTitle = [newPickerTitle retain];
-        activity = [newActivity retain];
+        pickerTitle         = [newPickerTitle copy];
+        activityTitle       = [newActivityTitle copy];
+        activityDescription = [newActivityDescription copy];
+//        activity = [newActivity retain];
     }
     return self;    
 }
 
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle andActivity:(JRActivityObject*)newActivity
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription// andActivity:(JRActivityObject*)newActivity
 {
-    return [[[PickerActivity alloc] initWithPickerTitle:newPickerTitle andActivity:newActivity] autorelease];
+    return [[[PickerActivity alloc] initWithPickerTitle:newPickerTitle activityTitle:newActivityTitle andActivityDescription:newActivityDescription/* andActivity:newActivity*/] autorelease];
 }
 
 - (void)dealloc
 {
     [pickerTitle release];
-    [activity release];
+    [activityTitle release];
+    [activityDescription release];
+//    [activity release];
     
     [super dealloc];
 }
@@ -79,6 +90,8 @@
 {
     [super viewDidLoad];
     
+    config = [ConfigurationData sharedConfigurationData];
+
     cellTitles = [[NSArray alloc] initWithObjects:
                   @"Url", @"Add a url to the activity",
                   @"Image", @"Add an image url to the activity",
@@ -99,7 +112,8 @@
 
 typedef enum
 {
-    CIAddImage = 0,
+    CIAddUrl = 0,
+    CIAddImage,
     CIAddSong,
     CIAddVideo,
 } CellIndex;
@@ -111,61 +125,51 @@ typedef enum
 {
     for (int i = 0; i < [cellTitles count]/2; i++)
     {
-        TestConfigurationTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        TestConfigurationTableViewCell *cell = 
+            (TestConfigurationTableViewCell*)[self.table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         
-        if (cell.cellSwitch.on == YES)
-        {
+//        if (cell.cellSwitch.on == YES)
+//        {
             switch ((CellIndex)i)
             {
+                case CIAddUrl:
+                    if (cell.cellSwitch.on) [config setActivityAddUrl:YES];
+                    else [config setActivityAddUrl:NO];
+                    break;
                 case CIAddImage:
-                    if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
-                    else  [config setAuthenticationBackgroundColor:YES];
+                    if (cell.cellSwitch.on) [config setActivityAddImage:YES];
+                    else [config setActivityAddImage:NO];
                     break;
                 case CIAddSong:
-                    if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
-                    else  [config setAuthenticationBackgroundImageView:YES];
+                    if (cell.cellSwitch.on) [config setActivityAddSong:YES];
+                    else [config setActivityAddSong:NO];
                     break;
-                case CIAddFlash:
-                    if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
-                    else  [config setProviderTableTitleView:YES];
-                    break;
-                case CIProviderTableTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
-                    else  [config setProviderTableTitleString:YES];
-                    break;
-                case CIProviderTableHeaderView:
-                    if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
-                    else  [config setProviderTableHeaderView:YES];
-                    break;
-                case CIProviderTableFooterView:
-                    if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
-                    else  [config setProviderTableFooterView:YES];
-                    break;
-                case CIProviderTableSectionHeaderView:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
-                    else  [config setProviderTableSectionHeaderView:YES];
-                    break;
-                case CIProviderTableSectionFooterView:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
-                    else  [config setProviderTableSectionFooterView:YES];
-                    break;
-                case CIProviderTableSectionHeaderTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
-                    else  [config setProviderTableSectionHeaderTitleString:YES];
-                    break;
-                case CIProviderTableSectionFooterTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
-                    else  [config setProviderTableSectionFooterTitleString:YES];
+                case CIAddVideo:
+                    if (cell.cellSwitch.on) [config setActivityAddVideo:YES];
+                    else [config setActivityAddVideo:NO];
                     break;
                 default:
                     break;
             }
-        }
+//        }
     }
     
+    if ([picker selectedRowInComponent:0] != -1)
+    {
+        PickerActivity *pickerActivity = [activityArray objectAtIndex:[picker selectedRowInComponent:0]];
+        [config setActivityAction:pickerActivity.pickerTitle];
+        [config setActivityTitle:pickerActivity.activityTitle];
+        [config setActivityDescription:pickerActivity.activityDescription];
+    }
+    else
+    {
+        [config setActivityAction:@"Nothing was selected"];
+    }
+
+                                                                       
     StartTestViewController *startTestViewController = 
-    [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
-    [self.navigationController pushViewController:startTestViewController animated:YES];    
+            [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
+                [self.navigationController pushViewController:startTestViewController animated:YES];    
 }
 
 
@@ -265,28 +269,30 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 - (void)buildActivityArray
 {
     activityArray = [[NSMutableArray alloc] initWithCapacity:42];
-    JRImageMediaObject *image = [[JRImageMediaObject alloc] initWithSrc:@"http://media.npr.org/assets/news/2010/09/28/somalia16_wide.jpg?t=1285704766&s=4"
-                                                                andHref:@"http://www.npr.org/templates/story/story.php?storyId=130273801&sc=17&f=1001"];
+//    JRImageMediaObject *image = [[JRImageMediaObject alloc] initWithSrc:@"http://media.npr.org/assets/news/2010/09/28/somalia16_wide.jpg?t=1285704766&s=4"
+//                                                                andHref:@"http://www.npr.org/templates/story/story.php?storyId=130273801&sc=17&f=1001"];
     
     for (int i = 0; i < NUM_PICKER_ACTIVITIES; i++)
     {
         NSMutableString *pickerTitle = [NSMutableString stringWithString:title_bits[i%NUM_TITLES]];
-        [pickerTitle appendString:descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / (NUM_PICKER_ACTIVITIES/2))))]];
+        [pickerTitle appendString:descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))]];
         
-        if (i >= NUM_PICKER_ACTIVITIES/2)
-            [pickerTitle appendString:@" W MEDIA"];
+//        if (i >= NUM_PICKER_ACTIVITIES/2)
+//            [pickerTitle appendString:@" W MEDIA"];
         
-        JRActivityObject *activity = [[JRActivityObject alloc] 
-                                      initWithAction:pickerTitle];
-        //andUrl:@"http://www.google.com"];
+//        JRActivityObject *activity = [[JRActivityObject alloc] 
+//                                      initWithAction:pickerTitle];
+//                                      andUrl:@"http://www.google.com"];
         
-        activity.title = titles[i%NUM_TITLES];
-        activity.description = descrs[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / (NUM_PICKER_ACTIVITIES/2))))];
+//        activity.title = titles[i%NUM_TITLES];
+//        activity.description = descrs[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))];
         
-        if (i >= NUM_PICKER_ACTIVITIES/2)
-            activity.media = [NSArray arrayWithObjects:image, nil];
+//        if (i >= NUM_PICKER_ACTIVITIES/2)
+//            activity.media = [NSArray arrayWithObjects:image, nil];
         
-        [activityArray addObject:[PickerActivity pickerActivityWithPickerTitle:pickerTitle andActivity:activity]];
+        [activityArray addObject:[PickerActivity pickerActivityWithPickerTitle:pickerTitle 
+                                                                 activityTitle:titles[i%NUM_TITLES] 
+                                                        andActivityDescription:descrs[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))]]];
     }
 }
 
@@ -303,7 +309,7 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
     DLog(@"");
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 

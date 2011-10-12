@@ -10,6 +10,7 @@
 #import "TestConfigurationTableViewCell.h"
 #import "JRActivityObject.h"
 #import "ConfigurationData.h"
+#import "StartTestViewController.h"
 
 @interface SharingActivityChangesViewController : UIViewController 
 {

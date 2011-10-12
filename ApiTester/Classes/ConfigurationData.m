@@ -142,24 +142,29 @@ static NSString * const activityVideoImgsrc = @"http://b.vimeocdn.com/ts/153/117
         else
             activity = [JRActivityObject activityObjectWithAction:activityAction];
         
-        NSMutableArray *media = [NSMutableArray arrayWithCapacity:3];
+        if (activityAddImage || activityAddSong || activityAddVideo)
+        {
+            NSMutableArray *media = [NSMutableArray arrayWithCapacity:3];
         
-        if (activityAddImage)
-            [media addObject:[JRImageMediaObject imageMediaObjectWithSrc:activityImageSrc andHref:activityImageHref]];
+            if (activityAddImage)
+                [media addObject:[JRImageMediaObject imageMediaObjectWithSrc:activityImageSrc andHref:activityImageHref]];
 
-        if (activityAddSong)
-            [media addObject:[JRMp3MediaObject mp3MediaObjectWithSrc:activitySongSrc]];
+            if (activityAddSong)
+                [media addObject:[JRMp3MediaObject mp3MediaObjectWithSrc:activitySongSrc]];
 
-        if (activityAddVideo)
-            [media addObject:[JRFlashMediaObject flashMediaObjectWithSwfsrc:activityVideoSwfsrc andImgsrc:activityVideoImgsrc]];
-
+            if (activityAddVideo)
+                [media addObject:[JRFlashMediaObject flashMediaObjectWithSwfsrc:activityVideoSwfsrc andImgsrc:activityVideoImgsrc]];
+        
+            activity.media = media;
+        }
+        
         if (activityTitle)
             activity.title = activityTitle; 
         
         if (activityDescription)    
             activity.description = activityDescription;
         
-        
+        [jrEngage showSocialPublishingDialogWithActivity:activity];        
     }
 }
 
