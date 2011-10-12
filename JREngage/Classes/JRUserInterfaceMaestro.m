@@ -45,9 +45,9 @@
 
 void handleCustomInterfaceException(NSException* exception, NSString* kJRKeyString)
 {
-    NSLog (@"*** Exception thrown. Problem is most likely with jrEngage custom interface object%@: Caught %@: %@",
-                 (kJRKeyString ? [NSString stringWithFormat:@" %@", kJRKeyString] : @""),
-                 [exception name],
+    NSLog (@"*** Exception thrown. Problem is most likely with jrEngage custom interface object %@ : Caught %@ : %@", 
+                 (kJRKeyString ? [NSString stringWithFormat:@" possibly from kJRKeyString, %@", kJRKeyString] : @""),
+                 [exception name], 
                  [exception reason]);
 
 #ifdef DEBUG
@@ -220,7 +220,7 @@ static JRUserInterfaceMaestro* singleton = nil;
     return NSUIntegerMax;  //denotes an object that cannot be released
 }
 
-- (void)release
+- (oneway void)release
 {
     //do nothing
 }
@@ -712,7 +712,7 @@ static JRUserInterfaceMaestro* singleton = nil;
     else
         originalRootViewController = myProvidersController;
 
-    if (applicationNavigationController && [applicationNavigationController isViewLoaded])
+    if (usingAppNav && applicationNavigationController && [applicationNavigationController isViewLoaded])
         [applicationNavigationController popToViewController:originalRootViewController animated:YES];
     else
         [jrModalNavController.myNavigationController popToRootViewControllerAnimated:YES];

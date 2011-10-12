@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -39,6 +39,7 @@
 		9F0BB70113B2B0AD00898F4F /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F0BB70013B2B0AD00898F4F /* RegexKitLite.m */; };
 		9F25B07A12C2A9FF0083BB6A /* icon_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F25B07912C2A9FF0083BB6A /* icon_ipad.png */; };
 		9F5234FD12B29F460073ABAE /* janrain_blog.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F5234FC12B29F460073ABAE /* janrain_blog.json */; };
+		9F608B42143F7F06002F4439 /* JRPreviewLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F608B41143F7F06002F4439 /* JRPreviewLabel.m */; };
 		9F87D85412145FDE00FF7E2C /* FeedReaderFeeds.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F87D85212145FDE00FF7E2C /* FeedReaderFeeds.m */; };
 		9F87DF471219A97600FF7E2C /* FeedReaderWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F87DF451219A97600FF7E2C /* FeedReaderWebView.m */; };
 		9F8AC6101210BD4E004DB52A /* FeedReaderDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8AC60E1210BD4E004DB52A /* FeedReaderDetail.m */; };
@@ -204,8 +205,6 @@
 		9FA5DDE012FC846B0033A711 /* JRUserLandingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5DD4012FC846B0033A711 /* JRUserLandingController.xib */; };
 		9FA5DDE112FC846B0033A711 /* JRWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5DD4112FC846B0033A711 /* JRWebViewController.xib */; };
 		9FA5DDE212FC846B0033A711 /* JREngage-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5DD4212FC846B0033A711 /* JREngage-Info.plist */; };
-		9FA783B913CE21E900E1B603 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA783B513CE21E900E1B603 /* OHAttributedLabel.m */; };
-		9FA783BA13CE21E900E1B603 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA783B713CE21E900E1B603 /* NSAttributedString+Attributes.m */; };
 		9FA783CB13CE441A00E1B603 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FA783CA13CE441A00E1B603 /* CoreText.framework */; };
 		9FA798CD13E7260200E1B603 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FA798CC13E7260200E1B603 /* QuartzCore.framework */; };
 		9FA798F413E7279600E1B603 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA798F213E7279600E1B603 /* EGORefreshTableHeaderView.m */; };
@@ -264,6 +263,8 @@
 		9F0BB70013B2B0AD00898F4F /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegexKitLite.m; path = RegexKitLite/RegexKitLite.m; sourceTree = "<group>"; };
 		9F25B07912C2A9FF0083BB6A /* icon_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_ipad.png; sourceTree = "<group>"; };
 		9F5234FC12B29F460073ABAE /* janrain_blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = janrain_blog.json; path = Resources/janrain_blog.json; sourceTree = "<group>"; };
+		9F608B40143F7F06002F4439 /* JRPreviewLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRPreviewLabel.h; path = ../JREngage/Classes/JRPreviewLabel.h; sourceTree = SOURCE_ROOT; };
+		9F608B41143F7F06002F4439 /* JRPreviewLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRPreviewLabel.m; path = ../JREngage/Classes/JRPreviewLabel.m; sourceTree = SOURCE_ROOT; };
 		9F87D85112145FDE00FF7E2C /* FeedReaderFeeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedReaderFeeds.h; sourceTree = "<group>"; };
 		9F87D85212145FDE00FF7E2C /* FeedReaderFeeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedReaderFeeds.m; sourceTree = "<group>"; };
 		9F87DF441219A97600FF7E2C /* FeedReaderWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedReaderWebView.h; sourceTree = "<group>"; };
@@ -454,10 +455,6 @@
 		9FA5DD4012FC846B0033A711 /* JRUserLandingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JRUserLandingController.xib; sourceTree = "<group>"; };
 		9FA5DD4112FC846B0033A711 /* JRWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JRWebViewController.xib; sourceTree = "<group>"; };
 		9FA5DD4212FC846B0033A711 /* JREngage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JREngage-Info.plist"; path = "../JREngage/JREngage-Info.plist"; sourceTree = SOURCE_ROOT; };
-		9FA783B513CE21E900E1B603 /* OHAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OHAttributedLabel.m; path = ../JREngage/AttributedLabel/OHAttributedLabel.m; sourceTree = SOURCE_ROOT; };
-		9FA783B613CE21E900E1B603 /* OHAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OHAttributedLabel.h; path = ../JREngage/AttributedLabel/OHAttributedLabel.h; sourceTree = SOURCE_ROOT; };
-		9FA783B713CE21E900E1B603 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+Attributes.m"; path = "../JREngage/AttributedLabel/NSAttributedString+Attributes.m"; sourceTree = SOURCE_ROOT; };
-		9FA783B813CE21E900E1B603 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+Attributes.h"; path = "../JREngage/AttributedLabel/NSAttributedString+Attributes.h"; sourceTree = SOURCE_ROOT; };
 		9FA783CA13CE441A00E1B603 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		9FA798CC13E7260200E1B603 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9FA798F213E7279600E1B603 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGORefreshTableHeaderView.m; path = EGOTableViewPullRefresh/Classes/EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
@@ -665,7 +662,6 @@
 		9FA5DC7B12FC846B0033A711 /* JREngage */ = {
 			isa = PBXGroup;
 			children = (
-				9FA783B413CE21E900E1B603 /* AttributedLabel */,
 				9FA5DC7F12FC846B0033A711 /* JSON */,
 				9FA5DC7C12FC846B0033A711 /* Security */,
 				9FA5DC9312FC846B0033A711 /* Classes */,
@@ -736,6 +732,8 @@
 				9FA5DCA712FC846B0033A711 /* JRWebViewController.m */,
 				9FA5DCA812FC846B0033A711 /* JRInfoBar.h */,
 				9FA5DCA912FC846B0033A711 /* JRInfoBar.m */,
+				9F608B40143F7F06002F4439 /* JRPreviewLabel.h */,
+				9F608B41143F7F06002F4439 /* JRPreviewLabel.m */,
 			);
 			name = Classes;
 			path = ../JREngage/classes;
@@ -994,17 +992,6 @@
 			path = ../JREngage/Resources/xibs;
 			sourceTree = SOURCE_ROOT;
 		};
-		9FA783B413CE21E900E1B603 /* AttributedLabel */ = {
-			isa = PBXGroup;
-			children = (
-				9FA783B513CE21E900E1B603 /* OHAttributedLabel.m */,
-				9FA783B613CE21E900E1B603 /* OHAttributedLabel.h */,
-				9FA783B713CE21E900E1B603 /* NSAttributedString+Attributes.m */,
-				9FA783B813CE21E900E1B603 /* NSAttributedString+Attributes.h */,
-			);
-			name = AttributedLabel;
-			sourceTree = "<group>";
-		};
 		9FA798A113E7210E00E1B603 /* EGOTableViewPullRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1063,8 +1050,11 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "QuickPublish" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -1303,9 +1293,8 @@
 				9F0BB6FC13B2B08B00898F4F /* NSDate+InternetDateTime.m in Sources */,
 				9F0BB6FD13B2B08B00898F4F /* NSString+HTML.m in Sources */,
 				9F0BB70113B2B0AD00898F4F /* RegexKitLite.m in Sources */,
-				9FA783B913CE21E900E1B603 /* OHAttributedLabel.m in Sources */,
-				9FA783BA13CE21E900E1B603 /* NSAttributedString+Attributes.m in Sources */,
 				9FA798F413E7279600E1B603 /* EGORefreshTableHeaderView.m in Sources */,
+				9F608B42143F7F06002F4439 /* JRPreviewLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1317,18 +1306,19 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lilli Szafranski (QWMWM2H3HW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Quick_Publish_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "Quick_Publish-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = "Quick Publish";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A7B9FC53-99F0-4CBD-B6BE-6BC7F6CD6BD4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1340,13 +1330,16 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Quick_Publish_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "Quick_Publish-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = "Quick Publish";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1358,12 +1351,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
@@ -1373,15 +1366,16 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: JanRain, Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Quick_Publish_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = "Quick_Publish-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = "Quick Publish";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "20843F31-CFDF-4704-A3BF-8912BE1C4392";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1398,7 +1392,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				PREBINDING = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1407,12 +1400,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
