@@ -253,7 +253,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>StartTestViewController</string>
 					<string>UIResponder</string>
-					<string>{{850, 378}, {320, 480}}</string>
+					<string>{{850, 102}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -285,7 +285,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">9</int>
+			<int key="maxID">11</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

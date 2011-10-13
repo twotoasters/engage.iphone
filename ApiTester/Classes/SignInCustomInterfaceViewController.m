@@ -16,7 +16,7 @@
 #pragma mark View lifecycle
 
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
@@ -26,19 +26,19 @@
                     @"Background Color", @"Use a custom background color",
                     @"Background Image", @"Use a custom background image",
                     @"Providers Table Title View", @"Use a custom view for the title above the providers table",
-                    @"Providers Table Title String", @"Use a custom string for the title above the providers table", 
+                    @"Providers Table Title String", @"Use a custom string for the title above the providers table",
                     @"Providers Table Header View", @"Use a custom view over the providers table",
                     @"Providers Table Footer View", @"Use a custom view below the providers table",
                     @"Providers Table Section Header View", @"Use a custom view over the list of providers section of the table",
                     @"Providers Table Section Footer View", @"Use a custom view over the list of providers section of the table",
                     @"Providers Table Section Header Title String", @"Use a custom view over the list of providers section of the table",
                     @"Providers Table Section Footer Title String", @"Use a custom view over the list of providers section of the table", nil];
-    
+
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
-    
+
 //    [self.view setAllowsSelection:NO];
-    
+
     [self setToolbarItems:
         [NSArray arrayWithObjects:
          [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
@@ -157,26 +157,26 @@ typedef enum
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{        
-    TestConfigurationTableViewCell *cell = 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TestConfigurationTableViewCell *cell =
         (TestConfigurationTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]];
-    
-    if (cell == nil) 
+
+    if (cell == nil)
     {
-        cell = [[[TestConfigurationTableViewCell alloc] 
-                 initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch 
+        cell = [[[TestConfigurationTableViewCell alloc]
+                 initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
                                              reuseIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]]
                 autorelease];
     }
-        
+
     cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 2)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 2) + 1)];
-    
+
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
-    
+
     [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
-    
+
     return cell;
 }
 
@@ -187,13 +187,15 @@ typedef enum
 
 - (void)reset:(id)sender {}
 
-- (void)next:(id)sender 
+- (void)next:(id)sender
 {
+    [config resetCustomInterface];
+
     for (int i = 0; i < [cellTitles count]/2; i++)
     {
-        TestConfigurationTableViewCell *cell = 
+        TestConfigurationTableViewCell *cell =
             (TestConfigurationTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-                                                
+
 //        if (cell.cellSwitch.on == YES)
 //        {
             switch ((CellIndex)i)
@@ -243,10 +245,10 @@ typedef enum
             }
 //        }
     }
-    
-    StartTestViewController *startTestViewController = 
+
+    StartTestViewController *startTestViewController =
         [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
-    [self.navigationController pushViewController:startTestViewController animated:YES];    
+    [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 
 /*
@@ -261,14 +263,14 @@ typedef enum
 /*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source.
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
+    }
 }
 */
 
@@ -310,7 +312,7 @@ typedef enum
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Relinquish ownership any cached data, images, etc. that aren't in use.
 }
 

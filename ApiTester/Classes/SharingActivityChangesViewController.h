@@ -12,14 +12,14 @@
 #import "ConfigurationData.h"
 #import "StartTestViewController.h"
 
-@interface SharingActivityChangesViewController : UIViewController 
+@interface SharingActivityChangesViewController : UIViewController
 {
     UIPickerView *picker;
     UITableView  *table;
-    
+
     NSMutableArray *activityArray;
-    NSInteger selectedActivity;
-    
+//    NSInteger selectedActivity;
+
     NSArray *cellTitles;
     ConfigurationData *config;
 }

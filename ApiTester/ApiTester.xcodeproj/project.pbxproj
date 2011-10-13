@@ -174,6 +174,8 @@
 		9F27A0E9144611C9005BE7DC /* JRUserLandingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F27A048144611C9005BE7DC /* JRUserLandingController.xib */; };
 		9F27A0EA144611C9005BE7DC /* JRWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F27A049144611C9005BE7DC /* JRWebViewController.xib */; };
 		9F27A0EB144611C9005BE7DC /* JREngage-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F27A04A144611C9005BE7DC /* JREngage-Info.plist */; };
+		9F27A20E14462364005BE7DC /* SharingActivityWithBadParamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F27A20C14462364005BE7DC /* SharingActivityWithBadParamsViewController.m */; };
+		9F27A20F14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F27A20D14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib */; };
 		9F472332142D2D4300D88069 /* ConfigurationData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F472331142D2D4300D88069 /* ConfigurationData.m */; };
 		9F472336142D2DFD00D88069 /* TestTypesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F472334142D2DFD00D88069 /* TestTypesViewController.m */; };
 		9F472343142D3BDC00D88069 /* StartTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F472341142D3BDC00D88069 /* StartTestViewController.m */; };
@@ -402,6 +404,9 @@
 		9F27A048144611C9005BE7DC /* JRUserLandingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JRUserLandingController.xib; sourceTree = "<group>"; };
 		9F27A049144611C9005BE7DC /* JRWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JRWebViewController.xib; sourceTree = "<group>"; };
 		9F27A04A144611C9005BE7DC /* JREngage-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JREngage-Info.plist"; path = "../JREngage/JREngage-Info.plist"; sourceTree = SOURCE_ROOT; };
+		9F27A20B14462364005BE7DC /* SharingActivityWithBadParamsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingActivityWithBadParamsViewController.h; sourceTree = "<group>"; };
+		9F27A20C14462364005BE7DC /* SharingActivityWithBadParamsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingActivityWithBadParamsViewController.m; sourceTree = "<group>"; };
+		9F27A20D14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SharingActivityWithBadParamsViewController.xib; path = ../../Classes/SharingActivityWithBadParamsViewController.xib; sourceTree = "<group>"; };
 		9F472330142D2D4300D88069 /* ConfigurationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationData.h; sourceTree = "<group>"; };
 		9F472331142D2D4300D88069 /* ConfigurationData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationData.m; sourceTree = "<group>"; };
 		9F472333142D2DFD00D88069 /* TestTypesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTypesViewController.h; sourceTree = "<group>"; };
@@ -464,30 +469,15 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
-				28C286E00D94DF7D0034E888 /* RootViewController.m */,
 				1D3623240D0F684500981E51 /* ApiTesterAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ApiTesterAppDelegate.m */,
+				9F27A20A14462323005BE7DC /* Other View Controllers */,
+				9F27A208144622C9005BE7DC /* Sign In View Controllers */,
+				9F27A209144622D4005BE7DC /* Sharing Tests View Controllers */,
 				9F472330142D2D4300D88069 /* ConfigurationData.h */,
 				9F472331142D2D4300D88069 /* ConfigurationData.m */,
 				9F4727BC143127F500D88069 /* CustomViewBuilder.h */,
 				9F4727BD143127F500D88069 /* CustomViewBuilder.m */,
-				9F472487142D512A00D88069 /* TestConfigurationTableViewCell.h */,
-				9F472488142D512A00D88069 /* TestConfigurationTableViewCell.m */,
-				9F472333142D2DFD00D88069 /* TestTypesViewController.h */,
-				9F472334142D2DFD00D88069 /* TestTypesViewController.m */,
-				9F47249A142D538C00D88069 /* SignInCustomInterfaceViewController.h */,
-				9F47249B142D538C00D88069 /* SignInCustomInterfaceViewController.m */,
-				9F472A3F14313FE500D88069 /* SignInProviderConfigViewController.h */,
-				9F472A4014313FE500D88069 /* SignInProviderConfigViewController.m */,
-				9F472A441431401F00D88069 /* SharingEmailSmsViewController.h */,
-				9F472A451431401F00D88069 /* SharingEmailSmsViewController.m */,
-				9F472A491431403300D88069 /* SharingCustomInterfaceViewController.h */,
-				9F472A4A1431403300D88069 /* SharingCustomInterfaceViewController.m */,
-				9F472A4E1431404C00D88069 /* SharingActivityChangesViewController.h */,
-				9F472A4F1431404C00D88069 /* SharingActivityChangesViewController.m */,
-				9F472340142D3BDC00D88069 /* StartTestViewController.h */,
-				9F472341142D3BDC00D88069 /* StartTestViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -878,6 +868,47 @@
 			path = ../JREngage/Resources/xibs;
 			sourceTree = SOURCE_ROOT;
 		};
+		9F27A208144622C9005BE7DC /* Sign In View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9F47249A142D538C00D88069 /* SignInCustomInterfaceViewController.h */,
+				9F47249B142D538C00D88069 /* SignInCustomInterfaceViewController.m */,
+				9F472A3F14313FE500D88069 /* SignInProviderConfigViewController.h */,
+				9F472A4014313FE500D88069 /* SignInProviderConfigViewController.m */,
+			);
+			name = "Sign In View Controllers";
+			sourceTree = "<group>";
+		};
+		9F27A209144622D4005BE7DC /* Sharing Tests View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9F472A441431401F00D88069 /* SharingEmailSmsViewController.h */,
+				9F472A451431401F00D88069 /* SharingEmailSmsViewController.m */,
+				9F472A491431403300D88069 /* SharingCustomInterfaceViewController.h */,
+				9F472A4A1431403300D88069 /* SharingCustomInterfaceViewController.m */,
+				9F472A4E1431404C00D88069 /* SharingActivityChangesViewController.h */,
+				9F472A4F1431404C00D88069 /* SharingActivityChangesViewController.m */,
+				9F27A20B14462364005BE7DC /* SharingActivityWithBadParamsViewController.h */,
+				9F27A20C14462364005BE7DC /* SharingActivityWithBadParamsViewController.m */,
+			);
+			name = "Sharing Tests View Controllers";
+			sourceTree = "<group>";
+		};
+		9F27A20A14462323005BE7DC /* Other View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
+				28C286E00D94DF7D0034E888 /* RootViewController.m */,
+				9F472487142D512A00D88069 /* TestConfigurationTableViewCell.h */,
+				9F472488142D512A00D88069 /* TestConfigurationTableViewCell.m */,
+				9F472333142D2DFD00D88069 /* TestTypesViewController.h */,
+				9F472334142D2DFD00D88069 /* TestTypesViewController.m */,
+				9F472340142D3BDC00D88069 /* StartTestViewController.h */,
+				9F472341142D3BDC00D88069 /* StartTestViewController.m */,
+			);
+			name = "Other View Controllers";
+			sourceTree = "<group>";
+		};
 		9F4726501430F7C700D88069 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,16 +927,17 @@
 		9F4729FE14313B0800D88069 /* xibs */ = {
 			isa = PBXGroup;
 			children = (
-				9F472A531431407D00D88069 /* SharingActivityChangesViewController.xib */,
-				9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */,
-				9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */,
-				9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */,
+				9F472A0314313B0800D88069 /* SwitchControlTableCell.xib */,
 				9F4729FF14313B0800D88069 /* MainWindow.xib */,
 				9F472A0014313B0800D88069 /* RootViewController.xib */,
-				9F472A0114313B0800D88069 /* SignInCustomInterfaceViewController.xib */,
 				9F472A0214313B0800D88069 /* StartTestViewController.xib */,
-				9F472A0314313B0800D88069 /* SwitchControlTableCell.xib */,
 				9F472A0414313B0800D88069 /* TestTypesViewController.xib */,
+				9F472A0114313B0800D88069 /* SignInCustomInterfaceViewController.xib */,
+				9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */,
+				9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */,
+				9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */,
+				9F472A531431407D00D88069 /* SharingActivityChangesViewController.xib */,
+				9F27A20D14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib */,
 			);
 			name = xibs;
 			path = Resources/xibs;
@@ -1117,6 +1149,7 @@
 				9F27A0E9144611C9005BE7DC /* JRUserLandingController.xib in Resources */,
 				9F27A0EA144611C9005BE7DC /* JRWebViewController.xib in Resources */,
 				9F27A0EB144611C9005BE7DC /* JREngage-Info.plist in Resources */,
+				9F27A20F14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1162,6 +1195,7 @@
 				9F27A05E144611C9005BE7DC /* JRWebViewController.m in Sources */,
 				9F27A05F144611C9005BE7DC /* JRInfoBar.m in Sources */,
 				9F27A060144611C9005BE7DC /* JRPreviewLabel.m in Sources */,
+				9F27A20E14462364005BE7DC /* SharingActivityWithBadParamsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
