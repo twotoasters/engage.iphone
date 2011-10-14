@@ -25,20 +25,20 @@
 }
 */
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
     config = [ConfigurationData sharedConfigurationData];
 //    startButton.titleLabel.numberOfLines = 2;
-    
+
     titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 180, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
     titleLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     titleLabel.textAlignment = UITextAlignmentCenter;
     titleLabel.textColor = [UIColor whiteColor];
-    
+
     self.navigationItem.titleView = titleLabel;
     self.title = @"Test";
 }
@@ -46,7 +46,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if (config.signInOrSharing == CDSignIn)
     {
         titleLabel.text = @"Test Sign-In";
@@ -69,7 +69,7 @@
     }
     else if (navigationRadio.selectedSegmentIndex == 1)
     {
-        [config startTestWithNavigationController:CDNavigationControllerTypeApplication];        
+        [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
     }
     else
     {
@@ -79,12 +79,12 @@
 
 //- (IBAction)navigationRadioChanged:(id)sender
 //{
-//    
+//
 //}
 //
 //- (IBAction)padDisplayRadioChanged:(id)sender
 //{
-//    
+//
 //}
 
 
@@ -101,7 +101,7 @@
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Release any cached data, images, etc. that aren't in use.
 }
 

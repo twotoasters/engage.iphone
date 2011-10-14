@@ -33,8 +33,8 @@
 
     signInTestTypes = [[NSArray alloc] initWithObjects:
                          @"Test Basic Sign-In", @"The default sign-in process", @"ss",
-                         @"Test Various UI Customizations", @"Add a native provider, custom titles, different colors, etc.", @"sl",
-                         @"Test Different Provider Configurations", @"Exclude certain providers, always force reauthentication, skip the user landing page", @"ll",
+                         @"Test Various UI Customizations", @"Add background a background image, custom titles, different colors, etc.", @"sl",
+                         @"Test Different Provider Configurations", @"Add a native provider, exclude certain providers, always force reauthentication, skip the user landing page", @"ll",
                          nil];
 
     sharingTestTypes = [[NSArray alloc] initWithObjects:
@@ -133,6 +133,8 @@
         return 66;
     else if ([cellSize isEqualToString:@"ll"])
         return 84;
+    else
+        return 44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -240,6 +242,7 @@
         switch (indexPath.row)
         {
             case 0:
+                [config resetSignIn];
                 [config resetCustomInterface];
 
                 config.signInTestType = CDSignInTestTypeBasic;
@@ -260,6 +263,7 @@
         switch (indexPath.row)
         {
             case 0:
+                [config resetSignIn];
                 [config resetCustomInterface];
                 [config resetActivity];
 

@@ -7,10 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TestConfigurationTableViewCell.h"
+#import "ConfigurationData.h"
+#import "StartTestViewController.h"
+#import "JRSessionData.h"
 
+@interface SignInProviderConfigViewController : UITableViewController
+{
+    NSArray *cellTitles;
+    ConfigurationData *config;
 
-@interface SignInProviderConfigViewController : UITableViewController {
-
+    UIView  *excludeProvidersView;
+    NSArray *configuredProviders;
+    NSArray *excludeProvidersSwitches;
+    NSMutableArray *excludedProviders;
 }
 
 @end

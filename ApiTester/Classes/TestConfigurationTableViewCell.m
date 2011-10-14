@@ -118,20 +118,25 @@
     cellDisabled.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     cellBorder.frame   = CGRectMake(0, self.frame.size.height - 14, 320, 14);
 
-    DLog(@"cellDisabledFrame: %f, %f, %f, %f", cellDisabled.frame.origin.x,
-     cellDisabled.frame.origin.y,
-      cellDisabled.frame.size.width,
-       cellDisabled.frame.size.height);
+//    DLog(@"cellDisabledFrame: %f, %f, %f, %f", cellDisabled.frame.origin.x,
+//     cellDisabled.frame.origin.y,
+//      cellDisabled.frame.size.width,
+//       cellDisabled.frame.size.height);
 
     if (previewStyle == TCTableViewCellPreviewStyleSquare)
     {
         cellSwitch.frame = CGRectMake(180, 10, 94, 27);
         cellPreview.frame = CGRectMake(280, 10, 27, 27);
     }
-    else
+    else if (previewStyle == TCTableViewCellPreviewStyleLong)
     {
         cellSwitch.frame = CGRectMake(216, 10, 94, 27);
         cellPreview.frame = CGRectMake(10, 62, 300, 24);
+    }
+    else
+    {
+        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+        cellPreview.frame = CGRectMake(10, 62, 300, self.frame.size.height - 62 - 10);
     }
 
     CGFloat titleWidth = cellSwitch.frame.origin.x - 18;
@@ -150,6 +155,8 @@
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)
                 cellPreview.frame = CGRectMake(10, 64, 300, 24);
+            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
+                cellPreview.frame = CGRectMake(10, 64, 300, self.frame.size.height - 64 - 10);
 
             break;
 
@@ -159,6 +166,8 @@
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)
                 cellPreview.frame = CGRectMake(10, 80, 300, 24);
+            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
+                cellPreview.frame = CGRectMake(10, 80, 300, self.frame.size.height - 80 - 10);
 
             break;
 
@@ -168,6 +177,8 @@
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)
                 cellPreview.frame = CGRectMake(10, 82, 300, 24);
+            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
+                cellPreview.frame = CGRectMake(10, 82, 300, self.frame.size.height - 82 - 10);
 
             break;
 

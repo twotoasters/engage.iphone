@@ -207,6 +207,10 @@
 		9F472A591431407D00D88069 /* SharingEmailSmsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */; };
 		9F472A5A1431407D00D88069 /* SignInProviderConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */; };
 		C01FCF5008A954540054247D /* divider.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054247C /* divider.png */; };
+		C01FCF5008A9545400542480 /* SignInEmbeddedNativeLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */; };
+		C01FCF5008A9545400542482 /* SignInEmbeddedNativeLoginInfoScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */; };
+		C01FCF5008A9545400542484 /* janrain_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542483 /* janrain_logo.png */; };
+		C01FCF5008A9545400542486 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542485 /* background.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -449,6 +453,11 @@
 		9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharingEmailSmsViewController.xib; sourceTree = "<group>"; };
 		9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInProviderConfigViewController.xib; sourceTree = "<group>"; };
 		C01FCF5008A954540054247C /* divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divider.png; sourceTree = "<group>"; };
+		C01FCF5008A954540054247E /* SignInEmbeddedNativeLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInEmbeddedNativeLoginViewController.h; sourceTree = "<group>"; };
+		C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInEmbeddedNativeLoginViewController.m; sourceTree = "<group>"; };
+		C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInEmbeddedNativeLoginInfoScreen.xib; sourceTree = "<group>"; };
+		C01FCF5008A9545400542483 /* janrain_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = janrain_logo.png; sourceTree = "<group>"; };
+		C01FCF5008A9545400542485 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -899,6 +908,8 @@
 		9F27A20A14462323005BE7DC /* Other View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */,
+				C01FCF5008A954540054247E /* SignInEmbeddedNativeLoginViewController.h */,
 				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
 				28C286E00D94DF7D0034E888 /* RootViewController.m */,
 				9F472487142D512A00D88069 /* TestConfigurationTableViewCell.h */,
@@ -914,6 +925,8 @@
 		9F4726501430F7C700D88069 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A9545400542485 /* background.png */,
+				C01FCF5008A9545400542483 /* janrain_logo.png */,
 				C01FCF5008A954540054247C /* divider.png */,
 				9F47265D1430F8AB00D88069 /* disabledCyan.png */,
 				9F4726511430F7C700D88069 /* backgroundWeave.png */,
@@ -930,6 +943,7 @@
 		9F4729FE14313B0800D88069 /* xibs */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */,
 				9F472A0314313B0800D88069 /* SwitchControlTableCell.xib */,
 				9F4729FF14313B0800D88069 /* MainWindow.xib */,
 				9F472A0014313B0800D88069 /* RootViewController.xib */,
@@ -1154,6 +1168,9 @@
 				9F27A0EB144611C9005BE7DC /* JREngage-Info.plist in Resources */,
 				9F27A20F14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib in Resources */,
 				C01FCF5008A954540054247D /* divider.png in Resources */,
+				C01FCF5008A9545400542482 /* SignInEmbeddedNativeLoginInfoScreen.xib in Resources */,
+				C01FCF5008A9545400542484 /* janrain_logo.png in Resources */,
+				C01FCF5008A9545400542486 /* background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,6 +1217,7 @@
 				9F27A05F144611C9005BE7DC /* JRInfoBar.m in Sources */,
 				9F27A060144611C9005BE7DC /* JRPreviewLabel.m in Sources */,
 				9F27A20E14462364005BE7DC /* SharingActivityWithBadParamsViewController.m in Sources */,
+				C01FCF5008A9545400542480 /* SignInEmbeddedNativeLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

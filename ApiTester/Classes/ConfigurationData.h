@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "CustomViewBuilder.h"
+#import "SignInEmbeddedNativeLoginViewController.h"
 #import "JREngage.h"
 #import "JREngage+CustomInterface.h"
+
 
 
 #define JANRAIN_BLUE_100 [UIColor colorWithRed:0.102 green:0.33 blue:0.48 alpha:1.0]
@@ -51,6 +53,9 @@ typedef enum
 @interface ConfigurationData : NSObject <JREngageDelegate>
 {
     JREngage *jrEngage;
+    UINavigationController *applicationNavigationController;
+    UINavigationController *customNavigationController;
+    EmbeddedTableViewController *embeddedTable;
 
     SignInOrSharing signInOrSharing;
     SignInTestType  signInTestType;
@@ -66,6 +71,14 @@ typedef enum
     BOOL providerTableSectionFooterView;
     BOOL providerTableSectionHeaderTitleString;
     BOOL providerTableSectionFooterTitleString;
+
+
+    BOOL signinAddNativeLogin;
+    BOOL signinAlwaysForceReauth;
+    BOOL signinSkipUserLanding;
+    BOOL signinExcludeProviders;
+
+    NSArray *excludeProvidersArray;
 
     JRActivityObject    *activity;
 
@@ -129,6 +142,13 @@ typedef enum
 @property BOOL providerTableSectionHeaderTitleString;
 @property BOOL providerTableSectionFooterTitleString;
 
+@property BOOL signinAddNativeLogin;
+@property BOOL signinAlwaysForceReauth;
+@property BOOL signinSkipUserLanding;
+@property BOOL signinExcludeProviders;
+
+@property (copy) NSArray *excludeProvidersArray;
+
 @property BOOL activityAddDefaultAction;
 @property BOOL activityAddDefaultUrl;
 @property BOOL activityAddDefaultTitle;
@@ -146,6 +166,8 @@ typedef enum
 @property (copy) NSString *activityTitle;
 @property (copy) NSString *activityDescription;
 
+@property (retain, nonatomic) UINavigationController *applicationNavigationController;
+- (void)resetSignIn;
 - (void)resetActivity;
 - (void)resetCustomInterface;
 
@@ -158,4 +180,6 @@ typedef enum
 - (void)addActivitySmsWithMessage:(NSString *)message andUrls:(NSArray *)urls;
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType;
+
+- (void)triggerAuthenticationDidCancel:(id)sender;
 @end

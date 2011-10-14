@@ -37,8 +37,6 @@
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
 
-//    [self.view setAllowsSelection:NO];
-
     [self setToolbarItems:
         [NSArray arrayWithObjects:
          [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
@@ -218,9 +216,10 @@ typedef enum
 
 - (void)next:(id)sender
 {
+    [config resetSignIn];
     [config resetCustomInterface];
 
-    for (int i = 0; i < [cellTitles count]/2; i++)
+    for (int i = 0; i < [cellTitles count] / 3; i++)
     {
         TestConfigurationTableViewCell *cell =
             (TestConfigurationTableViewCell*)

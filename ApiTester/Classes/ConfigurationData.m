@@ -35,6 +35,13 @@
 @synthesize providerTableSectionHeaderTitleString;
 @synthesize providerTableSectionFooterTitleString;
 
+@synthesize signinAddNativeLogin;
+@synthesize signinAlwaysForceReauth;
+@synthesize signinSkipUserLanding;
+@synthesize signinExcludeProviders;
+
+@synthesize excludeProvidersArray;
+
 @synthesize activityAddDefaultAction;
 @synthesize activityAddDefaultUrl;
 @synthesize activityAddDefaultTitle;
@@ -51,6 +58,8 @@
 @synthesize activityUrl;
 @synthesize activityTitle;
 @synthesize activityDescription;
+
+@synthesize applicationNavigationController;
 
 #pragma mark singleton_methods
 static NSString * const appId = @"appcfamhnpkagijaeinl";
@@ -118,6 +127,11 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
                                 @"href", @"http://en.wikipedia.org/wiki/Portland,_Oregon", nil],
                         @"Time", @"5:00", nil];
 
+        customNavigationController = [[UINavigationController alloc] init];
+        customNavigationController.navigationBar.tintColor = JANRAIN_BLUE_80;
+
+        embeddedTable = [[EmbeddedTableViewController alloc] init];
+
         [self resetActivity];
     }
 
@@ -147,40 +161,16 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 - (void)release             { /* Do nothing... */ }
 - (id)autorelease           { return self; }
 
-- (void)buildAuthenticationCustomInterface
+- (void)resetSignIn
 {
-    if (!customInterface)
-        customInterface = [[NSMutableDictionary alloc] initWithCapacity:10];
+    [excludeProvidersArray release], excludeProvidersArray = nil;
 
-    if (authenticationBackgroundColor)
-        [customInterface setObject:[CustomViewBuilder authenticationBackgroundColor] forKey:kJRAuthenticationBackgroundColor];
+    [jrEngage alwaysForceReauthentication:NO];
 
-    if (authenticationBackgroundImageView)
-        [customInterface setObject:[CustomViewBuilder authenticationBackgroundImageView] forKey:kJRAuthenticationBackgroundImageView];
-
-    if (providerTableTitleView)
-        [customInterface setObject:[CustomViewBuilder providerTableTitleView] forKey:kJRProviderTableTitleView];
-
-    if (providerTableTitleString)
-        [customInterface setObject:[CustomViewBuilder providerTableTitleString] forKey:kJRProviderTableTitleString];
-
-    if (providerTableHeaderView)
-        [customInterface setObject:[CustomViewBuilder providerTableHeaderView] forKey:kJRProviderTableHeaderView];
-
-    if (providerTableFooterView)
-        [customInterface setObject:[CustomViewBuilder providerTableFooterView] forKey:kJRProviderTableFooterView];
-
-    if (providerTableSectionHeaderView)
-        [customInterface setObject:[CustomViewBuilder providerTableSectionHeaderView] forKey:kJRProviderTableSectionHeaderView];
-
-    if (providerTableSectionFooterView)
-        [customInterface setObject:[CustomViewBuilder providerTableSectionFooterView] forKey:kJRProviderTableSectionFooterView];
-
-    if (providerTableSectionHeaderTitleString)
-        [customInterface setObject:[CustomViewBuilder providerTableSectionHeaderTitleString] forKey:kJRProviderTableSectionHeaderTitleString];
-
-    if (providerTableSectionFooterTitleString)
-        [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
+    signinAddNativeLogin    = NO;
+    signinAlwaysForceReauth = NO;
+    signinSkipUserLanding   = NO;
+    signinExcludeProviders  = NO;
 }
 
 - (void)resetCustomInterface
@@ -309,10 +299,41 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
         WLog(@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention.");
 }
 
+- (void)buildAuthenticationCustomInterface
+{
+    if (authenticationBackgroundColor)
+        [customInterface setObject:[CustomViewBuilder authenticationBackgroundColor] forKey:kJRAuthenticationBackgroundColor];
+
+    if (authenticationBackgroundImageView)
+        [customInterface setObject:[CustomViewBuilder authenticationBackgroundImageView] forKey:kJRAuthenticationBackgroundImageView];
+
+    if (providerTableTitleView)
+        [customInterface setObject:[CustomViewBuilder providerTableTitleView] forKey:kJRProviderTableTitleView];
+
+    if (providerTableTitleString)
+        [customInterface setObject:[CustomViewBuilder providerTableTitleString] forKey:kJRProviderTableTitleString];
+
+    if (providerTableHeaderView)
+        [customInterface setObject:[CustomViewBuilder providerTableHeaderView] forKey:kJRProviderTableHeaderView];
+
+    if (providerTableFooterView)
+        [customInterface setObject:[CustomViewBuilder providerTableFooterView] forKey:kJRProviderTableFooterView];
+
+    if (providerTableSectionHeaderView)
+        [customInterface setObject:[CustomViewBuilder providerTableSectionHeaderView] forKey:kJRProviderTableSectionHeaderView];
+
+    if (providerTableSectionFooterView)
+        [customInterface setObject:[CustomViewBuilder providerTableSectionFooterView] forKey:kJRProviderTableSectionFooterView];
+
+    if (providerTableSectionHeaderTitleString)
+        [customInterface setObject:[CustomViewBuilder providerTableSectionHeaderTitleString] forKey:kJRProviderTableSectionHeaderTitleString];
+
+    if (providerTableSectionFooterTitleString)
+        [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
+}
+
 - (void)buildActivity
 {
-    // TODO: What about default action?
-
     if (!activity)
     {
         if (activityAction)
@@ -402,19 +423,61 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType
 {
+    [customInterface release], customInterface = nil;
+    customInterface = [[NSMutableDictionary alloc] initWithCapacity:10];
+
+    if (navigationControllerType == CDNavigationControllerTypeApplication)
+        [customInterface setObject:applicationNavigationController forKey:kJRApplicationNavigationController];
+    else if (navigationControllerType == CDNavigationControllerTypeCustom)
+        [customInterface setObject:customNavigationController forKey:kJRCustomModalNavigationController];
+
     if (signInOrSharing == CDSignIn)
     {
         if (signInTestType == CDSignInTestTypeCustomInterface)
         {
             [self buildAuthenticationCustomInterface];
-            [jrEngage showAuthenticationDialogWithCustomInterfaceOverrides:customInterface];
         }
+        else if (signInTestType == CDSignInTestTypeProviderConfiguration)
+        {
+            if (signinAddNativeLogin)
+            {
+                if (navigationControllerType == CDNavigationControllerTypeLibrary)
+                    [customInterface setObject:applicationNavigationController
+                                        forKey:kJRApplicationNavigationController];
+
+                [embeddedTable setUsingNavigationController:
+                        (navigationControllerType == CDNavigationControllerTypeCustom) ?
+                                customNavigationController : applicationNavigationController];
+
+                [customInterface setObject:embeddedTable.view
+                                    forKey:kJRProviderTableHeaderView];
+                [customInterface setObject:@"Sign in with a social provider"
+                                    forKey:kJRProviderTableSectionHeaderTitleString];
+            }
+
+            if (signinAlwaysForceReauth)
+                [jrEngage alwaysForceReauthentication:YES];
+            else
+                [jrEngage alwaysForceReauthentication:NO];
+
+            if (signinExcludeProviders)
+            {
+                [customInterface setObject:excludeProvidersArray forKey:kJRRemoveProvidersFromAuthentication];
+            }
+        }
+
+        [jrEngage showAuthenticationDialogWithCustomInterfaceOverrides:customInterface];
     }
     else if (signInOrSharing == CDSharing)
     {
         [self buildActivity];
-        [jrEngage showSocialPublishingDialogWithActivity:activity];
+        [jrEngage showSocialPublishingDialogWithActivity:activity andCustomInterfaceOverrides:customInterface];
     }
+}
+
+- (void)triggerAuthenticationDidCancel:(id)sender
+{
+    [jrEngage authenticationDidCancel];
 }
 
 @end

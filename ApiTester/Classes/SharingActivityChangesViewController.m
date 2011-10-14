@@ -122,10 +122,11 @@ typedef enum
 
 - (void)next:(id)sender
 {
+    [config resetSignIn];
     [config resetActivity];
     [config resetCustomInterface];
 
-    for (int i = 0; i < [cellTitles count]/2; i++)
+    for (int i = 0; i < [cellTitles count] / 2; i++)
     {
         TestConfigurationTableViewCell *cell =
             (TestConfigurationTableViewCell*)[self.table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
@@ -271,26 +272,11 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 - (void)buildActivityArray
 {
     activityArray = [[NSMutableArray alloc] initWithCapacity:42];
-//    JRImageMediaObject *image = [[JRImageMediaObject alloc] initWithSrc:@"http://media.npr.org/assets/news/2010/09/28/somalia16_wide.jpg?t=1285704766&s=4"
-//                                                                andHref:@"http://www.npr.org/templates/story/story.php?storyId=130273801&sc=17&f=1001"];
 
     for (int i = 0; i < NUM_PICKER_ACTIVITIES; i++)
     {
         NSMutableString *pickerTitle = [NSMutableString stringWithString:title_bits[i%NUM_TITLES]];
         [pickerTitle appendString:descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))]];
-
-//        if (i >= NUM_PICKER_ACTIVITIES/2)
-//            [pickerTitle appendString:@" W MEDIA"];
-
-//        JRActivityObject *activity = [[JRActivityObject alloc]
-//                                      initWithAction:pickerTitle];
-//                                      andUrl:@"http://www.google.com"];
-
-//        activity.title = titles[i%NUM_TITLES];
-//        activity.description = descrs[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))];
-
-//        if (i >= NUM_PICKER_ACTIVITIES/2)
-//            activity.media = [NSArray arrayWithObjects:image, nil];
 
         [activityArray addObject:[PickerActivity pickerActivityWithPickerTitle:pickerTitle
                                                                  activityTitle:titles[i%NUM_TITLES]

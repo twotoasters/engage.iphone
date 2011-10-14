@@ -17,7 +17,9 @@
 #import "SharingActivityWithBadParamsViewController.h"
 
 @implementation SharingActivityWithBadParamsViewController
-
+@synthesize scrollView;
+@synthesize contentView;
+@synthesize keyboardToolbar;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -73,6 +75,7 @@ typedef enum
 
 - (void)next:(id)sender
 {
+    [config resetSignIn];
     [config resetActivity];
     [config resetCustomInterface];
 
@@ -344,7 +347,12 @@ typedef enum
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
+    [scrollView release];
+    [contentView release];
+    [keyboardToolbar release];
+
     [super dealloc];
 }
 

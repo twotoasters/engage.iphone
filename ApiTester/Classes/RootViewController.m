@@ -21,6 +21,7 @@
     [super viewDidLoad];
 
     config = [ConfigurationData sharedConfigurationData];
+    config.applicationNavigationController = self.navigationController;
 
     UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];

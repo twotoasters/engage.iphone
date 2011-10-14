@@ -23,6 +23,7 @@ typedef enum {
 typedef enum {
     TCTableViewCellPreviewStyleLong,
     TCTableViewCellPreviewStyleSquare,
+    TCTableViewCellPreviewStyleCustom,
 } TCTableViewCellPreviewStyle;
 
 @interface TestConfigurationTableViewCell : UITableViewCell
