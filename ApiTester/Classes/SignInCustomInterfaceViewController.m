@@ -23,16 +23,16 @@
     config = [ConfigurationData sharedConfigurationData];
 
     cellTitles = [[NSArray alloc] initWithObjects:
-                    @"Background Color", @"Use a custom background color",
-                    @"Background Image", @"Use a custom background image",
-                    @"Providers Table Title View", @"Use a custom view for the title above the providers table",
-                    @"Providers Table Title String", @"Use a custom string for the title above the providers table",
-                    @"Providers Table Header View", @"Use a custom view over the providers table",
-                    @"Providers Table Footer View", @"Use a custom view below the providers table",
-                    @"Providers Table Section Header View", @"Use a custom view over the list of providers section of the table",
-                    @"Providers Table Section Footer View", @"Use a custom view over the list of providers section of the table",
-                    @"Providers Table Section Header Title String", @"Use a custom view over the list of providers section of the table",
-                    @"Providers Table Section Footer Title String", @"Use a custom view over the list of providers section of the table", nil];
+                    @"Background Color xxxxxxxxxxxxxxxxxx", @"Use a custom background color", @"ls",
+                    @"Background Image", @"Use a custom background image", @"ss",
+                    @"Providers Table Title View", @"Use a custom view for the title above the providers table",  @"sl",
+                    @"Providers Table Title String", @"Use a custom string for the title above the providers table", @"sl",
+                    @"Providers Table Header View", @"Use a custom view over the providers table", @"ss",
+                    @"Providers Table Footer View", @"Use a custom view below the providers table", @"ss",
+                    @"Providers Table Section Header View", @"Use a custom view over the list of providers section of the table", @"ll",
+                    @"Providers Table Section Footer View", @"Use a custom view over the list of providers section of the table", @"ll",
+                    @"Providers Table Section Header Title String", @"Use a custom view over the list of providers section of the table", @"ll",
+                    @"Providers Table Section Footer Title String", @"Use a custom view over the list of providers section of the table", @"ll",nil];
 
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
@@ -87,7 +87,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [cellTitles count]/2;
+    return [cellTitles count] / 3;
 }
 
 typedef enum
@@ -157,32 +157,58 @@ typedef enum
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellSize = [cellTitles objectAtIndex:((indexPath.row * 3) + 2)];
+
+//    if ([cellSize isEqualToString:@"ss"])
+//        return 44;
+//    else if ([cellSize isEqualToString:@"sl"])
+//        return 62;
+//    else if ([cellSize isEqualToString:@"ls"])
+//        return 66;
+//    else if ([cellSize isEqualToString:@"ll"])
+//        return 84;
+
+    return 120;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+ /* Every third string in our array tells us how big the titles and subtitles strings are (s = short, l = long) */
+    NSString *cellSize = [cellTitles objectAtIndex:((indexPath.row * 3) + 2)];
+    TCTableViewCellStyle style;
+
+    if ([cellSize isEqualToString:@"ss"])
+        style = TCTableViewCellStyleSwitch;
+    else if ([cellSize isEqualToString:@"ls"])
+        style = TCTableViewCellStyleSwitchWithLongTitle;
+    else if ([cellSize isEqualToString:@"sl"])
+        style = TCTableViewCellStyleSwitchWithLongSubtitle;
+    else if ([cellSize isEqualToString:@"ll"])
+        style = TCTableViewCellStyleSwitchWithLongTitleAndSubtitle;
+
     TestConfigurationTableViewCell *cell =
-        (TestConfigurationTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]];
+        (TestConfigurationTableViewCell*)
+                [tableView dequeueReusableCellWithIdentifier:
+                        [NSString stringWithFormat:@"cell_%d", indexPath.row]];
 
     if (cell == nil)
     {
         cell = [[[TestConfigurationTableViewCell alloc]
-                 initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
-                                             reuseIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]]
+                 initTestConfigurationTableViewCellWithStyle:style
+                                             reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
     }
 
-    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 2)];
-    cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 2) + 1)];
+    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 3)];
+    cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
 
     [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
 
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 120;
 }
 
 - (void)reset:(id)sender {}

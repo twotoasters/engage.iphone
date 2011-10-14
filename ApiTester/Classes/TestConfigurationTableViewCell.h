@@ -15,6 +15,9 @@ typedef enum {
     TCTableViewCellStyleValue2,
     TCTableViewCellStyleSubtitle,
     TCTableViewCellStyleSwitch,
+    TCTableViewCellStyleSwitchWithLongTitle,
+    TCTableViewCellStyleSwitchWithLongSubtitle,
+    TCTableViewCellStyleSwitchWithLongTitleAndSubtitle,
 } TCTableViewCellStyle;
 
 typedef enum {
@@ -28,7 +31,8 @@ typedef enum {
     UILabel  *cellTitle;
     UILabel  *cellSubtitle;
     UIButton *cellPreview;
-    
+
+    TCTableViewCellStyle        cellStyle;
     TCTableViewCellPreviewStyle previewStyle;
 }
 @property (nonatomic, retain) UISwitch *cellSwitch;

@@ -206,6 +206,7 @@
 		9F472A581431407D00D88069 /* SharingCustomInterfaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */; };
 		9F472A591431407D00D88069 /* SharingEmailSmsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */; };
 		9F472A5A1431407D00D88069 /* SignInProviderConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */; };
+		C01FCF5008A954540054247D /* divider.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054247C /* divider.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -447,6 +448,7 @@
 		9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharingCustomInterfaceViewController.xib; sourceTree = "<group>"; };
 		9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharingEmailSmsViewController.xib; sourceTree = "<group>"; };
 		9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInProviderConfigViewController.xib; sourceTree = "<group>"; };
+		C01FCF5008A954540054247C /* divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divider.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -912,6 +914,7 @@
 		9F4726501430F7C700D88069 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A954540054247C /* divider.png */,
 				9F47265D1430F8AB00D88069 /* disabledCyan.png */,
 				9F4726511430F7C700D88069 /* backgroundWeave.png */,
 				9F4726521430F7C700D88069 /* disabledDarkGray.png */,
@@ -1150,6 +1153,7 @@
 				9F27A0EA144611C9005BE7DC /* JRWebViewController.xib in Resources */,
 				9F27A0EB144611C9005BE7DC /* JREngage-Info.plist in Resources */,
 				9F27A20F14462364005BE7DC /* SharingActivityWithBadParamsViewController.xib in Resources */,
+				C01FCF5008A954540054247D /* divider.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

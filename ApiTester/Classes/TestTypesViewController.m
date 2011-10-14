@@ -6,6 +6,15 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(...)
+#endif
+
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+
 #import "TestTypesViewController.h"
 #import "SharingActivityWithBadParamsViewController.h"
 
@@ -23,17 +32,17 @@
 
 
     signInTestTypes = [[NSArray alloc] initWithObjects:
-                         @"Test Basic Sign-In", @"the default sign-in process",
-                         @"Test Various UI Customizations", @"add a native provider, custom titles, different colors, etc.",
-                         @"Test Different Provider Configurations", @"exclude certain providers, always force reauthentication, skip the user landing page",
+                         @"Test Basic Sign-In", @"The default sign-in process", @"ss",
+                         @"Test Various UI Customizations", @"Add a native provider, custom titles, different colors, etc.", @"sl",
+                         @"Test Different Provider Configurations", @"Exclude certain providers, always force reauthentication, skip the user landing page", @"ll",
                          nil];
 
     sharingTestTypes = [[NSArray alloc] initWithObjects:
-                          @"Test Basic Sharing", @"share a basic activity",
-                          @"Test Email/SMS", @"sharing activities with email/sms",
-                          @"Test Various UI Customizations", @"custom titles, different colors, etc.",
-                          @"Test Different Activities", @"activities with varying titles and descriptions, media, etc.",
-                          @"Test Activities With Bad Input", @"add whatever gobbledegook you can think of",
+                          @"Test Basic Sharing", @"Share a basic activity", @"ss",
+                          @"Test Email/SMS", @"Sharing activities with email/sms", @"ss",
+                          @"Test Various UI Customizations", @"Custom titles, different colors, etc.", @"ss",
+                          @"Test Different Activities", @"Activities with varying titles and descriptions, media, etc.", @"sl",
+                          @"Test Activities With Bad Input", @"Add whatever gobbledegook you can think of", @"ss",
                           nil];
 
     titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
@@ -94,35 +103,88 @@
     return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (config.signInOrSharing == CDSignIn)
-        return [signInTestTypes count]/2;
+        return [signInTestTypes count] / 3;
     else if (config.signInOrSharing == CDSharing)
-        return [sharingTestTypes count]/2;
+        return [sharingTestTypes count] / 3;
     else
         return 0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellSize;
+
+    /* Every third string in our array tells us how big the titles and subtitles strings are (s = short, l = long) */
+    if (config.signInOrSharing == CDSignIn)
+        cellSize = [signInTestTypes objectAtIndex:((indexPath.row * 3) + 2)];
+    else if (config.signInOrSharing == CDSharing)
+        cellSize = [sharingTestTypes objectAtIndex:((indexPath.row * 3) + 2)];
+    else
+        cellSize = @"ss";
+
+    if ([cellSize isEqualToString:@"ss"])
+        return 44;
+    else if ([cellSize isEqualToString:@"sl"])
+        return 62;
+    else if ([cellSize isEqualToString:@"ls"])
+        return 66;
+    else if ([cellSize isEqualToString:@"ll"])
+        return 84;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
-
     NSArray *array;
 
+ /* Get the array of cell titles, subtitles, and label sizes */
     if (config.signInOrSharing == CDSignIn)
         array = signInTestTypes;
     else if (config.signInOrSharing == CDSharing)
         array = sharingTestTypes;
+    else /* Won't ever happen */
+        array = nil;
 
-    cell.textLabel.text = [array objectAtIndex:(indexPath.row * 2)];
-    cell.detailTextLabel.text = [array objectAtIndex:((indexPath.row * 2) + 1)];
+ /* Every third string in our array tells us how big the titles and subtitles strings are (s = short, l = long) */
+    NSString *cellSize = [array objectAtIndex:((indexPath.row * 3) + 2)];
+
+    NSString        *cellIdentifier = [NSString stringWithFormat:@"cell_%@", cellSize];
+    UITableViewCell *cell           = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+
+    if (cell == nil)
+    {
+         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                        reuseIdentifier:cellIdentifier] autorelease];
+
+        if ([cellSize isEqualToString:@"sl"])
+        {
+            cell.detailTextLabel.numberOfLines = 2;
+        }
+        else if ([cellSize isEqualToString:@"ls"])
+        {
+            cell.textLabel.numberOfLines = 2;
+        }
+        else if ([cellSize isEqualToString:@"ll"])
+        {
+            cell.textLabel.numberOfLines = 2;
+            cell.detailTextLabel.numberOfLines = 2;
+        }
+    }
+
+    cell.textLabel.text       = [array objectAtIndex:(indexPath.row * 3)];
+    cell.detailTextLabel.text = [array objectAtIndex:((indexPath.row * 3) + 1)];
+
+
+//    NSInteger cleverIndex = ((config.signInOrSharing - 1) * 3) + indexPath.row;
+//
+//    if (cleverIndex == 2 || cleverIndex == 4 || cleverIndex == 5)
+//    {
+//        [cell setBackgroundColor:[UIColor lightGrayColor]];
+//        [cell.textLabel setBackgroundColor:[UIColor darkGrayColor]];
+//        [cell.detailTextLabel setBackgroundColor:[UIColor darkGrayColor]];
+//    }
 
     return cell;
 }

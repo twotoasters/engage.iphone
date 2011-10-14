@@ -27,27 +27,43 @@
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 {
     DLog(@"%@", reuseIdentifier);
-    
+    cellStyle = style;
+
     if (style < TCTableViewCellStyleSwitch)
         return [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
-    
-    cellTitle = [[[UILabel alloc] init] autorelease];
+
+    cellTitle    = [[[UILabel alloc] init] autorelease];
     cellSubtitle = [[[UILabel alloc] init] autorelease];
-    cellSwitch = [[[UISwitch alloc] init] autorelease];
-    cellPreview = [[[UIButton alloc] init] autorelease];
-    
-    [cellTitle setFont:[UIFont boldSystemFontOfSize:14.0]];
+    cellSwitch   = [[[UISwitch alloc] init] autorelease];
+    cellPreview  = [[[UIButton alloc] init] autorelease];
+
+    [cellTitle setFont:[UIFont boldSystemFontOfSize:18.0]];
     [cellTitle setTextColor:[UIColor darkTextColor]];
-    [cellTitle setLineBreakMode:UILineBreakModeWordWrap];
-    [cellTitle setNumberOfLines:2];
-    
-    [cellSubtitle setFont:[UIFont systemFontOfSize:12.0]];
+    [cellTitle setMinimumFontSize:10.0];
+    [cellTitle setAdjustsFontSizeToFitWidth:TRUE];
+    [cellTitle setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
+
+    if (style == TCTableViewCellStyleSwitchWithLongTitle || style == TCTableViewCellStyleSwitchWithLongTitleAndSubtitle)
+    {
+        [cellTitle setFont:[UIFont boldSystemFontOfSize:15.0]];
+        [cellTitle setAdjustsFontSizeToFitWidth:NO];
+        [cellTitle setLineBreakMode:UILineBreakModeWordWrap];
+        [cellTitle setNumberOfLines:2];
+    }
+
+    [cellSubtitle setFont:[UIFont systemFontOfSize:14.0]];
     [cellSubtitle setTextColor:[UIColor darkGrayColor]];
-    [cellSubtitle setLineBreakMode:UILineBreakModeWordWrap];
-    [cellSubtitle setNumberOfLines:2];
-    
+    [cellTitle setMinimumFontSize:10.0];
+    [cellTitle setAdjustsFontSizeToFitWidth:TRUE];
+
+    if (style == TCTableViewCellStyleSwitchWithLongSubtitle || style == TCTableViewCellStyleSwitchWithLongTitleAndSubtitle)
+    {
+        [cellSubtitle setLineBreakMode:UILineBreakModeWordWrap];
+        [cellSubtitle setNumberOfLines:2];
+    }
+
     [cellPreview setBackgroundImage:[UIImage imageNamed:@"enabledLightGray"] forState:UIControlStateNormal];
     [cellPreview setEnabled:NO];
     [cellPreview.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];
@@ -55,16 +71,16 @@
     [cellPreview setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 
     //    [cellPreview setBackgroundImage:[UIImage imageNamed:@"disabledDarkGray"] forState:UIControlStateDisabled];
-    
+
     [cellTitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
     [cellSubtitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
     [cellSwitch setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
     [cellPreview setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-    
+
     [cellSwitch addTarget:self
                    action:@selector(switchChanged:)
          forControlEvents:UIControlEventValueChanged];
-    
+
     [cellTitle setBackgroundColor:[UIColor clearColor]];
     [cellSubtitle setBackgroundColor:[UIColor clearColor]];
 
@@ -73,13 +89,13 @@
 
 //    [cellSwitch setBackgroundColor:[UIColor redColor]];
 //    [cellPreview setBackgroundColor:[UIColor lightGrayColor]];
-   
+
     [self.contentView addSubview:cellTitle];
     [self.contentView addSubview:cellSubtitle];
     [self.contentView addSubview:cellSwitch];
     [self.contentView addSubview:cellPreview];
-    
-    return self;    
+
+    return self;
 }
 
 - (void)layoutSubviews
@@ -89,47 +105,103 @@
 
     [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
 
-    CGRect cellFrame = self.frame;
-    if (cellFrame.size.height > 90)
-    {        
-        cellTitle.frame = CGRectMake(10, 7, 196, 33);
-        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-        cellSubtitle.frame = CGRectMake(10, 42, 300, 30);
-        
-        switch (previewStyle)
-        {
-            case TCTableViewCellPreviewStyleLong:
-                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-                break;
-            case TCTableViewCellPreviewStyleSquare:
-                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-                break;
-            default:
-                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-                break;
-        }        
+    CGRect switchFrame;
+    CGRect previewFrame;
+
+    if (previewStyle == TCTableViewCellPreviewStyleSquare)
+    {
+        switchFrame  = cellSwitch.frame = CGRectMake(180, 10, 94, 27);
+        previewFrame = cellPreview.frame = CGRectMake(280, 10, 27, 27);
     }
     else
     {
-        cellTitle.frame = CGRectMake(10, 7, 196, 19);
-        cellSubtitle.frame = CGRectMake(10, 28, 300, 17);        
-
-        switch (previewStyle)
-        {
-            case TCTableViewCellPreviewStyleLong:
-                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-                cellPreview.frame = CGRectMake(10, 53, 300, 24);
-                break;
-            case TCTableViewCellPreviewStyleSquare:
-                cellSwitch.frame = CGRectMake(180, 10, 94, 27);
-                cellPreview.frame = CGRectMake(280, 10, 27, 27);
-                break;
-            default:
-                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-                cellPreview.frame = CGRectMake(10, 53, 300, 24);
-                break;
-        }
+        switchFrame  = cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+        previewFrame = cellPreview.frame = CGRectMake(10, 62, 300, 24);
     }
+
+    CGFloat titleWidth = switchFrame.origin.x - 18;
+
+    switch (cellStyle)
+    {
+        case TCTableViewCellStyleSwitch:
+            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
+            cellSubtitle.frame = CGRectMake(10, 40, 300, 18);
+
+            break;
+
+        case TCTableViewCellStyleSwitchWithLongTitle:
+            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
+            cellSubtitle.frame = CGRectMake(10, 42, 300, 18);
+
+            if (previewStyle == TCTableViewCellPreviewStyleLong)
+                cellPreview.frame = CGRectMake(10, 64, 300, 24);
+
+            break;
+
+        case TCTableViewCellStyleSwitchWithLongSubtitle:
+            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
+            cellSubtitle.frame = CGRectMake(10, 40, 300, 36);
+
+            if (previewStyle == TCTableViewCellPreviewStyleLong)
+                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+
+            break;
+
+        case TCTableViewCellStyleSwitchWithLongTitleAndSubtitle:
+            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
+            cellSubtitle.frame = CGRectMake(10, 42, 300, 36);
+
+            if (previewStyle == TCTableViewCellPreviewStyleLong)
+                cellPreview.frame = CGRectMake(10, 82, 300, 24);
+
+            break;
+
+        default:
+            return;
+    }
+
+
+//    CGRect cellFrame = self.frame;
+//    if (cellFrame.size.height > 90)
+//    {
+//        cellTitle.frame = CGRectMake(10, 7, 196, 33);
+//        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+//        cellSubtitle.frame = CGRectMake(10, 42, 300, 30);
+//
+//        switch (previewStyle)
+//        {
+//            case TCTableViewCellPreviewStyleLong:
+//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+//                break;
+//            case TCTableViewCellPreviewStyleSquare:
+//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+//                break;
+//            default:
+//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
+//                break;
+//        }
+//    }
+//    else
+//    {
+//        cellTitle.frame = CGRectMake(10, 7, 196, 19);
+//        cellSubtitle.frame = CGRectMake(10, 28, 300, 17);
+//
+//        switch (previewStyle)
+//        {
+//            case TCTableViewCellPreviewStyleLong:
+//                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+//                cellPreview.frame = CGRectMake(10, 53, 300, 24);
+//                break;
+//            case TCTableViewCellPreviewStyleSquare:
+//                cellSwitch.frame = CGRectMake(180, 10, 94, 27);
+//                cellPreview.frame = CGRectMake(280, 10, 27, 27);
+//                break;
+//            default:
+//                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+//                cellPreview.frame = CGRectMake(10, 53, 300, 24);
+//                break;
+//        }
+//    }
 }
 
 - (void)switchChanged:(id)sender
@@ -143,11 +215,11 @@
         [cellPreview setEnabled:YES];
     }
     else
-    {         
+    {
         [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
         [cellPreview setEnabled:NO];
     }
-    
+
 //    [self setNeedsLayout];
 }
 
@@ -182,7 +254,7 @@
 //- (void)didReceiveMemoryWarning {
 //    // Releases the view if it doesn't have a superview.
 //    [super didReceiveMemoryWarning];
-//    
+//
 //    // Release any cached data, images, etc. that aren't in use.
 //}
 //

@@ -16,12 +16,12 @@
 #pragma mark View lifecycle
 
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
     config = [ConfigurationData sharedConfigurationData];
-    
+
     UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
@@ -29,9 +29,9 @@
     titleLabel.textAlignment = UITextAlignmentCenter;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"Sign-In or Sharing?";
-    
+
     self.navigationItem.titleView = titleLabel;
-    self.title = @"Start";    
+    self.title = @"Start";
 }
 
 
@@ -79,22 +79,47 @@
     return 2;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 70;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
+    view.backgroundColor = JANRAIN_BLUE_20;
+
+    UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 56)] autorelease];
+    headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    headerLabel.textColor = [UIColor darkGrayColor];
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.numberOfLines = 2;
+    headerLabel.text = @"Welcome to the Janrain Engage for iOS Test Harness app.";
+
+    UIImageView *headerDivider = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]] autorelease];
+    headerDivider.frame = CGRectMake(0, 56, 320, 14);
+
+    [view addSubview:headerLabel];
+    [view addSubview:headerDivider];
+
+    return view;
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
+
 	if (indexPath.row == 0)
         cell.textLabel.text = @"Test Sign-In";
     else
         cell.textLabel.text = @"Test Sharing";
-    
+
     return cell;
 }
 
@@ -111,14 +136,14 @@
 /*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source.
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
+    }
 }
 */
 
@@ -143,14 +168,14 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
 	if (indexPath.row == 0)
         config.signInOrSharing = CDSignIn;
     else
         config.signInOrSharing = CDSharing;
-	
-    TestTypesViewController *level1ViewController = [[TestTypesViewController alloc] 
-                                                     initWithNibName:@"TestTypesViewController" 
+
+    TestTypesViewController *level1ViewController = [[TestTypesViewController alloc]
+                                                     initWithNibName:@"TestTypesViewController"
                                                      bundle:nil];
 
 	[self.navigationController pushViewController:level1ViewController animated:YES];
@@ -164,7 +189,7 @@
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Relinquish ownership any cached data, images, etc that aren't in use.
 }
 
