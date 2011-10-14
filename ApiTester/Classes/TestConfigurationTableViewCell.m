@@ -91,12 +91,6 @@
     [cellTitle setBackgroundColor:[UIColor clearColor]];
     [cellSubtitle setBackgroundColor:[UIColor clearColor]];
 
-//    [cellTitle setBackgroundColor:[UIColor redColor]];
-//    [cellSubtitle setBackgroundColor:[UIColor redColor]];
-
-//    [cellSwitch setBackgroundColor:[UIColor redColor]];
-//    [cellPreview setBackgroundColor:[UIColor lightGrayColor]];
-
     [self.contentView addSubview:cellTitle];
     [self.contentView addSubview:cellSubtitle];
     [self.contentView addSubview:cellPreview];
@@ -113,15 +107,8 @@
     DLog(@"%@", self.reuseIdentifier);
     [super layoutSubviews];
 
-//    [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
-
     cellDisabled.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     cellBorder.frame   = CGRectMake(0, self.frame.size.height - 14, 320, 14);
-
-//    DLog(@"cellDisabledFrame: %f, %f, %f, %f", cellDisabled.frame.origin.x,
-//     cellDisabled.frame.origin.y,
-//      cellDisabled.frame.size.width,
-//       cellDisabled.frame.size.height);
 
     if (previewStyle == TCTableViewCellPreviewStyleSquare)
     {
@@ -185,49 +172,6 @@
         default:
             return;
     }
-
-
-//    CGRect cellFrame = self.frame;
-//    if (cellFrame.size.height > 90)
-//    {
-//        cellTitle.frame = CGRectMake(10, 7, 196, 33);
-//        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-//        cellSubtitle.frame = CGRectMake(10, 42, 300, 30);
-//
-//        switch (previewStyle)
-//        {
-//            case TCTableViewCellPreviewStyleLong:
-//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-//                break;
-//            case TCTableViewCellPreviewStyleSquare:
-//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-//                break;
-//            default:
-//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-//                break;
-//        }
-//    }
-//    else
-//    {
-//        cellTitle.frame = CGRectMake(10, 7, 196, 19);
-//        cellSubtitle.frame = CGRectMake(10, 28, 300, 17);
-//
-//        switch (previewStyle)
-//        {
-//            case TCTableViewCellPreviewStyleLong:
-//                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-//                cellPreview.frame = CGRectMake(10, 53, 300, 24);
-//                break;
-//            case TCTableViewCellPreviewStyleSquare:
-//                cellSwitch.frame = CGRectMake(180, 10, 94, 27);
-//                cellPreview.frame = CGRectMake(280, 10, 27, 27);
-//                break;
-//            default:
-//                cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-//                cellPreview.frame = CGRectMake(10, 53, 300, 24);
-//                break;
-//        }
-//    }
 }
 
 - (void)switchChanged:(id)sender
@@ -236,8 +180,6 @@
 
     if (cellSwitch.on == YES)
     {
-        DLog(@"%@", [[UIFont fontNamesForFamilyName:@"Marker Felt"] description]);
-        //[self setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
         [cellDisabled setHidden:YES];
         [cellPreview setEnabled:YES];
     }
@@ -247,61 +189,10 @@
         [cellDisabled setHidden:NO];
         [cellPreview setEnabled:NO];
     }
-
-//    [self setNeedsLayout];
 }
-
-
-
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-//- (void)didReceiveMemoryWarning {
-//    // Releases the view if it doesn't have a superview.
-//    [super didReceiveMemoryWarning];
-//
-//    // Release any cached data, images, etc. that aren't in use.
-//}
-//
-//- (void)viewDidUnload {
-//    [super viewDidUnload];
-//    // Release any retained subviews of the main view.
-//    // e.g. self.myOutlet = nil;
-//}
-
 
 - (void)dealloc
 {
-    [cellSwitch release];
-    [cellTitle release];
-    [cellSubtitle release];
-    [cellPreview release];
-    [cellDisabled release];
-    [cellBorder release];
-
     [super dealloc];
 }
 

@@ -83,6 +83,14 @@
 
 
 
+typedef enum
+{
+    CINativeLogin = 0,
+    CIAlwaysForceReauth,
+//    CISkipUserLanding,
+    CIExcludeProviders,
+} CellIndex;
+
 - (void)reset:(id)sender {}
 
 - (void)next:(id)sender
@@ -97,21 +105,21 @@
             (TestConfigurationTableViewCell*)
                     [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
 
-        switch (i)
+        switch ((CellIndex)i)
         {
-            case 0:
+            case CINativeLogin:
                 if (cell.cellSwitch.on) [config setSigninAddNativeLogin:YES];
                 else [config setSigninAddNativeLogin:NO];
                 break;
-            case 1:
+            case CIAlwaysForceReauth:
                 if (cell.cellSwitch.on) [config setSigninAlwaysForceReauth:YES];
                 else [config setSigninAlwaysForceReauth:NO];
                 break;
-            case 2:
-                if (cell.cellSwitch.on) [config setSigninSkipUserLanding:YES];
-                else [config setSigninSkipUserLanding:NO];
-                break;
-            case 3:
+//            case CISkipUserLanding:
+//                if (cell.cellSwitch.on) [config setSigninSkipUserLanding:YES];
+//                else [config setSigninSkipUserLanding:NO];
+//                break;
+            case CIExcludeProviders:
                 if (cell.cellSwitch.on) [config setSigninExcludeProviders:YES];
                 else [config setSigninExcludeProviders:NO];
                 break;

@@ -462,6 +462,7 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 
             if (signinExcludeProviders)
             {
+                DLog(@"excluded providers: %@", [excludeProvidersArray description]);
                 [customInterface setObject:excludeProvidersArray forKey:kJRRemoveProvidersFromAuthentication];
             }
         }
