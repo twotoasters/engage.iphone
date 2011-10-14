@@ -22,6 +22,8 @@
 @synthesize cellTitle;
 @synthesize cellSubtitle;
 @synthesize cellPreview;
+@synthesize cellDisabled;
+@synthesize cellBorder;
 @synthesize previewStyle;
 
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
@@ -38,6 +40,9 @@
     cellSubtitle = [[[UILabel alloc] init] autorelease];
     cellSwitch   = [[[UISwitch alloc] init] autorelease];
     cellPreview  = [[[UIButton alloc] init] autorelease];
+
+    cellBorder   = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]] autorelease];
+    cellDisabled = [[[UIView alloc] init] autorelease];
 
     [cellTitle setFont:[UIFont boldSystemFontOfSize:18.0]];
     [cellTitle setTextColor:[UIColor darkTextColor]];
@@ -70,6 +75,8 @@
     [cellPreview setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [cellPreview setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 
+    [cellDisabled setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+
     //    [cellPreview setBackgroundImage:[UIImage imageNamed:@"disabledDarkGray"] forState:UIControlStateDisabled];
 
     [cellTitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
@@ -92,8 +99,11 @@
 
     [self.contentView addSubview:cellTitle];
     [self.contentView addSubview:cellSubtitle];
-    [self.contentView addSubview:cellSwitch];
     [self.contentView addSubview:cellPreview];
+    [self.contentView addSubview:cellBorder];
+
+    [self.contentView addSubview:cellDisabled];
+    [self.contentView addSubview:cellSwitch];
 
     return self;
 }
@@ -103,23 +113,28 @@
     DLog(@"%@", self.reuseIdentifier);
     [super layoutSubviews];
 
-    [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
+//    [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
 
-    CGRect switchFrame;
-    CGRect previewFrame;
+    cellDisabled.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    cellBorder.frame   = CGRectMake(0, self.frame.size.height - 14, 320, 14);
+
+    DLog(@"cellDisabledFrame: %f, %f, %f, %f", cellDisabled.frame.origin.x,
+     cellDisabled.frame.origin.y,
+      cellDisabled.frame.size.width,
+       cellDisabled.frame.size.height);
 
     if (previewStyle == TCTableViewCellPreviewStyleSquare)
     {
-        switchFrame  = cellSwitch.frame = CGRectMake(180, 10, 94, 27);
-        previewFrame = cellPreview.frame = CGRectMake(280, 10, 27, 27);
+        cellSwitch.frame = CGRectMake(180, 10, 94, 27);
+        cellPreview.frame = CGRectMake(280, 10, 27, 27);
     }
     else
     {
-        switchFrame  = cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-        previewFrame = cellPreview.frame = CGRectMake(10, 62, 300, 24);
+        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
+        cellPreview.frame = CGRectMake(10, 62, 300, 24);
     }
 
-    CGFloat titleWidth = switchFrame.origin.x - 18;
+    CGFloat titleWidth = cellSwitch.frame.origin.x - 18;
 
     switch (cellStyle)
     {
@@ -211,12 +226,14 @@
     if (cellSwitch.on == YES)
     {
         DLog(@"%@", [[UIFont fontNamesForFamilyName:@"Marker Felt"] description]);
-        [self setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+        //[self setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
+        [cellDisabled setHidden:YES];
         [cellPreview setEnabled:YES];
     }
     else
     {
         [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
+        [cellDisabled setHidden:NO];
         [cellPreview setEnabled:NO];
     }
 
@@ -265,7 +282,15 @@
 //}
 
 
-- (void)dealloc {
+- (void)dealloc
+{
+    [cellSwitch release];
+    [cellTitle release];
+    [cellSubtitle release];
+    [cellPreview release];
+    [cellDisabled release];
+    [cellBorder release];
+
     [super dealloc];
 }
 

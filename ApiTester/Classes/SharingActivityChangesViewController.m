@@ -319,13 +319,14 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     DLog(@"");
 
     TestConfigurationTableViewCell *cell =
-    (TestConfigurationTableViewCell*)[tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]];
+            (TestConfigurationTableViewCell*)
+                    [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]];
 
     if (cell == nil)
     {
         cell = [[[TestConfigurationTableViewCell alloc]
                  initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
-                 reuseIdentifier:[NSString stringWithFormat:@"TestConfigurationTableViewCell_%d", indexPath.row]]
+                                             reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
     }
 
@@ -333,6 +334,8 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 2) + 1)];
 
     cell.previewStyle = TCTableViewCellPreviewStyleSquare;
+
+    [cell.cellBorder setHidden:YES];
 //    [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
 
     return cell;
@@ -340,7 +343,7 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 55;
+    return 65;
 }
 
 

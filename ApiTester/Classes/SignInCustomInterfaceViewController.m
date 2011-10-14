@@ -23,7 +23,7 @@
     config = [ConfigurationData sharedConfigurationData];
 
     cellTitles = [[NSArray alloc] initWithObjects:
-                    @"Background Color xxxxxxxxxxxxxxxxxx", @"Use a custom background color", @"ls",
+                    @"Background Color", @"Use a custom background color", @"ss",
                     @"Background Image", @"Use a custom background image", @"ss",
                     @"Providers Table Title View", @"Use a custom view for the title above the providers table",  @"sl",
                     @"Providers Table Title String", @"Use a custom string for the title above the providers table", @"sl",
@@ -161,16 +161,16 @@ typedef enum
 {
     NSString *cellSize = [cellTitles objectAtIndex:((indexPath.row * 3) + 2)];
 
-//    if ([cellSize isEqualToString:@"ss"])
-//        return 44;
-//    else if ([cellSize isEqualToString:@"sl"])
-//        return 62;
-//    else if ([cellSize isEqualToString:@"ls"])
-//        return 66;
-//    else if ([cellSize isEqualToString:@"ll"])
-//        return 84;
-
-    return 120;
+    if ([cellSize isEqualToString:@"ss"])
+        return 110;
+    else if ([cellSize isEqualToString:@"ls"])
+        return 112;
+    else if ([cellSize isEqualToString:@"sl"])
+        return 128;
+    else if ([cellSize isEqualToString:@"ll"])
+        return 130;
+    else /* Won't ever happen */
+        return 120;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,6 +187,9 @@ typedef enum
         style = TCTableViewCellStyleSwitchWithLongSubtitle;
     else if ([cellSize isEqualToString:@"ll"])
         style = TCTableViewCellStyleSwitchWithLongTitleAndSubtitle;
+    else /* Won't ever happen */
+        style = TCTableViewCellStyleSwitch;
+
 
     TestConfigurationTableViewCell *cell =
         (TestConfigurationTableViewCell*)
@@ -220,56 +223,54 @@ typedef enum
     for (int i = 0; i < [cellTitles count]/2; i++)
     {
         TestConfigurationTableViewCell *cell =
-            (TestConfigurationTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            (TestConfigurationTableViewCell*)
+                    [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
 
-//        if (cell.cellSwitch.on == YES)
-//        {
-            switch ((CellIndex)i)
-            {
-                case CIAuthenticationBackgroundColor:
-                    if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
-                    else  [config setAuthenticationBackgroundColor:NO];
-                    break;
-                case CIAuthenticationBackgroundImageView:
-                    if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
-                    else  [config setAuthenticationBackgroundImageView:NO];
-                    break;
-                case CIProviderTableTitleView:
-                    if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
-                    else  [config setProviderTableTitleView:NO];
-                    break;
-                case CIProviderTableTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
-                    else  [config setProviderTableTitleString:NO];
-                    break;
-                case CIProviderTableHeaderView:
-                    if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
-                    else  [config setProviderTableHeaderView:NO];
-                    break;
-                case CIProviderTableFooterView:
-                    if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
-                    else  [config setProviderTableFooterView:NO];
-                    break;
-                case CIProviderTableSectionHeaderView:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
-                    else  [config setProviderTableSectionHeaderView:NO];
-                    break;
-                case CIProviderTableSectionFooterView:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
-                    else  [config setProviderTableSectionFooterView:NO];
-                    break;
-                case CIProviderTableSectionHeaderTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
-                    else  [config setProviderTableSectionHeaderTitleString:NO];
-                    break;
-                case CIProviderTableSectionFooterTitleString:
-                    if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
-                    else  [config setProviderTableSectionFooterTitleString:NO];
-                    break;
-                default:
-                    break;
-            }
-//        }
+        switch ((CellIndex)i)
+        {
+            case CIAuthenticationBackgroundColor:
+                if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
+                else  [config setAuthenticationBackgroundColor:NO];
+                break;
+            case CIAuthenticationBackgroundImageView:
+                if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
+                else  [config setAuthenticationBackgroundImageView:NO];
+                break;
+            case CIProviderTableTitleView:
+                if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
+                else  [config setProviderTableTitleView:NO];
+                break;
+            case CIProviderTableTitleString:
+                if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
+                else  [config setProviderTableTitleString:NO];
+                break;
+            case CIProviderTableHeaderView:
+                if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
+                else  [config setProviderTableHeaderView:NO];
+                break;
+            case CIProviderTableFooterView:
+                if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
+                else  [config setProviderTableFooterView:NO];
+                break;
+            case CIProviderTableSectionHeaderView:
+                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
+                else  [config setProviderTableSectionHeaderView:NO];
+                break;
+            case CIProviderTableSectionFooterView:
+                if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
+                else  [config setProviderTableSectionFooterView:NO];
+                break;
+            case CIProviderTableSectionHeaderTitleString:
+                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
+                else  [config setProviderTableSectionHeaderTitleString:NO];
+                break;
+            case CIProviderTableSectionFooterTitleString:
+                if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
+                else  [config setProviderTableSectionFooterTitleString:NO];
+                break;
+            default:
+                break;
+        }
     }
 
     StartTestViewController *startTestViewController =

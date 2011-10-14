@@ -32,13 +32,18 @@ typedef enum {
     UILabel  *cellSubtitle;
     UIButton *cellPreview;
 
+    UIImageView *cellBorder;
+    UIView      *cellDisabled;
+
     TCTableViewCellStyle        cellStyle;
     TCTableViewCellPreviewStyle previewStyle;
 }
-@property (nonatomic, retain) UISwitch *cellSwitch;
-@property (nonatomic, retain) UILabel  *cellTitle;
-@property (nonatomic, retain) UILabel  *cellSubtitle;
-@property (nonatomic, retain) UIButton *cellPreview;
+@property (nonatomic, retain) UISwitch    *cellSwitch;
+@property (nonatomic, retain) UILabel     *cellTitle;
+@property (nonatomic, retain) UILabel     *cellSubtitle;
+@property (nonatomic, retain) UIButton    *cellPreview;
+@property (nonatomic, retain) UIImageView *cellBorder;
+@property (nonatomic, retain) UIView      *cellDisabled;
 @property TCTableViewCellPreviewStyle previewStyle;
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 - (void)switchChanged:(id)sender;
