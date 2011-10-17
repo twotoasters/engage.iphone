@@ -11,10 +11,12 @@
 #import "ConfigurationData.h"
 #import "StartTestViewController.h"
 
-@interface SignInCustomInterfaceViewController : UITableViewController 
+@interface SignInCustomInterfaceViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
 {
     NSArray *cellTitles;
     ConfigurationData *config;
+
+    NSMutableArray *cellSwitchStates;
 }
 
 @end

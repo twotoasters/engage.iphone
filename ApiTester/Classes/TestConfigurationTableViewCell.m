@@ -25,6 +25,8 @@
 @synthesize cellDisabled;
 @synthesize cellBorder;
 @synthesize previewStyle;
+@synthesize delegate;
+
 
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 {
@@ -36,13 +38,13 @@
 
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 
-    cellTitle    = [[[UILabel alloc] init] autorelease];
-    cellSubtitle = [[[UILabel alloc] init] autorelease];
-    cellSwitch   = [[[UISwitch alloc] init] autorelease];
-    cellPreview  = [[[UIButton alloc] init] autorelease];
+    cellTitle    = [[UILabel alloc] init];
+    cellSubtitle = [[UILabel alloc] init];
+    cellSwitch   = [[UISwitch alloc] init];
+    cellPreview  = [[UIButton alloc] init];
 
-    cellBorder   = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]] autorelease];
-    cellDisabled = [[[UIView alloc] init] autorelease];
+    cellBorder   = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]];
+    cellDisabled = [[UIView alloc] init];
 
     [cellTitle setFont:[UIFont boldSystemFontOfSize:18.0]];
     [cellTitle setTextColor:[UIColor darkTextColor]];
@@ -60,8 +62,8 @@
 
     [cellSubtitle setFont:[UIFont systemFontOfSize:14.0]];
     [cellSubtitle setTextColor:[UIColor darkGrayColor]];
-    [cellTitle setMinimumFontSize:10.0];
-    [cellTitle setAdjustsFontSizeToFitWidth:TRUE];
+    [cellSubtitle setMinimumFontSize:10.0];
+    [cellSubtitle setAdjustsFontSizeToFitWidth:TRUE];
 
     if (style == TCTableViewCellStyleSwitchWithLongSubtitle || style == TCTableViewCellStyleSwitchWithLongTitleAndSubtitle)
     {
@@ -77,12 +79,10 @@
 
     [cellDisabled setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
 
-    //    [cellPreview setBackgroundImage:[UIImage imageNamed:@"disabledDarkGray"] forState:UIControlStateDisabled];
-
-    [cellTitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+    [cellTitle    setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
     [cellSubtitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-    [cellSwitch setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
-    [cellPreview setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
+    [cellSwitch   setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
+    [cellPreview  setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
 
     [cellSwitch addTarget:self
                    action:@selector(switchChanged:)
@@ -185,14 +185,25 @@
     }
     else
     {
-        [self setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
         [cellDisabled setHidden:NO];
         [cellPreview setEnabled:NO];
     }
+
+    if ([delegate respondsToSelector:(@selector(testConfigurationTableViewCell:switchDidChange:))])
+        [delegate testConfigurationTableViewCell:self switchDidChange:cellSwitch];
 }
 
 - (void)dealloc
 {
+    [cellTitle release];
+    [cellSubtitle release];
+    [cellSwitch release];
+    [cellPreview release];
+    [cellDisabled release];
+    [cellBorder release];
+
+    [delegate release];
+
     [super dealloc];
 }
 

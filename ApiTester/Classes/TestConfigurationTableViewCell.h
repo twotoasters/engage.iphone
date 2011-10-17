@@ -26,6 +26,12 @@ typedef enum {
     TCTableViewCellPreviewStyleCustom,
 } TCTableViewCellPreviewStyle;
 
+@class TestConfigurationTableViewCell;
+@protocol TestConfigurationTableViewCellDelegate <NSObject>
+@optional
+- (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch;
+@end
+
 @interface TestConfigurationTableViewCell : UITableViewCell
 {
     UISwitch *cellSwitch;
@@ -38,6 +44,8 @@ typedef enum {
 
     TCTableViewCellStyle        cellStyle;
     TCTableViewCellPreviewStyle previewStyle;
+
+    id<TestConfigurationTableViewCellDelegate> delegate;
 }
 @property (nonatomic, retain) UISwitch    *cellSwitch;
 @property (nonatomic, retain) UILabel     *cellTitle;
@@ -46,6 +54,7 @@ typedef enum {
 @property (nonatomic, retain) UIImageView *cellBorder;
 @property (nonatomic, retain) UIView      *cellDisabled;
 @property TCTableViewCellPreviewStyle previewStyle;
+@property (nonatomic, retain) id<TestConfigurationTableViewCellDelegate> delegate;
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 - (void)switchChanged:(id)sender;
 @end

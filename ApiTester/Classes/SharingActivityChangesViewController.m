@@ -21,42 +21,38 @@
     NSString *pickerTitle;
     NSString *activityTitle;
     NSString *activityDescription;
-
-//    JRActivityObject *activity;
 }
 @property (readonly) NSString *pickerTitle;
 @property (readonly) NSString *activityTitle;
 @property (readonly) NSString *activityDescription;
-//@property (retain) JRActivityObject *activity;
-- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;// andActivity:(JRActivityObject*)newActivity;
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;// andActivity:(JRActivityObject*)newActivity;
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;
 @end
 
 @implementation PickerActivity
 @synthesize pickerTitle;
 @synthesize activityTitle;
 @synthesize activityDescription;
-//@synthesize activity;
 
-- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription// andActivity:(JRActivityObject*)newActivity
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription
 {
-    if (newPickerTitle == nil)// || newActivity == nil)
+    if (newPickerTitle == nil)
     {
         [self release];
         return nil;
     }
 
-    if (self = [super init])
+    if ((self = [super init]))
     {
         pickerTitle         = [newPickerTitle copy];
         activityTitle       = [newActivityTitle copy];
         activityDescription = [newActivityDescription copy];
-//        activity = [newActivity retain];
     }
+
     return self;
 }
 
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription// andActivity:(JRActivityObject*)newActivity
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription
 {
     return [[[PickerActivity alloc] initWithPickerTitle:newPickerTitle activityTitle:newActivityTitle andActivityDescription:newActivityDescription/* andActivity:newActivity*/] autorelease];
 }
@@ -66,7 +62,6 @@
     [pickerTitle release];
     [activityTitle release];
     [activityDescription release];
-//    [activity release];
 
     [super dealloc];
 }
@@ -97,6 +92,11 @@
                   @"Song",  @"Add a song url to the activity",
                   @"Video", @"Add a video url to the activity", nil];
 
+    cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 3)];
+
+    for (NSUInteger i = 0; i < ([cellTitles count] / 3); i++)
+        [cellSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
+
     [table setSeparatorColor:[UIColor darkGrayColor]];
     [table setAllowsSelection:NO];
 
@@ -126,40 +126,44 @@ typedef enum
     [config resetActivity];
     [config resetCustomInterface];
 
-    for (int i = 0; i < [cellTitles count] / 2; i++)
+//    for (int i = 0; i < [cellTitles count] / 3; i++)
+    for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
     {
-        TestConfigurationTableViewCell *cell =
-            (TestConfigurationTableViewCell*)[self.table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+//        TestConfigurationTableViewCell *cell =
+//            (TestConfigurationTableViewCell*)[self.table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
 
-//        if (cell.cellSwitch.on == YES)
-//        {
-            switch ((CellIndex)i)
-            {
-                case CIAddUrl:
-                    if (cell.cellSwitch.on) [config setActivityAddDefaultUrl:YES];
-                    else [config setActivityAddDefaultUrl:NO];
-                    break;
-                case CIAddImage:
-                    if (cell.cellSwitch.on) [config setActivityAddDefaultImage:YES];
-                    else [config setActivityAddDefaultImage:NO];
-                    break;
-                case CIAddSong:
-                    if (cell.cellSwitch.on) [config setActivityAddDefaultSong:YES];
-                    else [config setActivityAddDefaultSong:NO];
-                    break;
-                case CIAddVideo:
-                    if (cell.cellSwitch.on) [config setActivityAddDefaultVideo:YES];
-                    else [config setActivityAddDefaultVideo:NO];
-                    break;
-                default:
-                    break;
-            }
-//        }
+        BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
+
+        switch ((CellIndex)i)
+        {
+            case CIAddUrl:
+//                if (cell.cellSwitch.on) [config setActivityAddDefaultUrl:YES];
+                if (switchState == YES) [config setActivityAddDefaultUrl:YES];
+                else [config setActivityAddDefaultUrl:NO];
+                break;
+            case CIAddImage:
+//                if (cell.cellSwitch.on) [config setActivityAddDefaultImage:YES];
+                if (switchState == YES) [config setActivityAddDefaultImage:YES];
+                else [config setActivityAddDefaultImage:NO];
+                break;
+            case CIAddSong:
+//                if (cell.cellSwitch.on) [config setActivityAddDefaultSong:YES];
+                if (switchState == YES) [config setActivityAddDefaultSong:YES];
+                else [config setActivityAddDefaultSong:NO];
+                break;
+            case CIAddVideo:
+//                if (cell.cellSwitch.on) [config setActivityAddDefaultVideo:YES];
+                if (switchState == YES) [config setActivityAddDefaultVideo:YES];
+                else [config setActivityAddDefaultVideo:NO];
+                break;
+            default:
+                break;
+        }
     }
 
     if ([picker selectedRowInComponent:0] != -1)
     {
-        PickerActivity *pickerActivity = [activityArray objectAtIndex:[picker selectedRowInComponent:0]];
+        PickerActivity *pickerActivity = [activityArray objectAtIndex:(NSUInteger)[picker selectedRowInComponent:0]];
         [config setActivityAction:pickerActivity.pickerTitle];
         [config setActivityTitle:pickerActivity.activityTitle];
         [config setActivityDescription:pickerActivity.activityDescription];
@@ -214,15 +218,9 @@ typedef enum
     return [activityArray count];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-//    selectedActivity = row;
-//    [jrEngage showSocialPublishingDialogWithActivity:[((PickerActivity*)[activityArray objectAtIndex:row]) activity]];
-}
-
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [((PickerActivity*)[activityArray objectAtIndex:row]) pickerTitle];
+    return [((PickerActivity*)[activityArray objectAtIndex:(NSUInteger)row]) pickerTitle];
 }
 
 #define NUM_PICKER_ACTIVITIES 49//98
@@ -300,6 +298,8 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     return 4;
 }
 
+#define CELL_TAG_OFFSET 100
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DLog(@"");
@@ -321,10 +321,20 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 
     cell.previewStyle = TCTableViewCellPreviewStyleSquare;
 
+    cell.tag = CELL_TAG_OFFSET + indexPath.row;
+    cell.delegate = self;
+
     [cell.cellBorder setHidden:YES];
-//    [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
 
     return cell;
+}
+
+- (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch
+{
+    NSInteger cellIndex = cell.tag - CELL_TAG_OFFSET;
+
+    if (cellIndex < [cellSwitchStates count])
+        [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -404,7 +414,12 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
+    [cellTitles release];
+    [cellSwitchStates release];
+    [activityArray release];
+
     [super dealloc];
 }
 

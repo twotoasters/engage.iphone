@@ -6,11 +6,19 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(...)
+#endif
+
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
 #import "SignInCustomInterfaceViewController.h"
 
 
 @implementation SignInCustomInterfaceViewController
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -36,6 +44,11 @@
 
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
+
+    cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 3)];
+
+    for (NSUInteger i = 0; i < ([cellTitles count] / 3); i++)
+        [cellSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
     [self setToolbarItems:
         [NSArray arrayWithObjects:
@@ -77,14 +90,14 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [cellTitles count] / 3;
 }
 
@@ -188,7 +201,6 @@ typedef enum
     else /* Won't ever happen */
         style = TCTableViewCellStyleSwitch;
 
-
     TestConfigurationTableViewCell *cell =
         (TestConfigurationTableViewCell*)
                 [tableView dequeueReusableCellWithIdentifier:
@@ -206,6 +218,7 @@ typedef enum
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
+    cell.delegate = self;
 
     [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
 
@@ -219,52 +232,68 @@ typedef enum
     [config resetSignIn];
     [config resetCustomInterface];
 
-    for (int i = 0; i < [cellTitles count] / 3; i++)
+//    for (int i = 0; i < [cellTitles count] / 3; i++)
+    for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
     {
-        TestConfigurationTableViewCell *cell =
-            (TestConfigurationTableViewCell*)
-                    [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+//        TestConfigurationTableViewCell *cell =
+//            (TestConfigurationTableViewCell*)
+//                    [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+
+//        if (!cell)
+//            DLog(@"not cell in row: %d", i);
+
+        BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
 
         switch ((CellIndex)i)
         {
             case CIAuthenticationBackgroundColor:
-                if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
+//                if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
+                if (switchState == YES) [config setAuthenticationBackgroundColor:YES];
                 else  [config setAuthenticationBackgroundColor:NO];
                 break;
             case CIAuthenticationBackgroundImageView:
-                if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
+//                if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
+                if (switchState == YES) [config setAuthenticationBackgroundImageView:YES];
                 else  [config setAuthenticationBackgroundImageView:NO];
                 break;
             case CIProviderTableTitleView:
-                if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
+                if (switchState == YES) [config setProviderTableTitleView:YES];
                 else  [config setProviderTableTitleView:NO];
                 break;
             case CIProviderTableTitleString:
-                if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
+                if (switchState == YES) [config setProviderTableTitleString:YES];
                 else  [config setProviderTableTitleString:NO];
                 break;
             case CIProviderTableHeaderView:
-                if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
+                if (switchState == YES) [config setProviderTableHeaderView:YES];
                 else  [config setProviderTableHeaderView:NO];
                 break;
             case CIProviderTableFooterView:
-                if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
+                if (switchState == YES) [config setProviderTableFooterView:YES];
                 else  [config setProviderTableFooterView:NO];
                 break;
             case CIProviderTableSectionHeaderView:
-                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
+                if (switchState == YES) [config setProviderTableSectionHeaderView:YES];
                 else  [config setProviderTableSectionHeaderView:NO];
                 break;
             case CIProviderTableSectionFooterView:
-                if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
+                if (switchState == YES) [config setProviderTableSectionFooterView:YES];
                 else  [config setProviderTableSectionFooterView:NO];
                 break;
             case CIProviderTableSectionHeaderTitleString:
-                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
+                if (switchState == YES) [config setProviderTableSectionHeaderTitleString:YES];
                 else  [config setProviderTableSectionHeaderTitleString:NO];
                 break;
             case CIProviderTableSectionFooterTitleString:
-                if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
+//                if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
+                if (switchState == YES) [config setProviderTableSectionFooterTitleString:YES];
                 else  [config setProviderTableSectionFooterTitleString:NO];
                 break;
             default:
@@ -275,6 +304,14 @@ typedef enum
     StartTestViewController *startTestViewController =
         [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
     [self.navigationController pushViewController:startTestViewController animated:YES];
+}
+
+- (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch
+{
+    NSInteger cellIndex = cell.tag - CELL_TAG_OFFSET;
+
+    if (cellIndex < [cellSwitchStates count])
+        [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 }
 
 /*
@@ -348,7 +385,11 @@ typedef enum
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
+    [cellTitles release];
+    [cellSwitchStates release];
+
     [super dealloc];
 }
 
