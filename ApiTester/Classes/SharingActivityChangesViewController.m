@@ -92,9 +92,9 @@
                   @"Song",  @"Add a song url to the activity",
                   @"Video", @"Add a video url to the activity", nil];
 
-    cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 3)];
+    cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 2)];
 
-    for (NSUInteger i = 0; i < ([cellTitles count] / 3); i++)
+    for (NSUInteger i = 0; i < ([cellTitles count] / 2); i++)
         [cellSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
     [table setSeparatorColor:[UIColor darkGrayColor]];
