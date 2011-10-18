@@ -64,6 +64,8 @@
 #pragma mark singleton_methods
 static NSString * const appId = @"appcfamhnpkagijaeinl";
 static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
+//static NSString * const appId = @"fccdmobdiafiebjhbghn";
+//static NSString * const tokenUrl = nil;
 
 static ConfigurationData *sharedConfigurationData = nil;
 
