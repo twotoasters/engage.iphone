@@ -1,0 +1,7 @@
+commits to be cherry-picked:
+  
+commits already cherry-picked:
+   Test  / Devel
+  abdee41/5aa64f5 Updated the JRActivityObject to be more strict when taking urls; that is, if media objects or any url
+  3031dd8/07a0ef1 Made the activity url property copy, not readonly
+  c5623d5/96ddee3 Minor change to JREngage xcode proj
