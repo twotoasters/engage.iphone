@@ -12,8 +12,6 @@
 #import "JREngage.h"
 #import "JREngage+CustomInterface.h"
 
-
-
 #define JANRAIN_BLUE_100 [UIColor colorWithRed:0.102 green:0.33 blue:0.48 alpha:1.0]
 #define JANRAIN_BLUE_20  [UIColor colorWithRed:0.102 green:0.33 blue:0.48 alpha:0.2]
 #define JANRAIN_BLUE_80  [UIColor colorWithRed:0.102 green:0.33 blue:0.48 alpha:0.8]

@@ -75,7 +75,9 @@
 @implementation SharingActivityChangesViewController
 @synthesize picker;
 @synthesize table;
-
+@synthesize thinDivider;
+@synthesize sliderDivider;
+@synthesize sliderButton;
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -86,11 +88,15 @@
 
     config = [ConfigurationData sharedConfigurationData];
 
+    [self buildActivityArray];
+
     cellTitles = [[NSArray alloc] initWithObjects:
                   @"Url", @"Add a url to the activity",
-                  @"Image", @"Add an image url to the activity",
-                  @"Song",  @"Add a song url to the activity",
-                  @"Video", @"Add a video url to the activity", nil];
+                  @"Image", @"Add an image to the activity",
+                  @"Song",  @"Add a song to the activity",
+                  @"Video", @"Add a video to the activity",
+                  @"Action Link", @"Add an action link to the activity",
+                  @"Properties Dictionary", @"Add a properties dictionary to the activity", nil];
 
     cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 2)];
 
@@ -100,7 +106,8 @@
     [table setSeparatorColor:[UIColor darkGrayColor]];
     [table setAllowsSelection:NO];
 
-    [self buildActivityArray];
+    [picker setFrame:CGRectMake(0, 372, 320, 162)];
+//    [table setTableFooterView:thinDivider];
 
     [self setToolbarItems:
      [NSArray arrayWithObjects:
@@ -115,6 +122,8 @@ typedef enum
     CIAddImage,
     CIAddSong,
     CIAddVideo,
+    CIAddActionLink,
+    CIAddProperties,
 } CellIndex;
 
 
@@ -126,35 +135,35 @@ typedef enum
     [config resetActivity];
     [config resetCustomInterface];
 
-//    for (int i = 0; i < [cellTitles count] / 3; i++)
     for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
     {
-//        TestConfigurationTableViewCell *cell =
-//            (TestConfigurationTableViewCell*)[self.table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-
         BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
 
         switch ((CellIndex)i)
         {
             case CIAddUrl:
-//                if (cell.cellSwitch.on) [config setActivityAddDefaultUrl:YES];
                 if (switchState == YES) [config setActivityAddDefaultUrl:YES];
                 else [config setActivityAddDefaultUrl:NO];
                 break;
             case CIAddImage:
-//                if (cell.cellSwitch.on) [config setActivityAddDefaultImage:YES];
                 if (switchState == YES) [config setActivityAddDefaultImage:YES];
                 else [config setActivityAddDefaultImage:NO];
                 break;
             case CIAddSong:
-//                if (cell.cellSwitch.on) [config setActivityAddDefaultSong:YES];
                 if (switchState == YES) [config setActivityAddDefaultSong:YES];
                 else [config setActivityAddDefaultSong:NO];
                 break;
             case CIAddVideo:
-//                if (cell.cellSwitch.on) [config setActivityAddDefaultVideo:YES];
                 if (switchState == YES) [config setActivityAddDefaultVideo:YES];
                 else [config setActivityAddDefaultVideo:NO];
+                break;
+            case CIAddActionLink:
+                if (switchState == YES) [config setActivityAddDefaultActionLinks:YES];
+                else [config setActivityAddDefaultActionLinks:NO];
+                break;
+            case CIAddProperties:
+                if (switchState == YES) [config setActivityAddDefaultProperties:YES];
+                else [config setActivityAddDefaultProperties:NO];
                 break;
             default:
                 break;
@@ -172,7 +181,6 @@ typedef enum
     {
         [config setActivityAction:@"Nothing was selected"];
     }
-
 
     StartTestViewController *startTestViewController =
             [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
@@ -282,6 +290,47 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     }
 }
 
+- (void)slidePickerUp
+{
+    [UIView beginAnimations:@"slider_up" context:nil];
+//  [UIView setAnimationDuration:2000];
+
+    [table setFrame:CGRectMake(0, 0, 320, 214 - 62)];
+    [thinDivider setFrame:CGRectMake(0, 214 - 62, 320, 14)];
+    [sliderDivider setFrame:CGRectMake(0, 228 - 62, 320, 44)];
+    [sliderButton setFrame:CGRectMake(0, 228 - 62, 320, 44)];
+    [picker setFrame:CGRectMake(0, 272 - 62, 320, 162)];
+
+    [UIView commitAnimations];
+
+    [sliderButton setTitle:@"Click to Hide Selector" forState:UIControlStateNormal];
+}
+
+- (void)slidePickerDown
+{
+    [UIView beginAnimations:@"slider_up" context:nil];
+//  [UIView setAnimationDuration:2000];
+
+    [table setFrame:CGRectMake(0, 0, 320, 314)];
+    [thinDivider setFrame:CGRectMake(0, 314, 320, 14)];
+    [sliderDivider setFrame:CGRectMake(0, 328, 320, 44)];
+    [sliderButton setFrame:CGRectMake(0, 328, 320, 44)];
+    [picker setFrame:CGRectMake(0, 372, 320, 100)];
+
+    [UIView commitAnimations];
+
+    [sliderButton setTitle:@"Click for Title and Description Selector" forState:UIControlStateNormal];
+}
+
+- (IBAction)sliderButtonPressed:(id)sender
+{
+    if (sliderUp)
+        [self slidePickerDown];
+    else
+        [self slidePickerUp];
+
+    sliderUp = !sliderUp;
+}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -295,7 +344,7 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     DLog(@"");
-    return 4;
+    return [cellTitles count] / 2;
 }
 
 #define CELL_TAG_OFFSET 100
@@ -419,6 +468,12 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     [cellTitles release];
     [cellSwitchStates release];
     [activityArray release];
+
+    [picker release];
+    [table release];
+    [thinDivider release];
+    [sliderDivider release];
+    [sliderButton release];
 
     [super dealloc];
 }

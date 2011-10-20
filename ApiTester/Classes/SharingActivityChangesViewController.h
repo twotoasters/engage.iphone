@@ -16,13 +16,22 @@
 {
     UIPickerView *picker;
     UITableView  *table;
+    UIImageView  *thinDivider;
+    UIImageView  *sliderDivider;
+    UIButton     *sliderButton;
 
     NSMutableArray *activityArray;
     NSMutableArray *cellSwitchStates;
 
     NSArray *cellTitles;
     ConfigurationData *config;
+
+    BOOL sliderUp;
 }
 @property (retain, nonatomic) IBOutlet UIPickerView *picker;
 @property (retain, nonatomic) IBOutlet UITableView  *table;
+@property (retain, nonatomic) IBOutlet UIImageView  *thinDivider;
+@property (retain, nonatomic) IBOutlet UIImageView  *sliderDivider;
+@property (retain, nonatomic) IBOutlet UIButton     *sliderButton;
+- (IBAction)sliderButtonPressed:(id)sender;
 @end

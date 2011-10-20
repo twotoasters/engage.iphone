@@ -69,7 +69,6 @@ static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
 
 static ConfigurationData *sharedConfigurationData = nil;
 
-
 #define VALID_DEFAULTS
 #ifdef  VALID_DEFAULTS
 static NSString * const defaultAction       = @"is sharing an activity";
