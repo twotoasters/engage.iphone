@@ -123,10 +123,10 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 
         defaultActivityProperties =
                 [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                        @"Location", [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"text", @"Portland",
-                                @"href", @"http://en.wikipedia.org/wiki/Portland,_Oregon", nil],
-                        @"Time", @"5:00", nil];
+                        [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"Portland", @"text",
+                                @"http://en.wikipedia.org/wiki/Portland,_Oregon", @"href", nil], @"Location",
+                        @"5:00", @"Time", nil];
 
         customNavigationController = [[UINavigationController alloc] init];
         customNavigationController.navigationBar.tintColor = JANRAIN_BLUE_80;
