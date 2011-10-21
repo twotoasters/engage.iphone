@@ -14,16 +14,16 @@
 @synthesize navigationRadio;
 @synthesize padDisplayRadio;
 
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
+    if (self)
+    {
+
     }
     return self;
 }
-*/
+
 
 - (void)viewDidLoad
 {
@@ -51,13 +51,11 @@
     {
         titleLabel.text = @"Test Sign-In";
         [startButton setTitle:@"Start the Sign-In Test" forState:UIControlStateNormal];
-//        [startButton setTitle:@"Start the Sign-In Test" forState:UIControlStateSelected];
     }
     else if (config.signInOrSharing == CDSharing)
     {
         titleLabel.text = @"Test Sharing";
         [startButton setTitle:@"Start the Sharing Test" forState:UIControlStateNormal];
-//        [startButton setTitle:@"Start the Sharing Test" forState:UIControlStateHighlighted];
     }
 }
 
@@ -87,9 +85,6 @@
 //
 //}
 
-
-
-
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -111,10 +106,8 @@
     // e.g. self.myOutlet = nil;
 }
 
-
 - (void)dealloc {
     [super dealloc];
 }
-
 
 @end

@@ -6,7 +6,6 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-
 #ifdef DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
@@ -17,12 +16,10 @@
 
 #import "SignInCustomInterfaceViewController.h"
 
-
 @implementation SignInCustomInterfaceViewController
 
 #pragma mark -
 #pragma mark View lifecycle
-
 
 - (void)viewDidLoad
 {
@@ -57,7 +54,6 @@
          [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
 }
 
-
 /*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -86,15 +82,10 @@
 }
 */
 
-
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 1; }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -232,67 +223,49 @@ typedef enum
     [config resetSignIn];
     [config resetCustomInterface];
 
-//    for (int i = 0; i < [cellTitles count] / 3; i++)
     for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
     {
-//        TestConfigurationTableViewCell *cell =
-//            (TestConfigurationTableViewCell*)
-//                    [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-
-//        if (!cell)
-//            DLog(@"not cell in row: %d", i);
-
         BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
 
         switch ((CellIndex)i)
         {
             case CIAuthenticationBackgroundColor:
-//                if (cell.cellSwitch.on) [config setAuthenticationBackgroundColor:YES];
                 if (switchState == YES) [config setAuthenticationBackgroundColor:YES];
                 else  [config setAuthenticationBackgroundColor:NO];
                 break;
             case CIAuthenticationBackgroundImageView:
-//                if (cell.cellSwitch.on) [config setAuthenticationBackgroundImageView:YES];
                 if (switchState == YES) [config setAuthenticationBackgroundImageView:YES];
                 else  [config setAuthenticationBackgroundImageView:NO];
                 break;
             case CIProviderTableTitleView:
-//                if (cell.cellSwitch.on) [config setProviderTableTitleView:YES];
                 if (switchState == YES) [config setProviderTableTitleView:YES];
                 else  [config setProviderTableTitleView:NO];
                 break;
             case CIProviderTableTitleString:
-//                if (cell.cellSwitch.on) [config setProviderTableTitleString:YES];
                 if (switchState == YES) [config setProviderTableTitleString:YES];
                 else  [config setProviderTableTitleString:NO];
                 break;
             case CIProviderTableHeaderView:
-//                if (cell.cellSwitch.on) [config setProviderTableHeaderView:YES];
                 if (switchState == YES) [config setProviderTableHeaderView:YES];
                 else  [config setProviderTableHeaderView:NO];
                 break;
             case CIProviderTableFooterView:
-//                if (cell.cellSwitch.on) [config setProviderTableFooterView:YES];
                 if (switchState == YES) [config setProviderTableFooterView:YES];
                 else  [config setProviderTableFooterView:NO];
                 break;
             case CIProviderTableSectionHeaderView:
-//                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderView:YES];
                 if (switchState == YES) [config setProviderTableSectionHeaderView:YES];
                 else  [config setProviderTableSectionHeaderView:NO];
                 break;
             case CIProviderTableSectionFooterView:
-//                if (cell.cellSwitch.on) [config setProviderTableSectionFooterView:YES];
                 if (switchState == YES) [config setProviderTableSectionFooterView:YES];
                 else  [config setProviderTableSectionFooterView:NO];
                 break;
             case CIProviderTableSectionHeaderTitleString:
-//                if (cell.cellSwitch.on) [config setProviderTableSectionHeaderTitleString:YES];
                 if (switchState == YES) [config setProviderTableSectionHeaderTitleString:YES];
                 else  [config setProviderTableSectionHeaderTitleString:NO];
                 break;
             case CIProviderTableSectionFooterTitleString:
-//                if (cell.cellSwitch.on) [config setProviderTableSectionFooterTitleString:YES];
                 if (switchState == YES) [config setProviderTableSectionFooterTitleString:YES];
                 else  [config setProviderTableSectionFooterTitleString:NO];
                 break;
@@ -313,61 +286,6 @@ typedef enum
     if (cellIndex < [cellSwitchStates count])
         [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
-}
-
 
 #pragma mark -
 #pragma mark Memory management

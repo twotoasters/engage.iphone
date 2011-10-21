@@ -43,7 +43,7 @@
 
     UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc]
                                       initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-									  target:[ConfigurationData sharedConfigurationData]
+                                      target:[ConfigurationData sharedConfigurationData]
                                       action:@selector(triggerAuthenticationDidCancel:)] autorelease];
 
 	self.navigationItem.rightBarButtonItem = cancelButton;

@@ -12,7 +12,9 @@
 #import "ConfigurationData.h"
 #import "StartTestViewController.h"
 
-@interface SharingActivityChangesViewController : UIViewController <TestConfigurationTableViewCellDelegate>
+@interface SharingActivityChangesViewController : UIViewController <TestConfigurationTableViewCellDelegate,
+                                                                    UIPickerViewDataSource, UIPickerViewDelegate,
+                                                                    UITableViewDataSource, UITableViewDelegate>
 {
     UIPickerView *picker;
     UITableView  *table;

@@ -219,10 +219,7 @@ typedef enum
 #pragma mark -
 #pragma mark Picker set-up methods
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView { return 1; }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {

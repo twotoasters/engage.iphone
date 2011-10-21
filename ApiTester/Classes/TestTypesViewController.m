@@ -14,7 +14,6 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-
 #import "TestTypesViewController.h"
 #import "SharingActivityWithBadParamsViewController.h"
 
@@ -22,7 +21,6 @@
 
 #pragma mark -
 #pragma mark View lifecycle
-
 
 - (void)viewDidLoad
 {
@@ -70,7 +68,6 @@
     }
 }
 
-
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -93,7 +90,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -191,52 +187,12 @@
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIViewController *level2ViewController;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIViewController *level2ViewController = nil;
 
     if (config.signInOrSharing == CDSignIn)
         switch (indexPath.row)
@@ -246,15 +202,21 @@
                 [config resetCustomInterface];
 
                 config.signInTestType = CDSignInTestTypeBasic;
-                level2ViewController = [[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil];
+                level2ViewController =
+                    [[StartTestViewController alloc] initWithNibName:@"StartTestViewController"
+                                                              bundle:nil];
                 break;
             case 1:
                 config.signInTestType = CDSignInTestTypeCustomInterface;
-                level2ViewController = [[SignInCustomInterfaceViewController alloc] initWithNibName:@"SignInCustomInterfaceViewController" bundle:nil];
+                level2ViewController =
+                    [[SignInCustomInterfaceViewController alloc] initWithNibName:@"SignInCustomInterfaceViewController"
+                                                                          bundle:nil];
                 break;
             case 2:
                 config.signInTestType = CDSignInTestTypeProviderConfiguration;
-                level2ViewController = [[SignInProviderConfigViewController alloc] initWithNibName:@"SignInProviderConfigViewController" bundle:nil];
+                level2ViewController =
+                    [[SignInProviderConfigViewController alloc] initWithNibName:@"SignInProviderConfigViewController"
+                                                                         bundle:nil];
                 break;
             default:
                 break;
@@ -274,23 +236,33 @@
                 config.activityAddDefaultImage       = YES;
 
                 config.sharingTestType = CDSharingTestTypeBasic;
-                level2ViewController = [[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil];
+                level2ViewController =
+                    [[StartTestViewController alloc] initWithNibName:@"StartTestViewController"
+                                                              bundle:nil];
                 break;
             case 1:
                 config.sharingTestType = CDSharingTestTypeEmailSms;
-                level2ViewController = [[SharingEmailSmsViewController alloc] initWithNibName:@"SharingEmailSmsViewController" bundle:nil];
+                level2ViewController =
+                    [[SharingEmailSmsViewController alloc] initWithNibName:@"SharingEmailSmsViewController"
+                                                                    bundle:nil];
                 break;
             case 2:
                 config.sharingTestType = CDSharingTestTypeCustomInterface;
-                level2ViewController = [[SharingCustomInterfaceViewController alloc] initWithNibName:@"SharingCustomInterfaceViewController" bundle:nil];
+                level2ViewController =
+                    [[SharingCustomInterfaceViewController alloc] initWithNibName:@"SharingCustomInterfaceViewController"
+                                                                           bundle:nil];
                 break;
             case 3:
                 config.sharingTestType = CDSharingTestTypeActivityChanges;
-                level2ViewController = [[SharingActivityChangesViewController alloc] initWithNibName:@"SharingActivityChangesViewController" bundle:nil];
+                level2ViewController =
+                    [[SharingActivityChangesViewController alloc] initWithNibName:@"SharingActivityChangesViewController"
+                                                                           bundle:nil];
                 break;
             case 4:
                 config.sharingTestType = CDSharingTestTypeBadActivityParams;
-                level2ViewController = [[SharingActivityWithBadParamsViewController alloc] initWithNibName:@"SharingActivityWithBadParamsViewController" bundle:nil];
+                level2ViewController =
+                    [[SharingActivityWithBadParamsViewController alloc] initWithNibName:@"SharingActivityWithBadParamsViewController"
+                                                                                 bundle:nil];
                 break;
             default:
                 break;
@@ -299,7 +271,6 @@
     [self.navigationController pushViewController:level2ViewController animated:YES];
     [level2ViewController release];
 }
-
 
 #pragma mark -
 #pragma mark Memory management
@@ -316,11 +287,13 @@
     // For example: self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    [signInTestTypes release];
+    [sharingTestTypes release];
 
-- (void)dealloc {
     [super dealloc];
 }
-
 
 @end
 
