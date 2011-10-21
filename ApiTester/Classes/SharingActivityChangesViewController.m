@@ -25,8 +25,10 @@
 @property (readonly) NSString *pickerTitle;
 @property (readonly) NSString *activityTitle;
 @property (readonly) NSString *activityDescription;
-- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription;
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle
+   andActivityDescription:(NSString*)newActivityDescription;
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle
+             andActivityDescription:(NSString*)newActivityDescription;
 @end
 
 @implementation PickerActivity
@@ -34,7 +36,8 @@
 @synthesize activityTitle;
 @synthesize activityDescription;
 
-- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription
+- (id)initWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle
+   andActivityDescription:(NSString*)newActivityDescription
 {
     if (newPickerTitle == nil)
     {
@@ -52,9 +55,11 @@
     return self;
 }
 
-+ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle andActivityDescription:(NSString*)newActivityDescription
++ (id)pickerActivityWithPickerTitle:(NSString*)newPickerTitle activityTitle:(NSString*)newActivityTitle
+             andActivityDescription:(NSString*)newActivityDescription
 {
-    return [[[PickerActivity alloc] initWithPickerTitle:newPickerTitle activityTitle:newActivityTitle andActivityDescription:newActivityDescription/* andActivity:newActivity*/] autorelease];
+    return [[[PickerActivity alloc] initWithPickerTitle:newPickerTitle activityTitle:newActivityTitle
+                                 andActivityDescription:newActivityDescription] autorelease];
 }
 
 - (void)dealloc
@@ -81,7 +86,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -107,14 +111,27 @@
     [table setAllowsSelection:NO];
 
     [picker setFrame:CGRectMake(0, 372, 320, 162)];
-//    [table setTableFooterView:thinDivider];
 
     [self setToolbarItems:
      [NSArray arrayWithObjects:
-      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
+      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered
+                                       target:self action:@selector(reset:)] autorelease],
+      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered
+                                       target:self action:@selector(next:)] autorelease],
+      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                     target:nil action:nil] autorelease], nil]];
 }
+
+/*
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+*/
+/*
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+*/
 
 typedef enum
 {
@@ -126,6 +143,8 @@ typedef enum
     CIAddProperties,
 } CellIndex;
 
+#pragma mark -
+#pragma mark Toolbar button selectors
 
 - (void)reset:(id)sender {}
 
@@ -172,7 +191,9 @@ typedef enum
 
     if ([picker selectedRowInComponent:0] != -1)
     {
-        PickerActivity *pickerActivity = [activityArray objectAtIndex:(NSUInteger)[picker selectedRowInComponent:0]];
+        PickerActivity *pickerActivity =
+                [activityArray objectAtIndex:(NSUInteger)[picker selectedRowInComponent:0]];
+
         [config setActivityAction:pickerActivity.pickerTitle];
         [config setActivityTitle:pickerActivity.activityTitle];
         [config setActivityDescription:pickerActivity.activityDescription];
@@ -187,27 +208,6 @@ typedef enum
                 [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -215,6 +215,9 @@ typedef enum
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
+
+#pragma mark -
+#pragma mark Picker set-up methods
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -290,6 +293,9 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     }
 }
 
+#pragma mark -
+#pragma mark Slider control
+
 - (void)slidePickerUp
 {
     [UIView beginAnimations:@"slider_up" context:nil];
@@ -347,6 +353,11 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     return [cellTitles count] / 2;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 65;
+}
+
 #define CELL_TAG_OFFSET 100
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -386,69 +397,19 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
         [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 65;
-}
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"Nib name" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
-}
-
-
 #pragma mark -
 #pragma mark Memory management
+
+/*
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+*/
+/*
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+}
+*/
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

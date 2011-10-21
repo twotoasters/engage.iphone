@@ -77,15 +77,6 @@
     [cellPreview setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [cellPreview setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 
-//    [cellDisabled setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
-//    [self.contentView setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
-//    [self setBackgroundColor:[UIColor clearColor]];
-
-    [cellDisabled setBackgroundColor:[UIColor clearColor]];
-//    [self.contentView setBackgroundColor:[UIColor clearColor]];
-    [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
-
-
     [cellTitle    setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
     [cellSubtitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
     [cellSwitch   setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin];
@@ -97,6 +88,7 @@
 
     [cellTitle setBackgroundColor:[UIColor clearColor]];
     [cellSubtitle setBackgroundColor:[UIColor clearColor]];
+    [cellDisabled setBackgroundColor:[UIColor clearColor]];
 
     [self.contentView addSubview:cellTitle];
     [self.contentView addSubview:cellSubtitle];
@@ -105,6 +97,8 @@
 
     [self.contentView addSubview:cellDisabled];
     [self.contentView addSubview:cellSwitch];
+
+    [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
 
     return self;
 }
@@ -116,8 +110,6 @@
 
     CGFloat cellContentWidth  = self.contentView.frame.size.width;
     CGFloat cellContentHeight = self.contentView.frame.size.height;
-
-    //DLog(@"%f, %f", cellContentWidth, cellContentHeight);
 
     cellDisabled.frame = CGRectMake(0, 0, cellContentWidth, cellContentHeight);
     cellBorder.frame   = CGRectMake(0, cellContentHeight - 14, cellContentWidth, 14);
@@ -183,7 +175,6 @@
 
         default:
             break;
-            //return;
     }
 
     if (cellSwitch.on == YES)
@@ -191,94 +182,14 @@
         [cellDisabled setHidden:YES];
         [cellPreview setEnabled:YES];
         [self setBackgroundColor:[UIColor whiteColor]];
-
-//        [self.contentView setBackgroundColor:[UIColor clearColor]];
     }
     else
     {
         [cellDisabled setHidden:NO];
         [cellPreview setEnabled:NO];
         [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
-
-//        [self.contentView setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
     }
-
 }
-
-//- (void)layoutSubviews
-//{
-//    DLog(@"%@", self.reuseIdentifier);
-//    [super layoutSubviews];
-//
-//    CGFloat cellContentWidth  = self.frame.size.width;
-//    CGFloat cellContentHeight = self.frame.size.height;
-//
-//    cellDisabled.frame = CGRectMake(0, 0, cellContentWidth, cellContentHeight);
-//    cellBorder.frame   = CGRectMake(0, cellContentHeight - 14, cellContentWidth, 14);
-//
-//    if (previewStyle == TCTableViewCellPreviewStyleSquare)
-//    {
-//        cellSwitch.frame = CGRectMake(180, 10, 94, 27);
-//        cellPreview.frame = CGRectMake(280, 10, 27, 27);
-//    }
-//    else if (previewStyle == TCTableViewCellPreviewStyleLong)
-//    {
-//        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-//        cellPreview.frame = CGRectMake(10, 62, 300, 24);
-//    }
-//    else
-//    {
-//        cellSwitch.frame = CGRectMake(216, 10, 94, 27);
-//        cellPreview.frame = CGRectMake(10, 62, 300, self.frame.size.height - 62 - 10);
-//    }
-//
-//    CGFloat titleWidth = cellSwitch.frame.origin.x - 18;
-//
-//    switch (cellStyle)
-//    {
-//        case TCTableViewCellStyleSwitch:
-//            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
-//            cellSubtitle.frame = CGRectMake(10, 40, 300, 18);
-//
-//            break;
-//
-//        case TCTableViewCellStyleSwitchWithLongTitle:
-//            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
-//            cellSubtitle.frame = CGRectMake(10, 42, 300, 18);
-//
-//            if (previewStyle == TCTableViewCellPreviewStyleLong)
-//                cellPreview.frame = CGRectMake(10, 64, 300, 24);
-//            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
-//                cellPreview.frame = CGRectMake(10, 64, 300, self.frame.size.height - 64 - 10);
-//
-//            break;
-//
-//        case TCTableViewCellStyleSwitchWithLongSubtitle:
-//            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
-//            cellSubtitle.frame = CGRectMake(10, 40, 300, 36);
-//
-//            if (previewStyle == TCTableViewCellPreviewStyleLong)
-//                cellPreview.frame = CGRectMake(10, 80, 300, 24);
-//            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
-//                cellPreview.frame = CGRectMake(10, 80, 300, self.frame.size.height - 80 - 10);
-//
-//            break;
-//
-//        case TCTableViewCellStyleSwitchWithLongTitleAndSubtitle:
-//            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
-//            cellSubtitle.frame = CGRectMake(10, 42, 300, 36);
-//
-//            if (previewStyle == TCTableViewCellPreviewStyleLong)
-//                cellPreview.frame = CGRectMake(10, 82, 300, 24);
-//            else if (previewStyle == TCTableViewCellPreviewStyleCustom)
-//                cellPreview.frame = CGRectMake(10, 82, 300, self.frame.size.height - 82 - 10);
-//
-//            break;
-//
-//        default:
-//            return;
-//    }
-//}
 
 - (void)switchChanged:(id)sender
 {
@@ -289,16 +200,12 @@
         [cellDisabled setHidden:YES];
         [cellPreview setEnabled:YES];
         [self setBackgroundColor:[UIColor whiteColor]];
-
-//        [self.contentView setBackgroundColor:[UIColor clearColor]];
     }
     else
     {
         [cellDisabled setHidden:NO];
         [cellPreview setEnabled:NO];
         [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
-
-//        [self.contentView setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
     }
 
     if ([delegate respondsToSelector:(@selector(testConfigurationTableViewCell:switchDidChange:))])
@@ -318,6 +225,4 @@
 
     [super dealloc];
 }
-
-
 @end
