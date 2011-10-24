@@ -10,9 +10,17 @@
 #import "ConfigurationData.h"
 #import "TestTypesViewController.h"
 
-@interface RootViewController : UITableViewController 
+@class RootViewController;
+@protocol RootViewControllerDelegate <NSObject>
+@optional
+- (void)rootViewController:(RootViewController*)viewController tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+@end
+
+@interface RootViewController : UITableViewController
 {
     ConfigurationData *config;
-}
 
+    id<RootViewControllerDelegate> delegate;
+}
+@property (retain, nonatomic) id<RootViewControllerDelegate> delegate;
 @end

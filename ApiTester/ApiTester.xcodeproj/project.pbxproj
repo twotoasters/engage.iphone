@@ -206,11 +206,15 @@
 		9F472A581431407D00D88069 /* SharingCustomInterfaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */; };
 		9F472A591431407D00D88069 /* SharingEmailSmsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */; };
 		9F472A5A1431407D00D88069 /* SignInProviderConfigViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */; };
+		9FA1861B14521EC000F4F619 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA1861A14521EC000F4F619 /* MainWindow-iPad.xib */; };
+		9FA1861D14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA1861C14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib */; };
 		C01FCF5008A954540054247D /* divider.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054247C /* divider.png */; };
 		C01FCF5008A9545400542480 /* SignInEmbeddedNativeLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */; };
 		C01FCF5008A9545400542482 /* SignInEmbeddedNativeLoginInfoScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */; };
 		C01FCF5008A9545400542484 /* janrain_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542483 /* janrain_logo.png */; };
 		C01FCF5008A9545400542486 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542485 /* background.png */; };
+		C01FCF5008A9545400542488 /* DoubleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542487 /* DoubleTableViewController.m */; };
+		C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -452,12 +456,17 @@
 		9F472A541431407D00D88069 /* SharingCustomInterfaceViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharingCustomInterfaceViewController.xib; sourceTree = "<group>"; };
 		9F472A551431407D00D88069 /* SharingEmailSmsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharingEmailSmsViewController.xib; sourceTree = "<group>"; };
 		9F472A561431407D00D88069 /* SignInProviderConfigViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInProviderConfigViewController.xib; sourceTree = "<group>"; };
+		9FA1861A14521EC000F4F619 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		9FA1861C14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharingActivityWithBadParamsViewController.xib; sourceTree = "<group>"; };
 		C01FCF5008A954540054247C /* divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divider.png; sourceTree = "<group>"; };
 		C01FCF5008A954540054247E /* SignInEmbeddedNativeLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInEmbeddedNativeLoginViewController.h; sourceTree = "<group>"; };
 		C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInEmbeddedNativeLoginViewController.m; sourceTree = "<group>"; };
 		C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignInEmbeddedNativeLoginInfoScreen.xib; sourceTree = "<group>"; };
 		C01FCF5008A9545400542483 /* janrain_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = janrain_logo.png; sourceTree = "<group>"; };
 		C01FCF5008A9545400542485 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		C01FCF5008A9545400542487 /* DoubleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleTableViewController.m; sourceTree = "<group>"; };
+		C01FCF5008A9545400542489 /* DoubleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleTableViewController.h; sourceTree = "<group>"; };
+		C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "DoubleTableViewController-iPad.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -526,6 +535,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9FA1861914521E5D00F4F619 /* xibs-ipad */,
 				9F4729FE14313B0800D88069 /* xibs */,
 				9F4726501430F7C700D88069 /* images */,
 				8D1107310486CEB800E47090 /* ApiTester-Info.plist */,
@@ -908,6 +918,8 @@
 		9F27A20A14462323005BE7DC /* Other View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A9545400542489 /* DoubleTableViewController.h */,
+				C01FCF5008A9545400542487 /* DoubleTableViewController.m */,
 				C01FCF5008A954540054247F /* SignInEmbeddedNativeLoginViewController.m */,
 				C01FCF5008A954540054247E /* SignInEmbeddedNativeLoginViewController.h */,
 				28C286DF0D94DF7D0034E888 /* RootViewController.h */,
@@ -943,6 +955,7 @@
 		9F4729FE14313B0800D88069 /* xibs */ = {
 			isa = PBXGroup;
 			children = (
+				9FA1861C14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib */,
 				C01FCF5008A9545400542481 /* SignInEmbeddedNativeLoginInfoScreen.xib */,
 				9F472A0314313B0800D88069 /* SwitchControlTableCell.xib */,
 				9F4729FF14313B0800D88069 /* MainWindow.xib */,
@@ -958,6 +971,16 @@
 			);
 			name = xibs;
 			path = Resources/xibs;
+			sourceTree = "<group>";
+		};
+		9FA1861914521E5D00F4F619 /* xibs-ipad */ = {
+			isa = PBXGroup;
+			children = (
+				C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */,
+				9FA1861A14521EC000F4F619 /* MainWindow-iPad.xib */,
+			);
+			name = "xibs-ipad";
+			path = "Resources/xibs-ipad";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1171,6 +1194,9 @@
 				C01FCF5008A9545400542482 /* SignInEmbeddedNativeLoginInfoScreen.xib in Resources */,
 				C01FCF5008A9545400542484 /* janrain_logo.png in Resources */,
 				C01FCF5008A9545400542486 /* background.png in Resources */,
+				9FA1861B14521EC000F4F619 /* MainWindow-iPad.xib in Resources */,
+				9FA1861D14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib in Resources */,
+				C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,6 +1244,7 @@
 				9F27A060144611C9005BE7DC /* JRPreviewLabel.m in Sources */,
 				9F27A20E14462364005BE7DC /* SharingActivityWithBadParamsViewController.m in Sources */,
 				C01FCF5008A9545400542480 /* SignInEmbeddedNativeLoginViewController.m in Sources */,
+				C01FCF5008A9545400542488 /* DoubleTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1235,7 +1262,9 @@
 				GCC_PREFIX_HEADER = ApiTester_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INFOPLIST_FILE = "ApiTester-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = ApiTester;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1247,7 +1276,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ApiTester_Prefix.pch;
 				INFOPLIST_FILE = "ApiTester-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = ApiTester;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

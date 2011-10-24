@@ -19,7 +19,7 @@
 
     UIView  *excludeProvidersView;
     NSArray *configuredProviders;
-//    NSArray *excludeProvidersSwitches;
+//  NSArray *excludeProvidersSwitches;
     NSMutableArray *excludedProviders;
 }
 

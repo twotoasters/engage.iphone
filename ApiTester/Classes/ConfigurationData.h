@@ -55,6 +55,8 @@ typedef enum
     UINavigationController *customNavigationController;
     EmbeddedTableViewController *embeddedTable;
 
+    BOOL iPad;
+
     SignInOrSharing signInOrSharing;
     SignInTestType  signInTestType;
     SharingTestType sharingTestType;
@@ -124,6 +126,8 @@ typedef enum
 }
 
 + (ConfigurationData*)sharedConfigurationData;
+
+@property BOOL iPad;
 
 @property SignInOrSharing signInOrSharing;
 @property SignInTestType  signInTestType;

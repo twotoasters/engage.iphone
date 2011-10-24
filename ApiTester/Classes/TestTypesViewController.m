@@ -14,10 +14,13 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <Foundation/Foundation.h>
 #import "TestTypesViewController.h"
 #import "SharingActivityWithBadParamsViewController.h"
+#import "ConfigurationData.h"
 
 @implementation TestTypesViewController
+@synthesize delegate;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -268,7 +271,12 @@
                 break;
         }
 
-    [self.navigationController pushViewController:level2ViewController animated:YES];
+    if (config.iPad)
+        if ([delegate respondsToSelector:@selector(testTypesViewController:tableView:didSelectViewController:)])
+            [delegate testTypesViewController:self tableView:tableView didSelectViewController:level2ViewController];
+    else
+        [self.navigationController pushViewController:level2ViewController animated:YES];
+
     [level2ViewController release];
 }
 
@@ -289,6 +297,8 @@
 
 - (void)dealloc
 {
+    [delegate release];
+
     [signInTestTypes release];
     [sharingTestTypes release];
 

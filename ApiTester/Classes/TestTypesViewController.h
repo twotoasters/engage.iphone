@@ -15,14 +15,22 @@
 #import "SharingCustomInterfaceViewController.h"
 #import "SharingActivityChangesViewController.h"
 
-@interface TestTypesViewController : UITableViewController 
+
+@class TestTypesViewController;
+@protocol TestTypesViewControllerDelegate <NSObject>
+@optional
+- (void)testTypesViewController:(TestTypesViewController*)testTypes tableView:(UITableView *)tableView didSelectViewController:(UIViewController*)viewController;
+@end
+
+@interface TestTypesViewController : UITableViewController
 {
     NSArray *signInTestTypes;
     NSArray *sharingTestTypes;
 
     ConfigurationData *config;
-    
-    UILabel *titleLabel;
-}
 
+    UILabel *titleLabel;
+    id<TestTypesViewControllerDelegate> delegate;
+}
+@property (nonatomic, retain) id<TestTypesViewControllerDelegate> delegate;
 @end

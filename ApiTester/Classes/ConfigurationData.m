@@ -20,6 +20,7 @@
 #import "ConfigurationData.h"
 
 @implementation ConfigurationData
+@synthesize iPad;
 @synthesize signInOrSharing;
 @synthesize signInTestType;
 @synthesize sharingTestType;

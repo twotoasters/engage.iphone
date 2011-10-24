@@ -6,10 +6,14 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "RootViewController.h"
+#import "ConfigurationData.h"
 
 
 @implementation RootViewController
+@synthesize delegate;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -31,8 +35,15 @@
 
     self.navigationItem.titleView = titleLabel;
     self.title = @"Start";
-}
 
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        config.iPad = YES;
+
+    if (config.iPad)
+    {
+        self.tableView.scrollEnabled = NO;
+    }
+}
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,8 +83,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if (config.iPad)
+        return nil;
+
     UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
-    view.backgroundColor = JANRAIN_BLUE_20;
+    view.backgroundColor = [UIColor whiteColor];//JANRAIN_BLUE_20;
+
+    UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)] autorelease];
+    backgroundView.backgroundColor = JANRAIN_BLUE_20;
 
     UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 56)] autorelease];
     headerLabel.font = [UIFont boldSystemFontOfSize:14.0];
@@ -85,6 +102,7 @@
     UIImageView *headerDivider = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]] autorelease];
     headerDivider.frame = CGRectMake(0, 56, 320, 14);
 
+    [view addSubview:backgroundView];
     [view addSubview:headerLabel];
     [view addSubview:headerDivider];
 
@@ -119,19 +137,28 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 
 	if (indexPath.row == 0)
         config.signInOrSharing = CDSignIn;
     else
         config.signInOrSharing = CDSharing;
 
-    TestTypesViewController *level1ViewController = [[TestTypesViewController alloc]
-                                                     initWithNibName:@"TestTypesViewController"
-                                                     bundle:nil];
+    if (config.iPad)
+    {
+        if ([delegate respondsToSelector:@selector(rootViewController:tableView:didSelectRowAtIndexPath:)])
+                [delegate rootViewController:self tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+    else
+    {
+        TestTypesViewController *level1ViewController =
+            [[TestTypesViewController alloc] initWithNibName:@"TestTypesViewController"
+                                                      bundle:nil];
 
-	[self.navigationController pushViewController:level1ViewController animated:YES];
-	[level1ViewController release];
+        [self.navigationController pushViewController:level1ViewController animated:YES];
+        [level1ViewController release];
+    }
 }
 
 #pragma mark -
@@ -149,8 +176,10 @@
     // For example: self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    [delegate release];
 
-- (void)dealloc {
     [super dealloc];
 }
 @end
