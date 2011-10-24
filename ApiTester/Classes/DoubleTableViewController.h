@@ -13,8 +13,11 @@
 
 @interface DoubleTableViewController : UIViewController <RootViewControllerDelegate, TestTypesViewControllerDelegate>
 {
-    UIView *rightView;
+    UIView *topView;
     UIView *leftView;
+    UIView *rightView;
+
+    UILabel *titleLabel;
 
     RootViewController      *rootViewController;
     TestTypesViewController *testTypesViewController;
@@ -23,7 +26,8 @@
 }
 @property (nonatomic, retain) IBOutlet RootViewController      *rootViewController;
 @property (nonatomic, retain) IBOutlet TestTypesViewController *testTypesViewController;
-@property (nonatomic, retain) IBOutlet UIView *rightView;
+@property (nonatomic, retain) IBOutlet UIView *topView;
 @property (nonatomic, retain) IBOutlet UIView *leftView;
+@property (nonatomic, retain) IBOutlet UIView *rightView;
 
 @end

@@ -14,7 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "TestTypesViewController.h"
 #import "SharingActivityWithBadParamsViewController.h"
 #import "ConfigurationData.h"
@@ -31,20 +31,38 @@
 
     config = [ConfigurationData sharedConfigurationData];
 
+    if (config.iPad)
+    {
+        signInTestTypes = [[NSArray alloc] initWithObjects:
+                             @"Test Basic Sign-In", @"The default sign-in process", @"ss",
+                             @"Test Various UI Customizations", @"Add background a background image, custom titles, different colors, etc.", @"sl",
+                             @"Test Different Provider Configurations", @"Add a native provider, exclude certain providers, always force reauthentication, skip the user landing page", @"sl",
+                             nil];
 
-    signInTestTypes = [[NSArray alloc] initWithObjects:
-                         @"Test Basic Sign-In", @"The default sign-in process", @"ss",
-                         @"Test Various UI Customizations", @"Add background a background image, custom titles, different colors, etc.", @"sl",
-                         @"Test Different Provider Configurations", @"Add a native provider, exclude certain providers, always force reauthentication, skip the user landing page", @"ll",
-                         nil];
+        sharingTestTypes = [[NSArray alloc] initWithObjects:
+                              @"Test Basic Sharing", @"Share a basic activity", @"ss",
+                              @"Test Email/SMS", @"Sharing activities with email/sms", @"ss",
+                              @"Test Various UI Customizations", @"Custom titles, different colors, etc.", @"ss",
+                              @"Test Different Activities", @"Activities with varying titles and descriptions, media, etc.", @"ss",
+                              @"Test Activities With Bad Input", @"Add whatever gobbledegook you can think of", @"ss",
+                              nil];
+    }
+    else
+    {
+        signInTestTypes = [[NSArray alloc] initWithObjects:
+                             @"Test Basic Sign-In", @"The default sign-in process", @"ss",
+                             @"Test Various UI Customizations", @"Add background a background image, custom titles, different colors, etc.", @"sl",
+                             @"Test Different Provider Configurations", @"Add a native provider, exclude certain providers, always force reauthentication, skip the user landing page", @"ll",
+                             nil];
 
-    sharingTestTypes = [[NSArray alloc] initWithObjects:
-                          @"Test Basic Sharing", @"Share a basic activity", @"ss",
-                          @"Test Email/SMS", @"Sharing activities with email/sms", @"ss",
-                          @"Test Various UI Customizations", @"Custom titles, different colors, etc.", @"ss",
-                          @"Test Different Activities", @"Activities with varying titles and descriptions, media, etc.", @"sl",
-                          @"Test Activities With Bad Input", @"Add whatever gobbledegook you can think of", @"ss",
-                          nil];
+        sharingTestTypes = [[NSArray alloc] initWithObjects:
+                              @"Test Basic Sharing", @"Share a basic activity", @"ss",
+                              @"Test Email/SMS", @"Sharing activities with email/sms", @"ss",
+                              @"Test Various UI Customizations", @"Custom titles, different colors, etc.", @"ss",
+                              @"Test Different Activities", @"Activities with varying titles and descriptions, media, etc.", @"sl",
+                              @"Test Activities With Bad Input", @"Add whatever gobbledegook you can think of", @"ss",
+                              nil];
+    }
 
     titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -97,9 +115,18 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView                         { return 1; }
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section { return 70; }
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section  { return nil; }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return 1;
+    if (config.signInOrSharing == CDSignIn)
+        return @"Sign-In Tests";
+    else if (config.signInOrSharing == CDSharing)
+        return @"Sharing Tests";
+    else
+        return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -114,6 +141,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if (config.iPad)
+//        return 52;
+
     NSString *cellSize;
 
     /* Every third string in our array tells us how big the titles and subtitles strings are (s = short, l = long) */
@@ -125,15 +155,15 @@
         cellSize = @"ss";
 
     if ([cellSize isEqualToString:@"ss"])
-        return 44;
+        return 52;//44;
     else if ([cellSize isEqualToString:@"sl"])
-        return 62;
+        return 70;//62;
     else if ([cellSize isEqualToString:@"ls"])
-        return 66;
+        return 74;//66;
     else if ([cellSize isEqualToString:@"ll"])
-        return 84;
+        return 92;//84;
     else
-        return 44;
+        return 52;//44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -277,6 +307,7 @@
     else
         [self.navigationController pushViewController:level2ViewController animated:YES];
 
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     [level2ViewController release];
 }
 

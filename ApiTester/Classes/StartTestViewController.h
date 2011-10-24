@@ -8,21 +8,33 @@
 
 #import <UIKit/UIKit.h>
 #import "ConfigurationData.h"
+#import "JRPublishActivityController.h"
 
-@interface StartTestViewController : UIViewController 
+@interface StartTestViewController : UIViewController <UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     ConfigurationData *config;
-    
+
     UIButton *startButton;
+
     UISegmentedControl *navigationRadio;
     UISegmentedControl *padDisplayRadio;
-    
+
+    UILabel            *padDisplayLabel;
+    RoundedRectView    *padDisplayToast;
+    UIButton           *padDisplayListener;
+
+    UIPopoverController *arrowDirectionPopover;
+
     UILabel *titleLabel;
+
+    CGPoint padDisplayLocation;
+    UIPopoverArrowDirection arrowDirection;
 }
-@property (nonatomic, retain) IBOutlet UIButton *startButton;
+@property (nonatomic, retain) IBOutlet UIButton           *startButton;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *navigationRadio;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *padDisplayRadio;
-
+@property (nonatomic, retain) IBOutlet UILabel            *padDisplayLabel;
+@property (nonatomic, retain) IBOutlet RoundedRectView    *padDisplayToast;
 - (IBAction)startButtonPressed:(id)sender;
 //- (IBAction)navigationRadioChanged:(id)sender;
 //- (IBAction)padDisplayRadioChanged:(id)sender;

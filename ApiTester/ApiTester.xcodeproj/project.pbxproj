@@ -215,6 +215,8 @@
 		C01FCF5008A9545400542486 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542485 /* background.png */; };
 		C01FCF5008A9545400542488 /* DoubleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542487 /* DoubleTableViewController.m */; };
 		C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */; };
+		C01FCF5008A954540054248D /* RootViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248C /* RootViewController-iPad.xib */; };
+		C01FCF5008A954540054248F /* TestTypesViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248E /* TestTypesViewController-iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -467,6 +469,8 @@
 		C01FCF5008A9545400542487 /* DoubleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleTableViewController.m; sourceTree = "<group>"; };
 		C01FCF5008A9545400542489 /* DoubleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleTableViewController.h; sourceTree = "<group>"; };
 		C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "DoubleTableViewController-iPad.xib"; sourceTree = "<group>"; };
+		C01FCF5008A954540054248C /* RootViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RootViewController-iPad.xib"; sourceTree = "<group>"; };
+		C01FCF5008A954540054248E /* TestTypesViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TestTypesViewController-iPad.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -976,6 +980,8 @@
 		9FA1861914521E5D00F4F619 /* xibs-ipad */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A954540054248E /* TestTypesViewController-iPad.xib */,
+				C01FCF5008A954540054248C /* RootViewController-iPad.xib */,
 				C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */,
 				9FA1861A14521EC000F4F619 /* MainWindow-iPad.xib */,
 			);
@@ -1197,6 +1203,8 @@
 				9FA1861B14521EC000F4F619 /* MainWindow-iPad.xib in Resources */,
 				9FA1861D14521ECB00F4F619 /* SharingActivityWithBadParamsViewController.xib in Resources */,
 				C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */,
+				C01FCF5008A954540054248D /* RootViewController-iPad.xib in Resources */,
+				C01FCF5008A954540054248F /* TestTypesViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

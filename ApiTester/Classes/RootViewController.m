@@ -6,11 +6,15 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "RootViewController.h"
-#import "ConfigurationData.h"
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(...)
+#endif
 
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+#import "RootViewController.h"
 
 @implementation RootViewController
 @synthesize delegate;
@@ -39,10 +43,13 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         config.iPad = YES;
 
-    if (config.iPad)
-    {
-        self.tableView.scrollEnabled = NO;
-    }
+    DLog(@"%f, %f, %f, %f", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+
+
+//    if (config.iPad)
+//    {
+//        self.tableView.scrollEnabled = NO;
+//    }
 }
 
 /*
