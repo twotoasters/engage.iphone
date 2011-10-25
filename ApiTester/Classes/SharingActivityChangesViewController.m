@@ -15,6 +15,25 @@
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #import "SharingActivityChangesViewController.h"
+#import "ConfigurationData.h"
+
+@interface NSString (EXPAND_IF_PAD)
+- (NSString *)expandIfPad:(BOOL)isPad;
+@end
+
+@implementation NSString (EXPAND_IF_PAD)
+- (NSString *)expandIfPad:(BOOL)isPad
+{
+    if (!isPad)
+        return self;
+
+    return [[[self stringByReplacingOccurrencesOfString:@"EMPT" withString:@"EMPTY"]
+                       stringByReplacingOccurrencesOfString:@"LN" withString:@"LINE"]
+                           stringByReplacingOccurrencesOfString:@"DESCR" withString:@"DESCRIPTION"];
+}
+
+@end
+
 
 @interface PickerActivity : NSObject
 {
@@ -110,16 +129,39 @@
     [table setSeparatorColor:[UIColor darkGrayColor]];
     [table setAllowsSelection:NO];
 
-    [picker setFrame:CGRectMake(0, 372, 320, 162)];
 
-    [self setToolbarItems:
-     [NSArray arrayWithObjects:
-      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered
-                                       target:self action:@selector(reset:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered
-                                       target:self action:@selector(next:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                     target:nil action:nil] autorelease], nil]];
+    if (config.iPad)
+    {
+        [self.view setFrame:CGRectMake(0, 0, 768, 1004)];
+        [table setFrame:CGRectMake(0, 0, 768, 452)];
+        [thinDivider setFrame:CGRectMake(0, 452, 768, 14)];
+        [picker setFrame:CGRectMake(0, 466, 768, 216)];
+
+     //   [picker set]
+
+        [sliderButton setHidden:YES];
+        [sliderDivider setHidden:YES];
+    }
+    else
+    {
+        [picker setFrame:CGRectMake(0, 402, 320, 162)];
+    }
+
+    self.navigationItem.rightBarButtonItem =
+            [[[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                              style:UIBarButtonItemStyleDone
+                                             target:self
+                                             action:@selector(next:)] autorelease];
+
+//
+//    [self setToolbarItems:
+//     [NSArray arrayWithObjects:
+//      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered
+//                                       target:self action:@selector(reset:)] autorelease],
+//      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered
+//                                       target:self action:@selector(next:)] autorelease],
+//      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//                                                     target:nil action:nil] autorelease], nil]];
 }
 
 /*
@@ -146,7 +188,7 @@ typedef enum
 #pragma mark -
 #pragma mark Toolbar button selectors
 
-- (void)reset:(id)sender {}
+//- (void)reset:(id)sender {}
 
 - (void)next:(id)sender
 {
@@ -281,12 +323,16 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 
     for (int i = 0; i < NUM_PICKER_ACTIVITIES; i++)
     {
-        NSMutableString *pickerTitle = [NSMutableString stringWithString:title_bits[i%NUM_TITLES]];
-        [pickerTitle appendString:descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))]];
+        NSString *activityTitle = [title_bits[i% NUM_TITLES] expandIfPad:config.iPad];
+        NSString *activityDescr =
+                    [descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))] expandIfPad:config.iPad];
+
+        NSMutableString *pickerTitle = [NSMutableString stringWithString:activityTitle];
+        [pickerTitle appendString:activityDescr];
 
         [activityArray addObject:[PickerActivity pickerActivityWithPickerTitle:pickerTitle
-                                                                 activityTitle:titles[i%NUM_TITLES]
-                                                        andActivityDescription:descrs[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))]]];
+                                                                 activityTitle:activityTitle
+                                                        andActivityDescription:activityDescr]];
     }
 }
 
@@ -298,11 +344,11 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     [UIView beginAnimations:@"slider_up" context:nil];
 //  [UIView setAnimationDuration:2000];
 
-    [table setFrame:CGRectMake(0, 0, 320, 214 - 62)];
-    [thinDivider setFrame:CGRectMake(0, 214 - 62, 320, 14)];
-    [sliderDivider setFrame:CGRectMake(0, 228 - 62, 320, 44)];
-    [sliderButton setFrame:CGRectMake(0, 228 - 62, 320, 44)];
-    [picker setFrame:CGRectMake(0, 272 - 62, 320, 162)];
+    [table setFrame:CGRectMake(0, 0, 320, 196)];
+    [thinDivider setFrame:CGRectMake(0, 196, 320, 14)];
+    [sliderDivider setFrame:CGRectMake(0, 210, 320, 44)];
+    [sliderButton setFrame:CGRectMake(0, 210, 320, 44)];
+    [picker setFrame:CGRectMake(0, 254, 320, 162)];
 
     [UIView commitAnimations];
 
@@ -314,11 +360,11 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     [UIView beginAnimations:@"slider_up" context:nil];
 //  [UIView setAnimationDuration:2000];
 
-    [table setFrame:CGRectMake(0, 0, 320, 314)];
-    [thinDivider setFrame:CGRectMake(0, 314, 320, 14)];
-    [sliderDivider setFrame:CGRectMake(0, 328, 320, 44)];
-    [sliderButton setFrame:CGRectMake(0, 328, 320, 44)];
-    [picker setFrame:CGRectMake(0, 372, 320, 100)];
+    [table setFrame:CGRectMake(0, 0, 320, 344)];
+    [thinDivider setFrame:CGRectMake(0, 344, 320, 14)];
+    [sliderDivider setFrame:CGRectMake(0, 358, 320, 44)];
+    [sliderButton setFrame:CGRectMake(0, 358, 320, 44)];
+    [picker setFrame:CGRectMake(0, 402, 320, 100)];
 
     [UIView commitAnimations];
 

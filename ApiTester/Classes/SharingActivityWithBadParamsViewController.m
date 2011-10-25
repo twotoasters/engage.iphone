@@ -64,11 +64,17 @@ typedef enum
         textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     }
 
-    [self setToolbarItems:
-     [NSArray arrayWithObjects:
-      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
-      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
+    self.navigationItem.rightBarButtonItem =
+            [[[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                              style:UIBarButtonItemStyleDone
+                                             target:self
+                                             action:@selector(next:)] autorelease];
+
+//    [self setToolbarItems:
+//     [NSArray arrayWithObjects:
+//      [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
+//      [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
+//      [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
 }
 
 - (void)reset:(id)sender {}

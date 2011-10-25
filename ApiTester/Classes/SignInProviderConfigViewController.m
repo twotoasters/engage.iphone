@@ -32,12 +32,6 @@
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
 
-    [self setToolbarItems:
-        [NSArray arrayWithObjects:
-         [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
-         [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
-         [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
-
     configuredProviders = [[NSArray alloc] initWithArray:[[JRSessionData jrSessionData] basicProviders]];
     excludeProvidersView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [configuredProviders count] * 35)];
 
@@ -61,6 +55,19 @@
         [excludeProvidersView addSubview:providerLabel];
         [excludeProvidersView addSubview:providerSwitch];
     }
+
+    self.navigationItem.rightBarButtonItem =
+            [[[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                              style:UIBarButtonItemStyleDone
+                                             target:self
+                                             action:@selector(next:)] autorelease];
+
+//    [self setToolbarItems:
+//        [NSArray arrayWithObjects:
+//         [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
+//         [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
+//         [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
+
 }
 
 - (void)switchChanged:(id)sender
