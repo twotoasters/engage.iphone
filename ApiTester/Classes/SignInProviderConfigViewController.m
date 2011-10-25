@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "SignInProviderConfigViewController.h"
 
 
@@ -44,6 +45,7 @@
     {
         UILabel *providerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), 125, 35)] autorelease];
 
+        providerLabel.backgroundColor = [UIColor clearColor];
         providerLabel.font = [UIFont systemFontOfSize:15.0];
         providerLabel.text = [configuredProviders objectAtIndex:i];
         providerLabel.tag  = 200 + i;

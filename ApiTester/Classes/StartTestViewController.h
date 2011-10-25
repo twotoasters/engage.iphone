@@ -17,10 +17,11 @@
 
     UIButton *startButton;
 
+    UILabel            *navigationLabel;
+    UILabel            *padDisplayLabel;
     UISegmentedControl *navigationRadio;
     UISegmentedControl *padDisplayRadio;
 
-    UILabel            *padDisplayLabel;
     RoundedRectView    *padDisplayToast;
     UIButton           *padDisplayListener;
     UIImageView        *padDisplayTouchIndicator;
@@ -34,9 +35,10 @@
     UIPopoverArrowDirection arrowDirection;
 }
 @property (nonatomic, retain) IBOutlet UIButton           *startButton;
+@property (nonatomic, retain) IBOutlet UILabel            *padDisplayLabel;
+@property (nonatomic, retain) IBOutlet UILabel            *navigationLabel;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *navigationRadio;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *padDisplayRadio;
-@property (nonatomic, retain) IBOutlet UILabel            *padDisplayLabel;
 @property (nonatomic, retain) IBOutlet RoundedRectView    *padDisplayToast;
 - (IBAction)startButtonPressed:(id)sender;
 //- (IBAction)navigationRadioChanged:(id)sender;

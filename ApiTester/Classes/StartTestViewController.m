@@ -14,13 +14,17 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <UIKit/UIKit.h>
+#import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 #import "StartTestViewController.h"
 
 @implementation StartTestViewController
 @synthesize startButton;
+@synthesize navigationLabel;
+@synthesize padDisplayLabel;
 @synthesize navigationRadio;
 @synthesize padDisplayRadio;
-@synthesize padDisplayLabel;
 @synthesize padDisplayToast;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -85,6 +89,19 @@
 
         [self.view addSubview:padDisplayListener];
         [self.view addSubview:padDisplayTouchIndicator];
+
+        [navigationLabel setFrame:CGRectMake(navigationLabel.frame.origin.x - 40, navigationLabel.frame.origin.y,
+                navigationLabel.frame.size.width + 80, navigationLabel.frame.size.height + 40)];
+        [padDisplayLabel setFrame:CGRectMake(padDisplayLabel.frame.origin.x - 40, padDisplayLabel.frame.origin.y,
+                padDisplayLabel.frame.size.width + 80, padDisplayLabel.frame.size.height + 40)];
+        [navigationRadio setFrame:CGRectMake(navigationRadio.frame.origin.x - 20, navigationRadio.frame.origin.y,
+                navigationRadio.frame.size.width + 40, navigationRadio.frame.size.height)];
+
+        [navigationLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+        [padDisplayLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+
+        [navigationLabel setNumberOfLines:4];
+        [padDisplayLabel setNumberOfLines:4];
     }
 }
 
@@ -346,9 +363,10 @@
 - (void)dealloc
 {
     [startButton              release];
+    [navigationLabel          release];
+    [padDisplayLabel          release];
     [navigationRadio          release];
     [padDisplayRadio          release];
-    [padDisplayLabel          release];
     [padDisplayToast          release];
     [padDisplayListener       release];
     [padDisplayTouchIndicator release];

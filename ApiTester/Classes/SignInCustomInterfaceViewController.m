@@ -15,6 +15,7 @@
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #import "SignInCustomInterfaceViewController.h"
+#import "ConfigurationData.h"
 
 @implementation SignInCustomInterfaceViewController
 
@@ -161,6 +162,9 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (config.iPad)
+        return 110;
+
     NSString *cellSize = [cellTitles objectAtIndex:((indexPath.row * 3) + 2)];
 
     if ([cellSize isEqualToString:@"ss"])
@@ -181,7 +185,9 @@ typedef enum
     NSString *cellSize = [cellTitles objectAtIndex:((indexPath.row * 3) + 2)];
     TCTableViewCellStyle style;
 
-    if ([cellSize isEqualToString:@"ss"])
+    if (config.iPad)
+        style = TCTableViewCellStyleSwitch;
+    else if ([cellSize isEqualToString:@"ss"])
         style = TCTableViewCellStyleSwitch;
     else if ([cellSize isEqualToString:@"ls"])
         style = TCTableViewCellStyleSwitchWithLongTitle;
