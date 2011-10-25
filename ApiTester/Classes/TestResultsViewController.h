@@ -14,14 +14,18 @@
 
     UITableView *resultsTable;
     UIView      *detailView;
-    UITextView  *detailTextView;
-    UIButton    *closeDetailButton;
+    UIImageView *detailViewIcon;
+    UILabel     *detailViewSummaryLabel;
+    UITextView  *detailViewTextView;
+    UIButton    *detailViewCloseButton;
 
     NSArray *resultsArray;
 }
 @property(nonatomic, retain) IBOutlet UITableView *resultsTable;
-@property(nonatomic, retain) IBOutlet UIButton    *closeDetailButton;
-@property(nonatomic, retain) IBOutlet UITextView  *detailTextView;
 @property(nonatomic, retain) IBOutlet UIView      *detailView;
-
+@property(nonatomic, retain) IBOutlet UIImageView *detailViewIcon;
+@property(nonatomic, retain) IBOutlet UILabel     *detailViewSummaryLabel;
+@property(nonatomic, retain) IBOutlet UITextView  *detailViewTextView;
+@property(nonatomic, retain) IBOutlet UIButton    *detailViewCloseButton;
+- (IBAction)closeButtonPressed:(id)sender;
 @end

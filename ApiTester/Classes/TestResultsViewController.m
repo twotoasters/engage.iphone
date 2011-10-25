@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "TestResultsViewController.h"
 #import "ConfigurationData.h"
 
 @implementation TestResultsViewController
 @synthesize resultsTable;
-@synthesize closeDetailButton;
-@synthesize detailTextView;
+@synthesize detailViewIcon;
+@synthesize detailViewSummaryLabel;
+@synthesize detailViewTextView;
+@synthesize detailViewCloseButton;
 @synthesize detailView;
 
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,6 +45,11 @@
                                               style:UIBarButtonItemStyleBordered
                                              target:self
                                              action:@selector(refresh:)] autorelease];
+
+    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
+    [self.view addSubview:detailView];
+
+    self.title = @"Test Results";
 }
 
 - (void)refresh:(id)sender
@@ -70,6 +78,38 @@
 //    return 65;
 //}
 
+- (NSString *)imageNameForResultStat:(ResultStat)resultStat
+{
+    switch (resultStat)
+    {
+        case RSUserCanceled:
+        case RSDone:
+        case RSInfo:
+            return @"blue_dot.png";
+        case RSError:
+        case RSErrorStarting:
+        case RSPermanentAuthFailure:
+        case RSPermanentShareFailure:
+        case RSTokenUrlFailure:
+        case RSBadParametersPermanentFailure:
+            return @"red_dot.png";
+        case RSRecoverableAuthFailure:
+        case RSRecoverableShareFailure:
+        case RSBadParametersRecoverableFailure:
+            return @"orange_dot.png";
+        case RSWarn:
+            return @"yellow_dot.png";
+        case RSAuthSucceeded:
+        case RSPublishSucceeded:
+        case RSPublishCompleted:
+        case RSTokenUrlSucceeded:
+            return @"green_dot.png";
+        case RSNone:
+        default:
+            return @"gray_dot.png";
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -82,47 +122,69 @@
 
     cell.textLabel.text       = resultObject.summary;
     cell.detailTextLabel.text = resultObject.timestamp;
+    cell.imageView.image      = [UIImage imageNamed:[self imageNameForResultStat:resultObject.resultStat]];
 
-    NSString *imageName;
-    switch (resultObject.resultStat)
-    {
-        case RSUserCanceled:
-        case RSDone:
-        case RSInfo:
-            imageName = @"blue_dot.png";
-            break;
-        case RSError:
-        case RSErrorStarting:
-        case RSPermanentAuthFailure:
-        case RSPermanentShareFailure:
-        case RSTokenUrlFailure:
-        case RSBadParametersPermanentFailure:
-            imageName = @"red_dot.png";
-            break;
-        case RSRecoverableAuthFailure:
-        case RSRecoverableShareFailure:
-        case RSBadParametersRecoverableFailure:
-            imageName = @"orange_dot.png";
-            break;
-        case RSWarn:
-            imageName = @"yellow_dot.png";
-            break;
-        case RSAuthSucceeded:
-        case RSPublishSucceeded:
-        case RSPublishCompleted:
-        case RSTokenUrlSucceeded:
-            imageName = @"green_dot.png";
-            break;
-        case RSNone:
-        default:
-            imageName = @"gray_dot.png";
-            break;
-    }
+    cell.textLabel.font       = [UIFont boldSystemFontOfSize:16.0];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
 
-    cell.imageView.image = [UIImage imageNamed:imageName];
-    cell.imageView.frame = CGRectMake(4, 4, 32, 32);
 
     return cell;
+}
+
+#pragma mark -
+#pragma mark Detail view handling
+
+- (void)populateDetailViewWithResult:(ResultObject *)resultObject
+{
+    detailViewSummaryLabel.text = resultObject.summary;
+    detailViewTextView.text     = resultObject.detail;
+    detailViewIcon.image        = [UIImage imageNamed:[self imageNameForResultStat:resultObject.resultStat]];
+}
+
+- (void)clearDetailView
+{
+    detailViewSummaryLabel.text = @"";
+    detailViewTextView.text     = @"";
+    detailViewIcon.image        = [UIImage imageNamed:@"gray_dot.png"];
+}
+
+- (void)openDetailView
+{
+    [UIView beginAnimations:@"close_detail_view" context:nil];
+    if (config.iPad)
+        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 200,
+                                        (self.view.frame.size.height / 2) - 250, 400, 500)];
+    else
+        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 150,
+                                        (self.view.frame.size.height / 2) - 200, 300, 400)];
+    [UIView commitAnimations];
+}
+
+- (void)closeDetailView
+{
+    [UIView beginAnimations:@"close_detail_view" context:nil];
+    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
+    [UIView commitAnimations];
+}
+
+- (IBAction)closeButtonPressed:(id)sender
+{
+    [self clearDetailView];
+    [self closeDetailView];
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+    if (indexPath.row >= [resultsArray count]) // Uh oh!
+        return;
+
+    [self populateDetailViewWithResult:[resultsArray objectAtIndex:indexPath.row]];
+    [self openDetailView];
 }
 
 - (void)viewDidUnload
@@ -149,9 +211,12 @@
 - (void)dealloc
 {
     [resultsTable release];
-    [closeDetailButton release];
-    [detailTextView release];
+    [detailViewIcon release];
+    [detailViewSummaryLabel release];
+    [detailViewTextView release];
+    [detailViewCloseButton release];
     [detailView release];
+
     [super dealloc];
 }
 
