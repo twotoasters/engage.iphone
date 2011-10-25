@@ -458,6 +458,9 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
                             forKey:kJRPopoverPresentationFrameValue];
         [customInterface setObject:[NSNumber numberWithInt:popoverArrowDirection]
                             forKey:kJRPopoverPresentationArrowDirection];
+
+     /* Now reset the flag for next time */
+        usingPopoverFromRect = NO;
     }
 
     if (usingPopoverFromBarButtonItem)
@@ -466,6 +469,9 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
                             forKey:kJRPopoverPresentationBarButtonItem];
         [customInterface setObject:[NSNumber numberWithInt:popoverArrowDirection]
                             forKey:kJRPopoverPresentationArrowDirection];
+
+     /* Now reset the flag for next time */
+        usingPopoverFromBarButtonItem = NO;
     }
 
     if (signInOrSharing == CDSignIn)

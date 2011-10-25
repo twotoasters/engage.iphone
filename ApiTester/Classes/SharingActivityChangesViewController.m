@@ -137,8 +137,6 @@
         [thinDivider setFrame:CGRectMake(0, 452, 768, 14)];
         [picker setFrame:CGRectMake(0, 466, 768, 216)];
 
-     //   [picker set]
-
         [sliderButton setHidden:YES];
         [sliderDivider setHidden:YES];
     }

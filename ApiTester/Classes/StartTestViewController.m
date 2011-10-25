@@ -14,6 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <UIKit/UIKit.h>
 #import "StartTestViewController.h"
 
 @implementation StartTestViewController
@@ -216,6 +217,7 @@
 
     [padDisplayTouchIndicator setFrame:CGRectMake(location.x - 15, location.y - 15, 30, 30)];
     [padDisplayTouchIndicator setHidden:NO];
+    [padDisplayTouchIndicator setAlpha:1.0];
 //    [padDisplayTouchIndicator setBackgroundColor:[UIColor redColor]];
 
     [self fadeOutListener];
