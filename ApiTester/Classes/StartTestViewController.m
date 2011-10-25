@@ -14,7 +14,6 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <UIKit/UIKit.h>
 #import "StartTestViewController.h"
 
 @implementation StartTestViewController
@@ -92,8 +91,10 @@
                 navigationLabel.frame.size.width + 80, navigationLabel.frame.size.height + 40)];
         [padDisplayLabel setFrame:CGRectMake(padDisplayLabel.frame.origin.x - 40, padDisplayLabel.frame.origin.y,
                 padDisplayLabel.frame.size.width + 80, padDisplayLabel.frame.size.height + 40)];
-        [navigationRadio setFrame:CGRectMake(navigationRadio.frame.origin.x - 20, navigationRadio.frame.origin.y,
+        [navigationRadio setFrame:CGRectMake(navigationRadio.frame.origin.x - 20, navigationRadio.frame.origin.y - 40,
                 navigationRadio.frame.size.width + 40, navigationRadio.frame.size.height)];
+        [padDisplayRadio setFrame:CGRectMake(padDisplayRadio.frame.origin.x - 20, padDisplayRadio.frame.origin.y - 40,
+                padDisplayRadio.frame.size.width + 40, padDisplayRadio.frame.size.height)];
 
         [navigationLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
         [padDisplayLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
