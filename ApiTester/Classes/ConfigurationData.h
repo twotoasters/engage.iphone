@@ -48,9 +48,76 @@ typedef enum
     CDNavigationControllerTypeCustom,
 } NavigationControllerType;
 
+typedef enum
+{
+    RSNone,
+    RSInfo,
+    RSErrorStarting,
+    RSAuthSucceeded,
+    RSPermanentAuthFailure,
+    RSRecoverableAuthFailure,
+    RSPublishSucceeded,
+    RSPermanentShareFailure,
+    RSRecoverableShareFailure,
+    RSPublishCompleted,
+    RSTokenUrlSucceeded,
+    RSTokenUrlFailure,
+    RSUserCanceled,
+    RSBadParametersRecoverableFailure,
+    RSBadParametersPermanentFailure,
+    RSDone,
+} ResultStat;
+
+@interface ResultObject : NSObject
+{
+    NSString   *timestamp;
+    NSString   *summary;
+    NSString   *detail;
+    ResultStat  resultStat;
+}
+@property (nonatomic, readonly) NSString   *timestamp;
+@property (nonatomic, readonly) NSString   *summary;
+@property (nonatomic, readonly) NSString   *detail;
+@property (nonatomic, readonly) ResultStat  resultStat;
+- (id)initWithTimestamp:(NSString *)newTimestamp summary:(NSString *)newSummary detail:(NSString *)newDetail andResultStat:(ResultStat)newResultStat;
++ (id)resultObjectWithTimestamp:(NSString *)newTimestamp summary:(NSString *)newSummary detail:(NSString *)newDetail andResultStat:(ResultStat)newResultStat;
+@end
+
+
 @protocol ConfigurationDataDelegate <NSObject>
 @optional
 - (void)libraryDialogClosed;
+//- (void)triggerAuthenticationDidCancel:(id)sender
+//;
+//- (void)jrEngageDialogDidFailToShowWithError:(NSError*)error;
+//
+//- (void)jrAuthenticationDidNotComplete
+//;
+//- (void)jrAuthenticationDidSucceedForUser:(NSDictionary*)auth_info
+//                              forProvider:(NSString*)provider
+//;
+//- (void)jrAuthenticationDidFailWithError:(NSError*)error
+//                             forProvider:(NSString*)provider
+//;
+//- (void)jrAuthenticationDidReachTokenUrl:(NSString*)tokenUrl
+//                            withResponse:(NSURLResponse*)response
+//                              andPayload:(NSData*)tokenUrlPayload
+//                             forProvider:(NSString*)provider;
+//
+//- (void)jrAuthenticationCallToTokenUrl:(NSString*)tokenUrl
+//                      didFailWithError:(NSError*)error
+//                           forProvider:(NSString*)provider;
+//
+//- (void)jrSocialDidNotCompletePublishing;
+//
+//- (void)jrSocialDidCompletePublishing;
+//
+//- (void)jrSocialDidPublishActivity:(JRActivityObject*)activity
+//                       forProvider:(NSString*)provider;
+//
+//- (void)jrSocialPublishingActivity:(JRActivityObject*)activity
+//                  didFailWithError:(NSError*)error
+//                       forProvider:(NSString*)provider;
 @end
 
 
@@ -58,6 +125,8 @@ typedef enum
 {
     JREngage *jrEngage;
     id<ConfigurationDataDelegate> delegate;
+
+    NSMutableArray *resultsArray;
 
     UINavigationController *applicationNavigationController;
     UINavigationController *customNavigationController;
@@ -140,6 +209,7 @@ typedef enum
 }
 
 + (ConfigurationData*)sharedConfigurationData;
+@property (nonatomic, copy, readonly) NSMutableArray *resultsArray;
 
 @property (nonatomic, retain) id<ConfigurationDataDelegate> delegate;
 
@@ -188,6 +258,8 @@ typedef enum
 - (void)resetSignIn;
 - (void)resetActivity;
 - (void)resetCustomInterface;
+
+- (void)clearResultsArray;
 
 - (void)addActivityImageWithSrc:(NSString *)src andHref:(NSString *)href;
 - (void)addActivitySongWithSrc:(NSString *)src title:(NSString *)title artist:(NSString *)artist andAlbum:(NSString *)album;

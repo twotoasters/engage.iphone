@@ -16,11 +16,69 @@
 
 #define WLog(fmt, ...) NSLog((@"***  WARNING  *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define ELog(fmt, ...) NSLog((@"***   ERROR   *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-
+#define ILog(fmt, ...) NSLog((@"***    FYI    *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
+#import "JRActivityObject.h"
+
+typedef enum
+{
+    LMDebug,
+    LMWarn,
+    LMError,
+    LMInfo,
+    LMAll,
+    LMNone,
+} LogMessageType;
+
+@implementation ResultObject
+@synthesize timestamp;
+@synthesize summary;
+@synthesize detail;
+@synthesize resultStat;
+
+- (id)initWithTimestamp:(NSString *)newTimestamp summary:(NSString *)newSummary
+                 detail:(NSString *)newDetail andResultStat:(ResultStat)newResultStat
+{
+    if (newTimestamp == nil && newSummary == nil)
+    {
+        [self release];
+        return nil;
+    }
+
+    if ((self = [super init]))
+    {
+        timestamp = [newTimestamp copy];
+        summary   = [newSummary copy];
+        detail    = [newDetail copy];
+
+        resultStat = newResultStat;
+    }
+
+    return self;
+}
+
++ (id)resultObjectWithTimestamp:(NSString *)newTimestamp summary:(NSString *)newSummary
+                         detail:(NSString *)newDetail andResultStat:(ResultStat)newResultStat
+{
+    return [[[ResultObject alloc] initWithTimestamp:newTimestamp summary:newSummary
+                                             detail:newDetail andResultStat:newResultStat] autorelease];
+}
+
+- (void)dealloc
+{
+    [timestamp release];
+    [summary release];
+    [detail release];
+
+    [super dealloc];
+}
+
+
+@end
 
 @implementation ConfigurationData
+@synthesize resultsArray;
 @synthesize delegate;
 @synthesize iPad;
 @synthesize signInOrSharing;
@@ -224,6 +282,45 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     activityAddDefaultSmsObject   = NO;
 }
 
+- (void)clearResultsArray
+{
+    [resultsArray removeAllObjects];
+}
+
+- (NSString *)getCurrentTime
+{
+ /* Get the approximate timestamp of the user's log in */
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+
+    return [dateFormatter stringFromDate:today];
+}
+
+- (void)addResultObjectToResultsArray:(ResultObject *)resultObject
+                        andLogMessage:(NSString *)logMessage ofType:(LogMessageType)logMessageType
+{
+    [resultsArray addObject:resultObject];
+
+    switch (logMessageType)
+    {
+        case LMDebug: DLog(@"%@", logMessage);
+            break;
+        case LMWarn:  WLog(@"%@", logMessage);
+            break;
+        case LMError: ELog(@"%@", logMessage);
+            break;
+        case LMInfo:  ILog(@"%@", logMessage);
+            break;
+        case LMAll:   ALog(@"%@", logMessage);
+            break;
+        case LMNone:  // Fall through ...
+        default:
+            break;
+    }
+}
+
 - (void)addActivityImageWithSrc:(NSString *)src andHref:(NSString *)href
 {
     if (!activityMediaArray)
@@ -232,7 +329,16 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     JRImageMediaObject *image = [JRImageMediaObject imageMediaObjectWithSrc:src andHref:href];
 
     if (!image)
-        WLog(@"You tried to create a JRImageMediaObject, but result was nil.  No image was added to the media array.");
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Attempt to add image failed"
+                                                                             detail:[NSString stringWithFormat:
+@"You tried to create a JRImageMediaObject, but result was nil.  \n \
+No image was added to the media array. \n \
+This may or may not have been your intention.\n \
+src: %@ \n href: %@", src, href]
+                                                                      andResultStat:RSBadParametersRecoverableFailure]
+                              andLogMessage:@"You tried to create a JRImageMediaObject, but result was nil.  No image was added to the media array."
+                                     ofType:LMWarn];
     else
         [activityMediaArray addObject:image];
 }
@@ -249,7 +355,16 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     [song setAlbum:album];
 
     if (!song)
-        WLog(@"You tried to create a JRMp3MediaObject, but result was nil.  No song was added to the media array.");
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Attempt to add song failed"
+                                                                             detail:[NSString stringWithFormat:
+@"You tried to create a JRMp3MediaObject, but result was nil.  \n \
+No song was added to the media array. \n \
+This may or may not have been your intention.\n \
+src: %@ \n title: %@ \n artist: %@ \n album: %@", src, title, artist, album]
+                                                                      andResultStat:RSBadParametersRecoverableFailure]
+                              andLogMessage:@"You tried to create a JRMp3MediaObject, but result was nil.  No image was added to the media array."
+                                     ofType:LMWarn];
     else
         [activityMediaArray addObject:song];
 }
@@ -268,8 +383,17 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     [video setExpanded_height:expandedHeight];
 
     if (!video)
-        WLog(@"You tried to create a JRFlashMediaObject, but result was nil.  No video was added to the media array.");
-    else
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Attempt to add video failed"
+                                                                             detail:[NSString stringWithFormat:
+@"You tried to create a JRFlashMediaObject, but result was nil.  \n \
+No video was added to the media array. \n \
+This may or may not have been your intention.\n \
+swfsrc: %@ \n imgsrc: %@ \n width: %u \n height: %u \n expandedWidth: %u \n expandedHeight: %u", swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
+                                                                      andResultStat:RSBadParametersRecoverableFailure]
+                              andLogMessage:@"You tried to create a JRFlashMediaObject, but result was nil.  No video was added to the media array."
+                                     ofType:LMWarn];
+     else
         [activityMediaArray addObject:video];
 }
 
@@ -292,7 +416,16 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
                                             andUrlsToBeShortened:urls];
 
     if (!activityEmailObject)
-        WLog(@"You tried to create a JREmailObject, but result was nil. This may or may not have been your intention.");
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Attempt to add email failed"
+                                                                             detail:[NSString stringWithFormat:
+@"You tried to create a JREmailObject, but result was nil.  \n \
+No email was added to the activity. \n \
+This may or may not have been your intention.\n \
+subject: %@ \n body: %@", subject, body]
+                                                                      andResultStat:RSBadParametersRecoverableFailure]
+                              andLogMessage:@"You tried to create a JREmailObject, but result was nil. This may or may not have been your intention."
+                                     ofType:LMWarn];
 }
 
 - (void)addActivitySmsWithMessage:(NSString *)message andUrls:(NSArray *)urls
@@ -303,7 +436,17 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     activitySmsObject = [[JRSmsObject alloc] initWithMessage:message andUrlsToBeShortened:urls];
 
     if (!activitySmsObject)
-        WLog(@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention.");
+            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                summary:@"Attempt to add sms failed"
+                                                                                 detail:[NSString stringWithFormat:
+@"You tried to create a JRSmsObject, but result was nil.  \n \
+No sms was added to the activity. \n \
+This may or may not have been your intention.\n \
+message: %@",message]
+                                                                          andResultStat:RSBadParametersRecoverableFailure]
+                                  andLogMessage:@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention."
+                                         ofType:LMWarn];
+
 }
 
 - (void)setPopoverRect:(CGPoint)rect andArrowDirection:(UIPopoverArrowDirection)arrowDirection
@@ -365,7 +508,17 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
             activity = [[JRActivityObject alloc] initWithAction:nil];
 
         if (!activity)
-            WLog(@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention.");
+                [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                    summary:@"Attempt to add activity failed"
+                                                                                     detail:[NSString stringWithFormat:
+@"You tried to create a JRActivityObject, but result was nil.  \n \
+Without an activity, sharing will not work. \n \
+This may or may not have been your intention."]
+                                                                              andResultStat:RSBadParametersPermanentFailure]
+                                      andLogMessage:@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention."
+                                             ofType:LMWarn];
+
+
     }
 
     if (activityUrl)
@@ -524,55 +677,171 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     [jrEngage authenticationDidCancel];
 }
 
-- (void)jrEngageDialogDidFailToShowWithError:(NSError*)error { }
+- (void)jrEngageDialogDidFailToShowWithError:(NSError*)error
+{
+    NSString *message = [NSString stringWithFormat:
+@"Library dialog failed to show. \n \
+error: %@ \n error code: %u", [error description], [error code]];
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Library dialog failed to show"
+                                             detail:message
+                                      andResultStat:RSErrorStarting]
+                          andLogMessage:message
+                                 ofType:LMError];
+}
 
 - (void)jrAuthenticationDidNotComplete
 {
+    NSString *message = @"Authentication did not complete. This is most likely due to the user canceling.";
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Authentication did not complete"
+                                             detail:message
+                                      andResultStat:RSUserCanceled]
+                          andLogMessage:message
+                                 ofType:LMInfo];
+
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
         [delegate libraryDialogClosed];
 }
 
-- (void)jrAuthenticationDidSucceedForUser:(NSDictionary*)auth_info
-                              forProvider:(NSString*)provider
+- (void)jrAuthenticationDidSucceedForUser:(NSDictionary*)auth_info forProvider:(NSString*)provider
 {
+    NSString *message = [NSString stringWithFormat:
+@"Authentication completed for user. \n \
+user: \n %@ \n provider: %@", [auth_info description], provider];
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Authentication completed for user"
+                                             detail:message
+                                      andResultStat:RSUserCanceled]
+                          andLogMessage:@"Authentication completed for user."
+                                 ofType:LMInfo];
+
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
         [delegate libraryDialogClosed];
 }
 
-- (void)jrAuthenticationDidFailWithError:(NSError*)error
-                             forProvider:(NSString*)provider
+- (void)jrAuthenticationDidFailWithError:(NSError*)error forProvider:(NSString*)provider
 {
+    NSString *message = [NSString stringWithFormat:
+@"Authentication failed for provider: %@. \n \
+error: %@ \n error code: %u", provider, [error description], [error code]];
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:[NSString stringWithFormat:@"Authentication failed for provider: %@", provider]
+                                             detail:message
+                                      andResultStat:RSPermanentAuthFailure]
+                          andLogMessage:[NSString stringWithFormat:@"Authentication failed for provider: %@", provider]
+                                 ofType:LMError];
+
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
         [delegate libraryDialogClosed];
 }
 
-- (void)jrAuthenticationDidReachTokenUrl:(NSString*)tokenUrl
-                            withResponse:(NSURLResponse*)response
-                              andPayload:(NSData*)tokenUrlPayload
-                             forProvider:(NSString*)provider { }
+- (void)jrAuthenticationDidReachTokenUrl:(NSString*)tokenUrl withResponse:(NSURLResponse*)response
+                              andPayload:(NSData*)tokenUrlPayload forProvider:(NSString*)provider
+{
+    NSString *message = [NSString stringWithFormat:
+@"Successfully reached token url: %@. \n \
+token url response: \n %@ \n provider: %@",
+tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStringEncoding] autorelease], provider];
 
-- (void)jrAuthenticationCallToTokenUrl:(NSString*)tokenUrl
-                      didFailWithError:(NSError*)error
-                           forProvider:(NSString*)provider { }
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Successfully reached token url"
+                                             detail:message
+                                      andResultStat:RSTokenUrlSucceeded]
+                          andLogMessage:@"Successfully reached token url"
+                                 ofType:LMInfo];
+}
+
+- (void)jrAuthenticationCallToTokenUrl:(NSString*)tokenUrl didFailWithError:(NSError*)error
+                           forProvider:(NSString*)provider
+{
+    NSString *message = [NSString stringWithFormat:
+@"Token url failed for provider: %@. \n \
+token url: %@ \n error: %@ \n error code: %u", provider, tokenUrl, [error description], [error code]];
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:[NSString stringWithFormat:@"Token url failed for provider: %@", provider]
+                                             detail:message
+                                      andResultStat:RSTokenUrlFailure]
+                          andLogMessage:[NSString stringWithFormat:@"Token url failed for provider: %@", provider]
+                                 ofType:LMError];
+}
 
 - (void)jrSocialDidNotCompletePublishing
 {
+    NSString *message = @"Publishing did not complete. This is most likely due to the user canceling.";
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Publishing did not complete"
+                                             detail:message
+                                      andResultStat:RSUserCanceled]
+                          andLogMessage:message
+                                 ofType:LMInfo];
+
+
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
         [delegate libraryDialogClosed];
 }
 
 - (void)jrSocialDidCompletePublishing
 {
+    NSString *message = @"Publishing complete.  The user may or may not have shared on one or more providers.";
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"Publishing complete"
+                                             detail:message
+                                      andResultStat:RSPublishCompleted]
+                          andLogMessage:message
+                                 ofType:LMInfo];
+
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
         [delegate libraryDialogClosed];
 }
 
-- (void)jrSocialDidPublishActivity:(JRActivityObject*)activity
-                       forProvider:(NSString*)provider { }
+- (void)jrSocialDidPublishActivity:(JRActivityObject*)theActivity forProvider:(NSString*)provider
+{
+    NSString *message = [NSString stringWithFormat:
+@"User has successfully shared the activity for provider: %@ \n \
+activity: \n %@", provider, [[theActivity dictionaryForObject] description]];
 
-- (void)jrSocialPublishingActivity:(JRActivityObject*)activity
-                  didFailWithError:(NSError*)error
-                       forProvider:(NSString*)provider { }
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:@"User has successfully shared the"
+                                             detail:message
+                                      andResultStat:RSPublishSucceeded]
+                          andLogMessage:[NSString stringWithFormat:
+                          @"User has successfully shared the activity for provider: %@", provider]
+                                 ofType:LMInfo];
+}
+
+- (void)jrSocialPublishingActivity:(JRActivityObject*)theActivity didFailWithError:(NSError*)error
+                       forProvider:(NSString*)provider
+{
+    NSString *message = [NSString stringWithFormat:
+@"The activity failed to share for provider: %@. \n \
+activity: \n %@ \n error: %@ \n error code: %u",
+provider, [[theActivity dictionaryForObject] description], [error description], [error code]];
+
+    [self addResultObjectToResultsArray:
+            [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                            summary:[NSString stringWithFormat:@"Activity failed to share for provider: %@", provider]
+                                             detail:message
+                                      andResultStat:RSRecoverableShareFailure]
+                          andLogMessage:[NSString stringWithFormat:@"Activity failed to share for provider: %@", provider]
+                                 ofType:LMError];
+}
 
 @end
 
