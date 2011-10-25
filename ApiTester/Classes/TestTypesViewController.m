@@ -302,10 +302,14 @@
         }
 
     if (config.iPad)
+    {
         if ([delegate respondsToSelector:@selector(testTypesViewController:tableView:didSelectViewController:)])
             [delegate testTypesViewController:self tableView:tableView didSelectViewController:level2ViewController];
+    }
     else
+    {
         [self.navigationController pushViewController:level2ViewController animated:YES];
+    }
 
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     [level2ViewController release];
