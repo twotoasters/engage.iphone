@@ -14,22 +14,17 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#define WLog(fmt, ...) NSLog((@"***  WARNING  *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define ELog(fmt, ...) NSLog((@"***   ERROR   *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define ILog(fmt, ...) NSLog((@"***    FYI    *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+//#define WLog(fmt, ...) NSLog((@"***  WARNING  *** %s %s" fmt), "", "", ##__VA_ARGS__)
+//#define ELog(fmt, ...) NSLog((@"***   ERROR   *** %s %s" fmt), "", "", ##__VA_ARGS__)
+//#define ILog(fmt, ...) NSLog((@"***    FYI    *** %s %s" fmt), "", "", ##__VA_ARGS__)
+
+#define WLog(fmt, ...) NSLog((@"\n\n***  WARNING  *** " fmt), ##__VA_ARGS__)
+#define ELog(fmt, ...) NSLog((@"\n\n***   ERROR   *** " fmt), ##__VA_ARGS__)
+#define ILog(fmt, ...) NSLog((@"\n\n***    FYI    *** " fmt), ##__VA_ARGS__)
+
+
 #import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
-#import "JRActivityObject.h"
-
-typedef enum
-{
-    LMDebug,
-    LMWarn,
-    LMError,
-    LMInfo,
-    LMAll,
-    LMNone,
-} LogMessageType;
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -37,10 +32,21 @@ typedef enum
 @synthesize detail;
 @synthesize resultStat;
 
+- (NSString *)getCurrentTime
+{
+ /* Get the approximate timestamp of the user's log in */
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+
+    return [dateFormatter stringFromDate:today];
+}
+
 - (id)initWithTimestamp:(NSString *)newTimestamp summary:(NSString *)newSummary
                  detail:(NSString *)newDetail andResultStat:(ResultStat)newResultStat
 {
-    if (newTimestamp == nil && newSummary == nil)
+    if (newSummary == nil)
     {
         [self release];
         return nil;
@@ -48,9 +54,13 @@ typedef enum
 
     if ((self = [super init]))
     {
-        timestamp = [newTimestamp copy];
-        summary   = [newSummary copy];
-        detail    = [newDetail copy];
+        if (newTimestamp == nil)
+            timestamp = [self getCurrentTime];
+        else
+            timestamp = [newTimestamp copy];
+
+        summary = [newSummary copy];
+        detail  = [newDetail copy];
 
         resultStat = newResultStat;
     }
@@ -305,15 +315,15 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 
     switch (logMessageType)
     {
-        case LMDebug: DLog(@"%@", logMessage);
+        case LMDebug: DLog(@"%@\n\n", logMessage);
             break;
-        case LMWarn:  WLog(@"%@", logMessage);
+        case LMWarn:  WLog(@"%@\n\n", logMessage);
             break;
-        case LMError: ELog(@"%@", logMessage);
+        case LMError: ELog(@"%@\n\n", logMessage);
             break;
-        case LMInfo:  ILog(@"%@", logMessage);
+        case LMInfo:  ILog(@"%@\n\n", logMessage);
             break;
-        case LMAll:   ALog(@"%@", logMessage);
+        case LMAll:   ALog(@"%@\n\n", logMessage);
             break;
         case LMNone:  // Fall through ...
         default:
@@ -335,7 +345,7 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 @"You tried to create a JRImageMediaObject, but result was nil.  \n \
 No image was added to the media array. \n \
 This may or may not have been your intention.\n \
-src: %@ \n href: %@", src, href]
+src : %@ \n href: %@\n", src, href]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRImageMediaObject, but result was nil.  No image was added to the media array."
                                      ofType:LMWarn];
@@ -361,9 +371,9 @@ src: %@ \n href: %@", src, href]
 @"You tried to create a JRMp3MediaObject, but result was nil.  \n \
 No song was added to the media array. \n \
 This may or may not have been your intention.\n \
-src: %@ \n title: %@ \n artist: %@ \n album: %@", src, title, artist, album]
+src   : %@ \n title : %@ \n artist: %@ \n album : %@\n", src, title, artist, album]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
-                              andLogMessage:@"You tried to create a JRMp3MediaObject, but result was nil.  No image was added to the media array."
+                              andLogMessage:@"You tried to create a JRMp3MediaObject, but result was nil.  No song was added to the media array."
                                      ofType:LMWarn];
     else
         [activityMediaArray addObject:song];
@@ -389,7 +399,9 @@ src: %@ \n title: %@ \n artist: %@ \n album: %@", src, title, artist, album]
 @"You tried to create a JRFlashMediaObject, but result was nil.  \n \
 No video was added to the media array. \n \
 This may or may not have been your intention.\n \
-swfsrc: %@ \n imgsrc: %@ \n width: %u \n height: %u \n expandedWidth: %u \n expandedHeight: %u", swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
+swfsrc        : %@ \n imgsrc        : %@ \n width         : %u \n height        : %u \n expandedWidth : %u \n expandedHeight: %u\n",
+swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
+
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRFlashMediaObject, but result was nil.  No video was added to the media array."
                                      ofType:LMWarn];
@@ -422,7 +434,7 @@ swfsrc: %@ \n imgsrc: %@ \n width: %u \n height: %u \n expandedWidth: %u \n expa
 @"You tried to create a JREmailObject, but result was nil.  \n \
 No email was added to the activity. \n \
 This may or may not have been your intention.\n \
-subject: %@ \n body: %@", subject, body]
+subject: %@ \n body:    %@\n", subject, body]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JREmailObject, but result was nil. This may or may not have been your intention."
                                      ofType:LMWarn];
@@ -442,7 +454,7 @@ subject: %@ \n body: %@", subject, body]
 @"You tried to create a JRSmsObject, but result was nil.  \n \
 No sms was added to the activity. \n \
 This may or may not have been your intention.\n \
-message: %@",message]
+message: %@\n",message]
                                                                           andResultStat:RSBadParametersRecoverableFailure]
                                   andLogMessage:@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention."
                                          ofType:LMWarn];
@@ -513,7 +525,7 @@ message: %@",message]
                                                                                      detail:[NSString stringWithFormat:
 @"You tried to create a JRActivityObject, but result was nil.  \n \
 Without an activity, sharing will not work. \n \
-This may or may not have been your intention."]
+This may or may not have been your intention.\n"]
                                                                               andResultStat:RSBadParametersPermanentFailure]
                                       andLogMessage:@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention."
                                              ofType:LMWarn];
@@ -681,7 +693,8 @@ This may or may not have been your intention."]
 {
     NSString *message = [NSString stringWithFormat:
 @"Library dialog failed to show. \n \
-error: %@ \n error code: %u", [error description], [error code]];
+                 error     : %@ \n \
+                 error code: %u", [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -718,8 +731,8 @@ user: \n %@ \n provider: %@", [auth_info description], provider];
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                             summary:@"Authentication completed for user"
                                              detail:message
-                                      andResultStat:RSUserCanceled]
-                          andLogMessage:@"Authentication completed for user."
+                                      andResultStat:RSAuthSucceeded]
+                          andLogMessage:@"Authentication completed for user"
                                  ofType:LMInfo];
 
     if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
@@ -730,7 +743,8 @@ user: \n %@ \n provider: %@", [auth_info description], provider];
 {
     NSString *message = [NSString stringWithFormat:
 @"Authentication failed for provider: %@. \n \
-error: %@ \n error code: %u", provider, [error description], [error code]];
+                  error:      %@ \n \
+                  error code: %u", provider, [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -766,7 +780,9 @@ tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStrin
 {
     NSString *message = [NSString stringWithFormat:
 @"Token url failed for provider: %@. \n \
-token url: %@ \n error: %@ \n error code: %u", provider, tokenUrl, [error description], [error code]];
+                  token url:  %@ \n \
+                  error:      %@ \n \
+                  error code: %u", provider, tokenUrl, [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -831,8 +847,8 @@ activity: \n %@", provider, [[theActivity dictionaryForObject] description]];
 {
     NSString *message = [NSString stringWithFormat:
 @"The activity failed to share for provider: %@. \n \
-activity: \n %@ \n error: %@ \n error code: %u",
-provider, [[theActivity dictionaryForObject] description], [error description], [error code]];
+activity: \n %@ \n error:      %@ \n error code: %u",
+provider, [[theActivity dictionaryForObject] description], [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]

@@ -50,6 +50,16 @@ typedef enum
 
 typedef enum
 {
+    LMDebug,
+    LMWarn,
+    LMError,
+    LMInfo,
+    LMAll,
+    LMNone,
+} LogMessageType;
+
+typedef enum
+{
     RSNone,
     RSInfo,
     RSErrorStarting,
@@ -260,6 +270,8 @@ typedef enum
 - (void)resetCustomInterface;
 
 - (void)clearResultsArray;
+- (void)addResultObjectToResultsArray:(ResultObject *)resultObject
+                        andLogMessage:(NSString *)logMessage ofType:(LogMessageType)logMessageType;
 
 - (void)addActivityImageWithSrc:(NSString *)src andHref:(NSString *)href;
 - (void)addActivitySongWithSrc:(NSString *)src title:(NSString *)title artist:(NSString *)artist andAlbum:(NSString *)album;
