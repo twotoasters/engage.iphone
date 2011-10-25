@@ -217,6 +217,7 @@
 		C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */; };
 		C01FCF5008A954540054248D /* RootViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248C /* RootViewController-iPad.xib */; };
 		C01FCF5008A954540054248F /* TestTypesViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248E /* TestTypesViewController-iPad.xib */; };
+		C01FCF5008A9545400542491 /* touch_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542490 /* touch_spot.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -471,6 +472,7 @@
 		C01FCF5008A954540054248A /* DoubleTableViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "DoubleTableViewController-iPad.xib"; sourceTree = "<group>"; };
 		C01FCF5008A954540054248C /* RootViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RootViewController-iPad.xib"; sourceTree = "<group>"; };
 		C01FCF5008A954540054248E /* TestTypesViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TestTypesViewController-iPad.xib"; sourceTree = "<group>"; };
+		C01FCF5008A9545400542490 /* touch_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch_spot.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -941,6 +943,7 @@
 		9F4726501430F7C700D88069 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				C01FCF5008A9545400542490 /* touch_spot.png */,
 				C01FCF5008A9545400542485 /* background.png */,
 				C01FCF5008A9545400542483 /* janrain_logo.png */,
 				C01FCF5008A954540054247C /* divider.png */,
@@ -1205,6 +1208,7 @@
 				C01FCF5008A954540054248B /* DoubleTableViewController-iPad.xib in Resources */,
 				C01FCF5008A954540054248D /* RootViewController-iPad.xib in Resources */,
 				C01FCF5008A954540054248F /* TestTypesViewController-iPad.xib in Resources */,
+				C01FCF5008A9545400542491 /* touch_spot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

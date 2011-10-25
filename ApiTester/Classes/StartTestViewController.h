@@ -10,7 +10,8 @@
 #import "ConfigurationData.h"
 #import "JRPublishActivityController.h"
 
-@interface StartTestViewController : UIViewController <UIPopoverControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface StartTestViewController : UIViewController <UIPopoverControllerDelegate, UITableViewDataSource,
+                                                       UITableViewDelegate, ConfigurationDataDelegate>
 {
     ConfigurationData *config;
 
@@ -22,6 +23,8 @@
     UILabel            *padDisplayLabel;
     RoundedRectView    *padDisplayToast;
     UIButton           *padDisplayListener;
+    UIImageView        *padDisplayTouchIndicator;
+    UIBarButtonItem    *padDisplayBarButtonItem;
 
     UIPopoverController *arrowDirectionPopover;
 

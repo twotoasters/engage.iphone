@@ -6,7 +6,14 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(...)
+#endif
+
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
 #import "StartTestViewController.h"
 
 @implementation StartTestViewController
@@ -19,10 +26,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
+    if (self) { }
 
-    }
     return self;
 }
 
@@ -44,22 +49,33 @@
     self.navigationItem.titleView = titleLabel;
     self.title = @"Test";
 
+    config.delegate = self;
+
     if (config.iPad)
     {
+
         [padDisplayLabel setHidden:NO];
         [padDisplayRadio setHidden:NO];
 
-        [padDisplayToast setOuterFillColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
-        [padDisplayToast setOuterStrokeColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
+        [padDisplayToast setOuterFillColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]];
+        [padDisplayToast setOuterStrokeColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]];
         [padDisplayToast setDrawInnerRect:NO];
         [padDisplayToast setOuterCornerRadius:5.0];
         [padDisplayToast setNeedsDisplay];
 
+        padDisplayTouchIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"touch_spot.png"]];
         padDisplayListener = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        padDisplayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Click Me, Too!"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(barButtonPressed:)];
+
+        [padDisplayTouchIndicator setFrame:CGRectMake(-30, -30, 30, 30)];
 
         [padDisplayListener setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        [padDisplayListener setBackgroundColor:[UIColor redColor]];//clearColor]];
-        [padDisplayListener setShowsTouchWhenHighlighted:YES];
+        [padDisplayListener setBackgroundColor:[UIColor clearColor]];//blackColor]];//clearColor]];
+        //[padDisplayListener setAlpha:0.0];
+        //[padDisplayListener setShowsTouchWhenHighlighted:YES];
 
         [padDisplayListener addTarget:self
                                action:@selector(popoverDisplayListenerPressed:forEvent:)
@@ -68,6 +84,7 @@
         [padDisplayListener setHidden:YES];
 
         [self.view addSubview:padDisplayListener];
+        [self.view addSubview:padDisplayTouchIndicator];
     }
 }
 
@@ -87,40 +104,40 @@
     }
 }
 
-- (void)popoverDisplayListenerPressed:(id)sender forEvent:(UIEvent*)event
+- (void)libraryDialogClosed
 {
-    UIView *button = (UIView *)sender;
-    UITouch *touch = [[event touchesForView:button] anyObject];
-    CGPoint location = [touch locationInView:button];
-    NSLog(@"Location in button: %f, %f", location.x, location.y);
+    [self.navigationItem setRightBarButtonItem:nil animated:YES];
 
-    padDisplayLocation.x = location.x;
-    padDisplayLocation.y = location.y;
+    [UIView beginAnimations:@"listener_disappear" context:nil];
+    [padDisplayListener setAlpha:0.0];
+    [padDisplayToast setAlpha:0.0];
+    [padDisplayTouchIndicator setAlpha:0.0];
+    [UIView commitAnimations];
+}
 
-    [padDisplayListener setHidden:YES];
+- (void)fadeOutToast
+{
+    DLog(@"");
 
-    UIViewController *vc = [[[UIViewController alloc] init] autorelease];
-    UITableView      *tv = [[[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 260)
-                                                         style:UITableViewStylePlain] autorelease];
-    tv.dataSource = self;
-    tv.delegate   = self;
+    [UIView beginAnimations:@"toast_disappear" context:nil];
+    //[UIView setAnimationDuration:1000];
+    [padDisplayToast setAlpha:0.0];
+    [UIView commitAnimations];
+}
 
-    vc.view = tv;
+- (void)fadeOutListener
+{
+    DLog(@"");
 
-    arrowDirectionPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
-
-    arrowDirectionPopover.delegate = self;
-    arrowDirectionPopover.popoverContentSize = CGSizeMake(320, 260);
-
-    [arrowDirectionPopover presentPopoverFromRect:CGRectMake(location.x - 1, location.y - 1, 2, 2)
-                                           inView:self.view
-                         permittedArrowDirections:UIPopoverArrowDirectionAny
-                                         animated:YES];
-
+    [UIView beginAnimations:@"listener_disappear" context:nil];
+    [padDisplayListener setAlpha:0.0];
+    [UIView commitAnimations];
 }
 
 - (void)startPopoverPressListener
 {
+    DLog(@"");
+
     padDisplayLocation.x = 0;
     padDisplayLocation.y = 0;
 
@@ -130,18 +147,20 @@
     [padDisplayListener setHidden:NO];
     [padDisplayToast setHidden:NO];
 
+    [self.navigationItem setRightBarButtonItem:padDisplayBarButtonItem animated:YES];
+
     [UIView beginAnimations:@"toast_appear" context:nil];
     [padDisplayToast setAlpha:1.0];
+    [padDisplayListener setAlpha:0.3];
     [UIView commitAnimations];
 
-    [UIView beginAnimations:@"toast_disappear" context:nil];
-    [UIView setAnimationDelay:2000];
-    [padDisplayToast setAlpha:0.0];
-    [UIView commitAnimations];
+    [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fadeOutToast) userInfo:nil repeats:NO];
 }
 
 - (IBAction)startButtonPressed:(id)sender
 {
+    DLog(@"");
+
     if (config.iPad)
     {
         if (padDisplayRadio.selectedSegmentIndex == 0)
@@ -160,12 +179,100 @@
     }
 }
 
+- (void)barButtonPressed:(id)sender
+{
+    [config setPopoverBarButtonItem:padDisplayBarButtonItem andArrowDirection:arrowDirection];
+    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+}
+
+
+- (void)popoverDisplayListenerPressed:(id)sender forEvent:(UIEvent*)event
+{
+    DLog(@"");
+
+    UIView  *button   = (UIView *)sender;
+    UITouch *touch    = [[event touchesForView:button] anyObject];
+    CGPoint  location = [touch locationInView:button];
+
+ /* We have to subtract 64 from our point, because the library uses coordinates relative to the screen, and
+    the location is relative to our view controller's view, which is 64 pixels down from the top of the
+    screen (in portrait mode), as the nav bar is 44 pixels, and the status bar is 20. */
+    padDisplayLocation.x = location.x;
+    padDisplayLocation.y = location.y + 64;
+
+    [padDisplayTouchIndicator setFrame:CGRectMake(location.x - 15, location.y - 15, 30, 30)];
+    [padDisplayTouchIndicator setHidden:NO];
+//    [padDisplayTouchIndicator setBackgroundColor:[UIColor redColor]];
+
+    [self fadeOutListener];
+
+    UIViewController *vc = [[[UIViewController alloc] init] autorelease];
+    UITableView      *tv = [[[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 260)
+                                                         style:UITableViewStylePlain] autorelease];
+    tv.dataSource = self;
+    tv.delegate   = self;
+
+    vc.view = tv;
+
+    arrowDirectionPopover = [[UIPopoverController alloc] initWithContentViewController:vc];
+
+    arrowDirectionPopover.delegate = self;
+    arrowDirectionPopover.popoverContentSize = CGSizeMake(320, 260);
+
+    [arrowDirectionPopover presentPopoverFromRect:CGRectMake(location.x - 1, location.y - 1, 2, 2)
+                                           inView:self.view
+                         permittedArrowDirections:UIPopoverArrowDirectionAny
+                                         animated:YES];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    DLog(@"");
+
+    [config setPopoverRect:padDisplayLocation andArrowDirection:arrowDirection];
+    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DLog(@"");
+
+    switch (indexPath.row)
+    {
+        case 0:
+            arrowDirection = UIPopoverArrowDirectionUp;
+            break;
+        case 1:
+            arrowDirection = UIPopoverArrowDirectionDown;
+            break;
+        case 2:
+            arrowDirection = UIPopoverArrowDirectionLeft;
+            break;
+        case 3:
+            arrowDirection = UIPopoverArrowDirectionRight;
+            break;
+        case 4:
+            arrowDirection = UIPopoverArrowDirectionAny;
+            break;
+        case 5:
+            arrowDirection = UIPopoverArrowDirectionUnknown;
+            break;
+        default:
+            break;
+    }
+
+    [arrowDirectionPopover dismissPopoverAnimated:YES];
+
+    [config setPopoverRect:padDisplayLocation andArrowDirection:arrowDirection];
+    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView                         { return 1; }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  { return 5; }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Please choose an arrow direction for the library's popover dialog";
+    return @"Choose an arrow direction for the library's popover dialog";
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -208,40 +315,6 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.row)
-    {
-        case 0:
-            arrowDirection = UIPopoverArrowDirectionUp;
-            break;
-        case 1:
-            arrowDirection = UIPopoverArrowDirectionDown;
-            break;
-        case 2:
-            arrowDirection = UIPopoverArrowDirectionLeft;
-            break;
-        case 3:
-            arrowDirection = UIPopoverArrowDirectionRight;
-            break;
-        case 4:
-            arrowDirection = UIPopoverArrowDirectionAny;
-            break;
-        case 5:
-            arrowDirection = UIPopoverArrowDirectionUnknown;
-            break;
-        default:
-            break;
-    }
-
-    [arrowDirectionPopover dismissPopoverAnimated:YES];
-}
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-
-}
-
-
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -272,13 +345,15 @@
 
 - (void)dealloc
 {
-    [startButton           release];
-    [navigationRadio       release];
-    [padDisplayRadio       release];
-    [padDisplayLabel       release];
-    [padDisplayToast       release];
-    [padDisplayListener    release];
-    [arrowDirectionPopover release];
+    [startButton              release];
+    [navigationRadio          release];
+    [padDisplayRadio          release];
+    [padDisplayLabel          release];
+    [padDisplayToast          release];
+    [padDisplayListener       release];
+    [padDisplayTouchIndicator release];
+    [padDisplayBarButtonItem  release];
+    [arrowDirectionPopover    release];
 
     [super dealloc];
 }

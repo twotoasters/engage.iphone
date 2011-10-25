@@ -17,9 +17,11 @@
 #define WLog(fmt, ...) NSLog((@"***  WARNING  *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define ELog(fmt, ...) NSLog((@"***   ERROR   *** %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
 
 @implementation ConfigurationData
+@synthesize delegate;
 @synthesize iPad;
 @synthesize signInOrSharing;
 @synthesize signInTestType;
@@ -189,6 +191,9 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     providerTableSectionFooterView        = NO;
     providerTableSectionHeaderTitleString = NO;
     providerTableSectionFooterTitleString = NO;
+
+    usingPopoverFromRect          = NO;
+    usingPopoverFromBarButtonItem = NO;
 }
 
 - (void)resetActivity
@@ -299,6 +304,20 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 
     if (!activitySmsObject)
         WLog(@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention.");
+}
+
+- (void)setPopoverRect:(CGPoint)rect andArrowDirection:(UIPopoverArrowDirection)arrowDirection
+{
+    popoverRect           = CGRectMake(rect.x - 5, rect.y - 5, 10, 10);
+    popoverArrowDirection = arrowDirection;
+    usingPopoverFromRect  = YES;
+}
+
+- (void)setPopoverBarButtonItem:(UIBarButtonItem *)barButton andArrowDirection:(UIPopoverArrowDirection)arrowDirection
+{
+    popoverBarButton              = barButton;
+    popoverArrowDirection         = arrowDirection;
+    usingPopoverFromBarButtonItem = YES;
 }
 
 - (void)buildAuthenticationCustomInterface
@@ -433,6 +452,22 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     else if (navigationControllerType == CDNavigationControllerTypeCustom)
         [customInterface setObject:customNavigationController forKey:kJRCustomModalNavigationController];
 
+    if (usingPopoverFromRect)
+    {
+        [customInterface setObject:[NSValue valueWithCGRect:popoverRect]
+                            forKey:kJRPopoverPresentationFrameValue];
+        [customInterface setObject:[NSNumber numberWithInt:popoverArrowDirection]
+                            forKey:kJRPopoverPresentationArrowDirection];
+    }
+
+    if (usingPopoverFromBarButtonItem)
+    {
+        [customInterface setObject:popoverBarButton
+                            forKey:kJRPopoverPresentationBarButtonItem];
+        [customInterface setObject:[NSNumber numberWithInt:popoverArrowDirection]
+                            forKey:kJRPopoverPresentationArrowDirection];
+    }
+
     if (signInOrSharing == CDSignIn)
     {
         if (signInTestType == CDSignInTestTypeCustomInterface)
@@ -482,6 +517,56 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 {
     [jrEngage authenticationDidCancel];
 }
+
+- (void)jrEngageDialogDidFailToShowWithError:(NSError*)error { }
+
+- (void)jrAuthenticationDidNotComplete
+{
+    if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
+        [delegate libraryDialogClosed];
+}
+
+- (void)jrAuthenticationDidSucceedForUser:(NSDictionary*)auth_info
+                              forProvider:(NSString*)provider
+{
+    if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
+        [delegate libraryDialogClosed];
+}
+
+- (void)jrAuthenticationDidFailWithError:(NSError*)error
+                             forProvider:(NSString*)provider
+{
+    if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
+        [delegate libraryDialogClosed];
+}
+
+- (void)jrAuthenticationDidReachTokenUrl:(NSString*)tokenUrl
+                            withResponse:(NSURLResponse*)response
+                              andPayload:(NSData*)tokenUrlPayload
+                             forProvider:(NSString*)provider { }
+
+- (void)jrAuthenticationCallToTokenUrl:(NSString*)tokenUrl
+                      didFailWithError:(NSError*)error
+                           forProvider:(NSString*)provider { }
+
+- (void)jrSocialDidNotCompletePublishing
+{
+    if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
+        [delegate libraryDialogClosed];
+}
+
+- (void)jrSocialDidCompletePublishing
+{
+    if ([delegate respondsToSelector:@selector(libraryDialogClosed)])
+        [delegate libraryDialogClosed];
+}
+
+- (void)jrSocialDidPublishActivity:(JRActivityObject*)activity
+                       forProvider:(NSString*)provider { }
+
+- (void)jrSocialPublishingActivity:(JRActivityObject*)activity
+                  didFailWithError:(NSError*)error
+                       forProvider:(NSString*)provider { }
 
 @end
 

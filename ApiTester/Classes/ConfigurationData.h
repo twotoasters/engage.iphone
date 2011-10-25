@@ -48,12 +48,26 @@ typedef enum
     CDNavigationControllerTypeCustom,
 } NavigationControllerType;
 
+@protocol ConfigurationDataDelegate <NSObject>
+@optional
+- (void)libraryDialogClosed;
+@end
+
+
 @interface ConfigurationData : NSObject <JREngageDelegate>
 {
     JREngage *jrEngage;
+    id<ConfigurationDataDelegate> delegate;
+
     UINavigationController *applicationNavigationController;
     UINavigationController *customNavigationController;
     EmbeddedTableViewController *embeddedTable;
+
+    CGRect                   popoverRect;
+    UIPopoverArrowDirection  popoverArrowDirection;
+    UIBarButtonItem         *popoverBarButton;
+    BOOL                     usingPopoverFromRect;
+    BOOL                     usingPopoverFromBarButtonItem;
 
     BOOL iPad;
 
@@ -127,6 +141,8 @@ typedef enum
 
 + (ConfigurationData*)sharedConfigurationData;
 
+@property (nonatomic, retain) id<ConfigurationDataDelegate> delegate;
+
 @property BOOL iPad;
 
 @property SignInOrSharing signInOrSharing;
@@ -180,6 +196,9 @@ typedef enum
 - (void)addActivityPropertiesWithDictionary:(NSDictionary *)properties;
 - (void)addActivityEmailWithSubject:(NSString *)subject body:(NSString *)body isHtml:(BOOL)isHtml andUrls:(NSArray *)urls;
 - (void)addActivitySmsWithMessage:(NSString *)message andUrls:(NSArray *)urls;
+
+- (void)setPopoverRect:(CGPoint)rect andArrowDirection:(UIPopoverArrowDirection)arrowDirection;
+- (void)setPopoverBarButtonItem:(UIBarButtonItem *)barButton andArrowDirection:(UIPopoverArrowDirection)arrowDirection;
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType;
 
