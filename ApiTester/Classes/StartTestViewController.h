@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ConfigurationData.h"
 #import "JRPublishActivityController.h"
+#import "TestResultsViewController.h"
 
 @interface StartTestViewController : UIViewController <UIPopoverControllerDelegate, UITableViewDataSource,
                                                        UITableViewDelegate, ConfigurationDataDelegate>
@@ -41,6 +42,7 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *padDisplayRadio;
 @property (nonatomic, retain) IBOutlet RoundedRectView    *padDisplayToast;
 - (IBAction)startButtonPressed:(id)sender;
+- (IBAction)resultsButtonPressed:(id)sender;
 //- (IBAction)navigationRadioChanged:(id)sender;
 //- (IBAction)padDisplayRadioChanged:(id)sender;
 @end

@@ -14,6 +14,8 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "StartTestViewController.h"
 
 @implementation StartTestViewController
@@ -118,6 +120,14 @@
         titleLabel.text = @"Test Sharing";
         [startButton setTitle:@"Start the Sharing Test" forState:UIControlStateNormal];
     }
+}
+
+- (IBAction)resultsButtonPressed:(id)sender
+{
+    TestResultsViewController *testResultsViewController = [[[TestResultsViewController alloc]
+            initWithNibName:@"TestResultsViewController" bundle:nil] autorelease];
+
+    [self.navigationController pushViewController:testResultsViewController animated:YES];
 }
 
 - (void)libraryDialogClosed

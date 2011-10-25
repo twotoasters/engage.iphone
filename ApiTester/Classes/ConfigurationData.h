@@ -62,6 +62,8 @@ typedef enum
 {
     RSNone,
     RSInfo,
+    RSError,
+    RSWarn,
     RSErrorStarting,
     RSAuthSucceeded,
     RSPermanentAuthFailure,

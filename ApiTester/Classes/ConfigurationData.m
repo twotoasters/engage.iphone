@@ -37,7 +37,7 @@
  /* Get the approximate timestamp of the user's log in */
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
 
     return [dateFormatter stringFromDate:today];
@@ -302,7 +302,7 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
  /* Get the approximate timestamp of the user's log in */
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];
 
     return [dateFormatter stringFromDate:today];
@@ -311,6 +311,9 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
 - (void)addResultObjectToResultsArray:(ResultObject *)resultObject
                         andLogMessage:(NSString *)logMessage ofType:(LogMessageType)logMessageType
 {
+    if (!resultsArray)
+        resultsArray = [[NSMutableArray alloc] initWithCapacity:10];
+
     [resultsArray addObject:resultObject];
 
     switch (logMessageType)
