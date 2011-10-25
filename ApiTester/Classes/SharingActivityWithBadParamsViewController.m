@@ -14,7 +14,10 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
 #import "SharingActivityWithBadParamsViewController.h"
+#import "ConfigurationData.h"
 
 @implementation SharingActivityWithBadParamsViewController
 @synthesize scrollView;
@@ -53,8 +56,15 @@ typedef enum
 
     config = [ConfigurationData sharedConfigurationData];
 
+    if (config.iPad)
+    {
+        [self.view setFrame:CGRectMake(0, 0, 768, 1004)];
+        [contentView setFrame:CGRectMake(0, 0, 768, 1164)];
+    }
+
+
     [scrollView addSubview:contentView];
-    [scrollView setContentSize:CGSizeMake(320, contentView.frame.size.height)];
+    [scrollView setContentSize:CGSizeMake(contentView.frame.size.width, contentView.frame.size.height)];
 
     for (int i = 100; i < NUM_TEXT_FIELDS + 100; i++)
     {
@@ -176,8 +186,22 @@ typedef enum
 {
     if (!currentResponder)
     {
-        [scrollView setFrame:CGRectMake(0, 0, 320, 156)];
-        [contentView setFrame:CGRectMake(0, 0, 320, 1420)];
+//        [UIView beginAnimations:@"keyboard_appear" context:nil];
+//        [UIView setAnimationDuration:1000];
+        if (config.iPad)
+        {
+            [scrollView setFrame:CGRectMake(0, 0, 768, 696)];
+            [contentView setFrame:CGRectMake(0, 0, 768, 1164)];//1420)];
+//            [scrollView setContentSize:contentView.frame.size];
+        }
+        else
+        {
+            [scrollView setFrame:CGRectMake(0, 0, 320, 156)];
+            [contentView setFrame:CGRectMake(0, 0, 320, 1164)];//1420)];
+//            [scrollView setContentSize:contentView.frame.size];
+        }
+//        [UIView commitAnimations];
+
         [scrollView setContentSize:contentView.frame.size];
     }
 
@@ -205,8 +229,22 @@ typedef enum
     {
         currentResponder = nil;
 
-        [scrollView setFrame:CGRectMake(0, 0, 320, 372)];
-        [contentView setFrame:CGRectMake(0, 0, 320, 1120)];
+//        [UIView beginAnimations:@"keyboard_disappear" context:nil];
+//        [UIView setAnimationDuration:1000];
+        if (config.iPad)
+        {
+            [scrollView setFrame:CGRectMake(0, 0, 768, 960)];
+            [contentView setFrame:CGRectMake(0, 0, 768, 1164)];
+//            [scrollView setContentSize:contentView.frame.size];
+        }
+        else
+        {
+            [scrollView setFrame:CGRectMake(0, 0, 320, 416)];
+            [contentView setFrame:CGRectMake(0, 0, 320, 1164)];
+//            [scrollView setContentSize:contentView.frame.size];
+        }
+//        [UIView commitAnimations];
+
         [scrollView setContentSize:contentView.frame.size];
     }
 }
