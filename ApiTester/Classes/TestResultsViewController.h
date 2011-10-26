@@ -20,6 +20,8 @@
     UIButton    *detailViewCloseButton;
 
     NSArray *resultsArray;
+
+    UIViewController *detailViewController;
 }
 @property(nonatomic, retain) IBOutlet UITableView *resultsTable;
 @property(nonatomic, retain) IBOutlet UIView      *detailView;

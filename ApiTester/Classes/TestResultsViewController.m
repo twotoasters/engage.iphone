@@ -46,8 +46,12 @@
                                              target:self
                                              action:@selector(refresh:)] autorelease];
 
-    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
-    [self.view addSubview:detailView];
+    detailViewController = [[UIViewController alloc] init];
+    detailViewController.view = detailView;
+    detailViewController.view.backgroundColor = [UIColor clearColor];
+
+//    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
+//    [self.view addSubview:detailView];
 
     self.title = @"Test Results";
 }
@@ -150,21 +154,27 @@
 
 - (void)openDetailView
 {
-    [UIView beginAnimations:@"close_detail_view" context:nil];
-    if (config.iPad)
-        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 200,
-                                        (self.view.frame.size.height / 2) - 250, 400, 500)];
-    else
-        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 150,
-                                        (self.view.frame.size.height / 2) - 200, 300, 400)];
-    [UIView commitAnimations];
+    [self setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
+    [self presentModalViewController:detailViewController animated:YES];
+
+//    [UIView beginAnimations:@"close_detail_view" context:nil];
+//    if (config.iPad)
+//        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 200,
+//                                        (self.view.frame.size.height / 2) - 250, 400, 500)];
+//    else
+//        [detailView setFrame:CGRectMake((self.view.frame.size.width / 2) - 150,
+//                                        (self.view.frame.size.height / 2) - 200, 300, 400)];
+//    [UIView commitAnimations];
 }
 
 - (void)closeDetailView
 {
-    [UIView beginAnimations:@"close_detail_view" context:nil];
-    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
-    [UIView commitAnimations];
+    [self dismissModalViewControllerAnimated:YES];
+
+
+//    [UIView beginAnimations:@"close_detail_view" context:nil];
+//    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
+//    [UIView commitAnimations];
 }
 
 - (IBAction)closeButtonPressed:(id)sender
@@ -216,6 +226,8 @@
     [detailViewTextView release];
     [detailViewCloseButton release];
     [detailView release];
+
+    [detailViewController release];
 
     [super dealloc];
 }
