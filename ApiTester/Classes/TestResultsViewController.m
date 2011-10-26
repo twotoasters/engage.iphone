@@ -48,7 +48,11 @@
 
     detailViewController = [[UIViewController alloc] init];
     detailViewController.view = detailView;
-    detailViewController.view.backgroundColor = [UIColor clearColor];
+
+    detailViewSummaryLabel.font = [UIFont boldSystemFontOfSize:12.0];
+    detailViewTextView.font = [UIFont systemFontOfSize:10.0];
+
+//    detailViewController.view.backgroundColor = [UIColor clearColor];
 
 //    [detailView setFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 0, 0)];
 //    [self.view addSubview:detailView];
