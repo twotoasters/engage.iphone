@@ -17,6 +17,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "StartTestViewController.h"
+#import "ConfigurationData.h"
 
 @implementation StartTestViewController
 @synthesize startButton;
@@ -364,7 +365,10 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
+    config.delegate = nil;
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

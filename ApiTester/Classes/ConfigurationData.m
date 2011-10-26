@@ -25,6 +25,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
+#import "JRActivityObject.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -85,6 +86,10 @@
 }
 
 
+@end
+
+@interface ConfigurationData ()
+- (void)logWhatWeAreAboutToDo:(NavigationControllerType)navigationControllerType;
 @end
 
 @implementation ConfigurationData
@@ -215,7 +220,7 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
     if (sharedConfigurationData)
         return sharedConfigurationData;
 
-    return [((ConfigurationData*)[super allocWithZone:nil]) init];
+    return [[((ConfigurationData*)[super allocWithZone:nil]) init] autorelease];
 }
 
 + (id)allocWithZone:(NSZone*)zone
@@ -404,7 +409,6 @@ No video was added to the media array. \n \
 This may or may not have been your intention.\n \
 swfsrc        : %@ \n imgsrc        : %@ \n width         : %u \n height        : %u \n expandedWidth : %u \n expandedHeight: %u\n",
 swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
-
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRFlashMediaObject, but result was nil.  No video was added to the media array."
                                      ofType:LMWarn];
@@ -451,16 +455,78 @@ subject: %@ \n body:    %@\n", subject, body]
     activitySmsObject = [[JRSmsObject alloc] initWithMessage:message andUrlsToBeShortened:urls];
 
     if (!activitySmsObject)
-            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                summary:@"Attempt to add sms failed"
-                                                                                 detail:[NSString stringWithFormat:
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Attempt to add sms failed"
+                                                                             detail:[NSString stringWithFormat:
 @"You tried to create a JRSmsObject, but result was nil.  \n \
 No sms was added to the activity. \n \
 This may or may not have been your intention.\n \
 message: %@\n",message]
-                                                                          andResultStat:RSBadParametersRecoverableFailure]
-                                  andLogMessage:@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention."
-                                         ofType:LMWarn];
+                                                                      andResultStat:RSBadParametersRecoverableFailure]
+                              andLogMessage:@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention."
+                                     ofType:LMWarn];
+
+}
+
+- (void)checkActivityMediaArray:(NSMutableArray *)array
+{
+    int numImages = 0;
+    int numSongs  = 0;
+    int numVideos = 0;
+
+    for (NSObject *object in array)
+    {
+        if ([object isKindOfClass:[JRImageMediaObject class]])
+            numImages++;
+        else if ([object isKindOfClass:[JRMp3MediaObject class]])
+            numSongs++;
+        else if ([object isKindOfClass:[JRFlashMediaObject class]])
+            numVideos++;
+    }
+
+    if (numImages && numSongs && numVideos)
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Images, songs, and video added to activity"
+                                                                             detail:
+@"You have added images, songs, and video to the activity. \n \
+Only the images will be used.  The songs and video will be ignored. \n \
+This is a property off the providers."
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:@"Images, songs, and video added to activity. Only the images will be used; the songs and video will be ignored."
+                                     ofType:LMInfo];
+
+    else if (numImages && numSongs)
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Images and songs added to activity"
+                                                                             detail:
+@"You have added images and songs to the activity. \n \
+Only the images will be used.  The songs will be ignored. \n \
+This is a property off the providers."
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:@"Images and songs added to activity. Only the images will be used; the songs will be ignored."
+                                     ofType:LMInfo];
+
+    else if (numImages && numVideos)
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Images and video added to activity"
+                                                                             detail:
+@"You have added images and video to the activity. \n \
+Only the images will be used.  The video will be ignored. \n \
+This is a property off the providers."
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:@"Images and video added to activity. Only the images will be used; the video will be ignored."
+                                     ofType:LMInfo];
+
+    else if (numSongs && numVideos)
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Songs and video added to activity"
+                                                                             detail:
+@"You have added songs and video to the activity. \n \
+Only the songs will be used.  The video will be ignored. \n \
+This is a property off the providers."
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:@"Songs and video added to activity. Only the songs will be used; the video will be ignored."
+                                     ofType:LMInfo];
 
 }
 
@@ -523,15 +589,15 @@ message: %@\n",message]
             activity = [[JRActivityObject alloc] initWithAction:nil];
 
         if (!activity)
-                [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                    summary:@"Attempt to add activity failed"
-                                                                                     detail:[NSString stringWithFormat:
+            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                summary:@"Attempt to add activity failed"
+                                                                                 detail:[NSString stringWithFormat:
 @"You tried to create a JRActivityObject, but result was nil.  \n \
 Without an activity, sharing will not work. \n \
 This may or may not have been your intention.\n"]
-                                                                              andResultStat:RSBadParametersPermanentFailure]
-                                      andLogMessage:@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention."
-                                             ofType:LMWarn];
+                                                                          andResultStat:RSBadParametersPermanentFailure]
+                                  andLogMessage:@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention."
+                                         ofType:LMWarn];
 
 
     }
@@ -541,6 +607,17 @@ This may or may not have been your intention.\n"]
     else if (activityAddDefaultUrl)
         [activity setUrl:defaultActivityUrl];
     else ; // Do nothing
+
+    if (!activity.url)
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:@"Sharing an activity with no url"
+                                                                             detail:
+@"The activity you are sharing does not have a url. \n \
+If you share an activity without a url, some providers will thunk to set_status, and not share any of the rich data (e.g., images, the title and description, etc.). \n \
+This may have been intentional or this may have been caused by passing an invalid url."
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:@"Sharing an activity with no url. This may have been intentional or this may have been caused by passing an invalid url."
+                                     ofType:LMInfo];
 
     if (activityTitle)
         activity.title = activityTitle;
@@ -568,6 +645,8 @@ This may or may not have been your intention.\n"]
         if (activityAddDefaultVideo)
             [activityMediaArray addObject:defaultActivityVideo];
     }
+
+    [self checkActivityMediaArray:activityMediaArray];
 
     if (activityAddDefaultActionLinks)
     {
@@ -612,6 +691,8 @@ This may or may not have been your intention.\n"]
 
 - (void)startTestWithNavigationController:(NavigationControllerType)navigationControllerType
 {
+    [self logWhatWeAreAboutToDo:navigationControllerType];
+
     [customInterface release], customInterface = nil;
     customInterface = [[NSMutableDictionary alloc] initWithCapacity:10];
 
@@ -684,6 +765,7 @@ This may or may not have been your intention.\n"]
     {
         [self buildActivity];
         [jrEngage showSocialPublishingDialogWithActivity:activity andCustomInterfaceOverrides:customInterface];
+        [activity release], activity = nil;
     }
 }
 
@@ -860,6 +942,154 @@ provider, [[theActivity dictionaryForObject] description], [error localizedDescr
                                       andResultStat:RSRecoverableShareFailure]
                           andLogMessage:[NSString stringWithFormat:@"Activity failed to share for provider: %@", provider]
                                  ofType:LMError];
+}
+
+- (void)logWhatWeAreAboutToDo:(NavigationControllerType)navigationControllerType
+{
+    NSString *navType        = nil;
+    NSString *padDisplay     = nil;
+    NSString *testType       = nil;
+    NSMutableString *testing = nil;
+
+    if (navigationControllerType == CDNavigationControllerTypeApplication)
+    {
+        if (iPad)
+        {
+            navType = @"using the library's navigation controller";
+
+            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                summary:@"Can't use the application's nav controller on the iPad"
+                                                                                 detail:
+@"You are trying to use the application's navigation controller on the iPad. \n \
+This is not allowed.  The library will default to using its own navigation controller."
+                                                                          andResultStat:RSInfo]
+                                  andLogMessage:@"You are trying to use the application's navigation controller on the iPad. This is not allowed. The library will default to using its own navigation controller."
+                                         ofType:LMInfo];
+        }
+        else
+        {
+            navType = @"using the applications's navigation controller";
+        }
+    }
+    else if (navigationControllerType == CDNavigationControllerTypeCustom)
+    {
+        navType = @"using a custom navigation controller";
+    }
+
+    if (iPad)
+    {
+        if (usingPopoverFromRect)
+            padDisplay = @", and displayed in a popover from some point on the screen";
+        else if (usingPopoverFromBarButtonItem)
+            padDisplay = @", and displayed in a popover from the navigation controller's button";
+        else
+            padDisplay = @", and displayed modally";
+    }
+
+    if (signInOrSharing == CDSignIn)
+    {
+        testType = @"Sign-in test started";
+
+        if (signInTestType == CDSignInTestTypeCustomInterface)
+            testing = [NSMutableString stringWithString:@"Testing sign-in with different UI customizations, "];
+
+        else if (signInTestType == CDSignInTestTypeProviderConfiguration)
+        {
+            testing = [NSMutableString stringWithString:@"Testing sign-in with different provider configurations, "];
+            if (signinAddNativeLogin)
+            {
+                [testing appendString:@"including adding a native provider, "];
+
+                if (navigationControllerType == CDNavigationControllerTypeLibrary)
+                    [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                        summary:@"Can't add native provider and use library's navigation controller"
+                                                                                         detail:
+@"You can't add the native provider to sign-in and use library's navigation controller. \
+Using the application's navigation controller instead."
+                                                                                  andResultStat:RSInfo]
+                                          andLogMessage:@"You can't add the native provider to sign-in and use library's navigation controller. Using the application's navigation controller instead."
+                                                 ofType:LMInfo];
+            }
+
+            if (signinAlwaysForceReauth)
+                [testing appendString:@"and we are always forced to reauthenticate, "];
+
+            if (signinExcludeProviders)
+                [testing appendString:[NSString stringWithFormat:@"and we are excluding the providers: %@, ", [excludeProvidersArray description]]];
+        }
+        else
+        {
+            testing = [NSMutableString stringWithString:@"Testing basic sign-in, "];
+        }
+    }
+    else if (signInOrSharing == CDSharing)
+    {
+        testType = @"Sign-in test started";
+
+        if (sharingTestType == CDSharingTestTypeActivityChanges)
+            testing = [NSMutableString stringWithString:@"Testing sharing by adding different default objects to the activity, "];
+
+        else if (sharingTestType == CDSharingTestTypeBadActivityParams)
+            testing = [NSMutableString stringWithString:@"Testing sharing by adding different, custom values for the objects added to the activity, "];
+
+        else if (sharingTestType == CDSharingTestTypeCustomInterface)
+            testing = [NSMutableString stringWithString:@"Testing sharing with different UI customizations, "];
+
+        else if (sharingTestType == CDSharingTestTypeEmailSms)
+            testing = [NSMutableString stringWithString:@"Testing sharing with different email and sms objects added, "];
+
+        else
+            testing = [NSMutableString stringWithString:@"Testing sharing with a basic activity, "];
+    }
+
+    if (testing && navType)
+    {
+        [testing appendString:navType];
+
+        if (padDisplay)
+            [testing appendString:padDisplay];
+
+        [testing appendString:@"."];
+
+        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                            summary:testType
+                                                                             detail:testing
+                                                                      andResultStat:RSInfo]
+                              andLogMessage:testing
+                                     ofType:LMInfo];
+    }
+}
+
+/* Never gets called; just here to stop AppCode from giving me a million warnings */
+-(void)dealloc
+{
+
+
+    [customInterface release];
+    [activity release];
+    [activityPropertiesDictionary release];
+    [activityActionLinksArray release];
+    [activityMediaArray release];
+    [activitySmsObject release];
+    [activityEmailObject release];
+    [resultsArray release];
+    [embeddedTable release];
+    [customNavigationController release];
+    [defaultActivityProperties release];
+    [defaultActivityActionLink release];
+    [defaultActivitySms release];
+    [defaultActivityEmail release];
+    [defaultActivityVideo release];
+    [defaultActivitySong release];
+    [defaultActivityImage release];
+    [delegate release];
+    [excludeProvidersArray release];
+    [activityAction release];
+    [activityUrl release];
+    [activityTitle release];
+    [activityDescription release];
+    [applicationNavigationController release];
+    [super dealloc];
 }
 
 @end

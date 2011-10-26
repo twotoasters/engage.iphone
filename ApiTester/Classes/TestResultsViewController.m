@@ -62,7 +62,7 @@
 
 
     detailViewSummaryLabel.font = [UIFont boldSystemFontOfSize:12.0];
-    detailViewTextView.font = [UIFont systemFontOfSize:10.0];
+    detailViewTextView.font = [UIFont systemFontOfSize:11.0];
 
 //    detailViewController.view.backgroundColor = [UIColor clearColor];
 
