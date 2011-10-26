@@ -46,8 +46,20 @@
                                              target:self
                                              action:@selector(refresh:)] autorelease];
 
-    detailViewController = [[UIViewController alloc] init];
-    detailViewController.view = detailView;
+
+    UIViewController *viewController = [[[UIViewController alloc] init] autorelease];
+    viewController.view = detailView;
+
+    detailViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    detailViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+
+    viewController.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    viewController.navigationItem.rightBarButtonItem =
+            [[[UIBarButtonItem alloc] initWithTitle:@"Close"
+                                              style:UIBarButtonItemStyleBordered
+                                             target:self
+                                             action:@selector(closeButtonPressed:)] autorelease];
+
 
     detailViewSummaryLabel.font = [UIFont boldSystemFontOfSize:12.0];
     detailViewTextView.font = [UIFont systemFontOfSize:10.0];
@@ -158,7 +170,6 @@
 
 - (void)openDetailView
 {
-    [self setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
     [self presentModalViewController:detailViewController animated:YES];
 
 //    [UIView beginAnimations:@"close_detail_view" context:nil];

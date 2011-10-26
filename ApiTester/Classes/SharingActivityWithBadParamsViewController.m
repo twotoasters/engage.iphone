@@ -58,13 +58,20 @@ typedef enum
 
     if (config.iPad)
     {
-        [self.view setFrame:CGRectMake(0, 0, 768, 1004)];
+        [self.view setFrame:CGRectMake(0, 0, 768, 960)];//1024)];
+        [scrollView setFrame:CGRectMake(0, 0, 768, 960)];//1024)];
         [contentView setFrame:CGRectMake(0, 0, 768, 1164)];
     }
-
+    else
+    {
+        [scrollView setFrame:CGRectMake(0, 0, 320, 416)];
+        [contentView setFrame:CGRectMake(0, 0, 320, 1164)];
+    }
 
     [scrollView addSubview:contentView];
-    [scrollView setContentSize:CGSizeMake(contentView.frame.size.width, contentView.frame.size.height)];
+    [scrollView setContentSize:contentView.frame.size];
+
+//    [scrollView setContentSize:CGSizeMake(contentView.frame.size.width, contentView.frame.size.height)];
 
     for (int i = 100; i < NUM_TEXT_FIELDS + 100; i++)
     {
@@ -190,7 +197,7 @@ typedef enum
 //        [UIView setAnimationDuration:1000];
         if (config.iPad)
         {
-            [scrollView setFrame:CGRectMake(0, 0, 768, 696)];
+            [scrollView setFrame:CGRectMake(0, 0, 768, 652)];
             [contentView setFrame:CGRectMake(0, 0, 768, 1164)];//1420)];
 //            [scrollView setContentSize:contentView.frame.size];
         }
@@ -233,7 +240,7 @@ typedef enum
 //        [UIView setAnimationDuration:1000];
         if (config.iPad)
         {
-            [scrollView setFrame:CGRectMake(0, 0, 768, 960)];
+            [scrollView setFrame:CGRectMake(0, 0, 768, 960)];//1024)];
             [contentView setFrame:CGRectMake(0, 0, 768, 1164)];
 //            [scrollView setContentSize:contentView.frame.size];
         }

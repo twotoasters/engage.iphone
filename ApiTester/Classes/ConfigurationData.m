@@ -837,7 +837,7 @@ activity: \n %@", provider, [[theActivity dictionaryForObject] description]];
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                            summary:@"User has successfully shared the"
+                                            summary:@"User has successfully shared the activity"
                                              detail:message
                                       andResultStat:RSPublishSucceeded]
                           andLogMessage:[NSString stringWithFormat:

@@ -21,7 +21,7 @@
 
     NSArray *resultsArray;
 
-    UIViewController *detailViewController;
+    UINavigationController *detailViewController;
 }
 @property(nonatomic, retain) IBOutlet UITableView *resultsTable;
 @property(nonatomic, retain) IBOutlet UIView      *detailView;
