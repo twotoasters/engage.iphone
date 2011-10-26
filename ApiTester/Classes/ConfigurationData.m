@@ -491,9 +491,9 @@ message: %@\n",message]
 @"You have added images, songs, and video to the activity. \n \
 Only the images will be used.  The songs and video will be ignored. \n \
 This is a property off the providers."
-                                                                      andResultStat:RSInfo]
+                                                                      andResultStat:RSWarn]
                               andLogMessage:@"Images, songs, and video added to activity. Only the images will be used; the songs and video will be ignored."
-                                     ofType:LMInfo];
+                                     ofType:LMWarn];
 
     else if (numImages && numSongs)
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -502,9 +502,9 @@ This is a property off the providers."
 @"You have added images and songs to the activity. \n \
 Only the images will be used.  The songs will be ignored. \n \
 This is a property off the providers."
-                                                                      andResultStat:RSInfo]
+                                                                      andResultStat:RSWarn]
                               andLogMessage:@"Images and songs added to activity. Only the images will be used; the songs will be ignored."
-                                     ofType:LMInfo];
+                                     ofType:LMWarn];
 
     else if (numImages && numVideos)
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -513,9 +513,9 @@ This is a property off the providers."
 @"You have added images and video to the activity. \n \
 Only the images will be used.  The video will be ignored. \n \
 This is a property off the providers."
-                                                                      andResultStat:RSInfo]
+                                                                      andResultStat:RSWarn]
                               andLogMessage:@"Images and video added to activity. Only the images will be used; the video will be ignored."
-                                     ofType:LMInfo];
+                                     ofType:LMWarn];
 
     else if (numSongs && numVideos)
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -524,9 +524,9 @@ This is a property off the providers."
 @"You have added songs and video to the activity. \n \
 Only the songs will be used.  The video will be ignored. \n \
 This is a property off the providers."
-                                                                      andResultStat:RSInfo]
+                                                                      andResultStat:RSWarn]
                               andLogMessage:@"Songs and video added to activity. Only the songs will be used; the video will be ignored."
-                                     ofType:LMInfo];
+                                     ofType:LMWarn];
 
 }
 
@@ -693,6 +693,8 @@ This may have been intentional or this may have been caused by passing an invali
 {
     [self logWhatWeAreAboutToDo:navigationControllerType];
 
+    DLog(@"navigationControllerType: %u", (int)navigationControllerType);
+
     [customInterface release], customInterface = nil;
     customInterface = [[NSMutableDictionary alloc] initWithCapacity:10];
 
@@ -733,13 +735,27 @@ This may have been intentional or this may have been caused by passing an invali
         {
             if (signinAddNativeLogin)
             {
-                if (navigationControllerType == CDNavigationControllerTypeLibrary)
+                UINavigationController *navigationController;
+
+                if (navigationControllerType == CDNavigationControllerTypeLibrary ||
+                    navigationControllerType == CDNavigationControllerTypeApplication)
+                {
+                    if (iPad) navigationController = customNavigationController;
+                    else navigationController = applicationNavigationController;
+                }
+                else
+                {
+                    navigationController = customNavigationController;
+                }
+
+                if (navigationController == applicationNavigationController)
                     [customInterface setObject:applicationNavigationController
                                         forKey:kJRApplicationNavigationController];
+                else
+                    [customInterface setObject:customNavigationController
+                                        forKey:kJRCustomModalNavigationController];
 
-                [embeddedTable setUsingNavigationController:
-                        (navigationControllerType == CDNavigationControllerTypeCustom) ?
-                                customNavigationController : applicationNavigationController];
+                [embeddedTable setUsingNavigationController:navigationController];
 
                 [customInterface setObject:embeddedTable.view
                                     forKey:kJRProviderTableHeaderView];
@@ -897,7 +913,7 @@ tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStrin
 
 - (void)jrSocialDidCompletePublishing
 {
-    NSString *message = @"Publishing complete.  The user may or may not have shared on one or more providers.";
+    NSString *message = @"Publishing complete.  The user has shared the activity on one or more providers.";
 
     [self addResultObjectToResultsArray:
             [ResultObject resultObjectWithTimestamp:[self getCurrentTime]
@@ -955,35 +971,39 @@ provider, [[theActivity dictionaryForObject] description], [error localizedDescr
     {
         if (iPad)
         {
-            navType = @"using the library's navigation controller";
+            navType = @"We are using the library's navigation controller";
 
             [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                                 summary:@"Can't use the application's nav controller on the iPad"
                                                                                  detail:
 @"You are trying to use the application's navigation controller on the iPad. \n \
-This is not allowed.  The library will default to using its own navigation controller."
-                                                                          andResultStat:RSInfo]
-                                  andLogMessage:@"You are trying to use the application's navigation controller on the iPad. This is not allowed. The library will default to using its own navigation controller."
-                                         ofType:LMInfo];
+This is not allowed.  The library will default to using its own navigation controller or the custom navigation controller."
+                                                                          andResultStat:RSWarn]
+                                  andLogMessage:@"You are trying to use the application's navigation controller on the iPad. This is not allowed. The library will default to using its own navigation controller or the custom navigation controller."
+                                         ofType:LMWarn];
         }
         else
         {
-            navType = @"using the applications's navigation controller";
+            navType = @"We are using the applications's navigation controller";
         }
     }
     else if (navigationControllerType == CDNavigationControllerTypeCustom)
     {
-        navType = @"using a custom navigation controller";
+        navType = @"We are using a custom navigation controller";
+    }
+    else
+    {
+        navType = @"We are using the library's navigation controller";
     }
 
     if (iPad)
     {
         if (usingPopoverFromRect)
-            padDisplay = @", and displayed in a popover from some point on the screen";
+            padDisplay = @", and displaying the dialog in a popover from some point on the screen";
         else if (usingPopoverFromBarButtonItem)
-            padDisplay = @", and displayed in a popover from the navigation controller's button";
+            padDisplay = @", and displaying the dialog in a popover from the navigation controller's button";
         else
-            padDisplay = @", and displayed modally";
+            padDisplay = @", and displaying the dialog modally";
     }
 
     if (signInOrSharing == CDSignIn)
@@ -991,35 +1011,52 @@ This is not allowed.  The library will default to using its own navigation contr
         testType = @"Sign-in test started";
 
         if (signInTestType == CDSignInTestTypeCustomInterface)
-            testing = [NSMutableString stringWithString:@"Testing sign-in with different UI customizations, "];
+            testing = [NSMutableString stringWithString:@"Testing sign-in with different UI customizations. "];
 
         else if (signInTestType == CDSignInTestTypeProviderConfiguration)
         {
-            testing = [NSMutableString stringWithString:@"Testing sign-in with different provider configurations, "];
+            testing = [NSMutableString stringWithString:@"Testing sign-in with different provider configurations"];
             if (signinAddNativeLogin)
             {
-                [testing appendString:@"including adding a native provider, "];
+                [testing appendString:@", including adding a native provider"];
 
-                if (navigationControllerType == CDNavigationControllerTypeLibrary)
+                NSString *usingNavController = nil;
+
+                if (navigationControllerType == CDNavigationControllerTypeLibrary ||
+                    navigationControllerType == CDNavigationControllerTypeApplication)
+                {
+                    if (iPad) usingNavController = @"custom";
+                    else usingNavController = @"application's";
+                }
+
+                if (usingNavController)
+                {
+                    NSString *message = [NSString stringWithFormat:
+@"You can't add the native provider to sign-in and use %@ navigation controller. \
+Using the %@ navigation controller instead.", (iPad ? @" application or library's " : @"library's"), usingNavController];
+
                     [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                        summary:@"Can't add native provider and use library's navigation controller"
-                                                                                         detail:
-@"You can't add the native provider to sign-in and use library's navigation controller. \
-Using the application's navigation controller instead."
-                                                                                  andResultStat:RSInfo]
-                                          andLogMessage:@"You can't add the native provider to sign-in and use library's navigation controller. Using the application's navigation controller instead."
-                                                 ofType:LMInfo];
+                                                                                        summary:@"Wrong navigation controller used with the native provider"
+                                                                                         detail:message
+                                                                                  andResultStat:RSWarn]
+                                          andLogMessage:message
+                                                 ofType:LMWarn];
+
+                    navType = [NSString stringWithFormat:@"We are using the %@ navigation controller", usingNavController];
+                }
             }
 
             if (signinAlwaysForceReauth)
-                [testing appendString:@"and we are always forced to reauthenticate, "];
+                [testing appendString:@", and we are always forced to reauthenticate"];
 
             if (signinExcludeProviders)
-                [testing appendString:[NSString stringWithFormat:@"and we are excluding the providers: %@, ", [excludeProvidersArray description]]];
+                [testing appendString:[NSString stringWithFormat:@", and we are excluding the providers: %@", [excludeProvidersArray description]]];
+
+            [testing appendString:@". "];
         }
         else
         {
-            testing = [NSMutableString stringWithString:@"Testing basic sign-in, "];
+            testing = [NSMutableString stringWithString:@"Testing basic sign-in. "];
         }
     }
     else if (signInOrSharing == CDSharing)
@@ -1027,19 +1064,19 @@ Using the application's navigation controller instead."
         testType = @"Sign-in test started";
 
         if (sharingTestType == CDSharingTestTypeActivityChanges)
-            testing = [NSMutableString stringWithString:@"Testing sharing by adding different default objects to the activity, "];
+            testing = [NSMutableString stringWithString:@"Testing sharing by adding different default objects to the activity. "];
 
         else if (sharingTestType == CDSharingTestTypeBadActivityParams)
-            testing = [NSMutableString stringWithString:@"Testing sharing by adding different, custom values for the objects added to the activity, "];
+            testing = [NSMutableString stringWithString:@"Testing sharing by adding different, custom values for the objects added to the activity. "];
 
         else if (sharingTestType == CDSharingTestTypeCustomInterface)
-            testing = [NSMutableString stringWithString:@"Testing sharing with different UI customizations, "];
+            testing = [NSMutableString stringWithString:@"Testing sharing with different UI customizations. "];
 
         else if (sharingTestType == CDSharingTestTypeEmailSms)
-            testing = [NSMutableString stringWithString:@"Testing sharing with different email and sms objects added, "];
+            testing = [NSMutableString stringWithString:@"Testing sharing with different email and sms objects added. "];
 
         else
-            testing = [NSMutableString stringWithString:@"Testing sharing with a basic activity, "];
+            testing = [NSMutableString stringWithString:@"Testing sharing with a basic activity. "];
     }
 
     if (testing && navType)
@@ -1054,7 +1091,7 @@ Using the application's navigation controller instead."
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:testType
                                                                              detail:testing
-                                                                      andResultStat:RSInfo]
+                                                                      andResultStat:RSGood]
                               andLogMessage:testing
                                      ofType:LMInfo];
     }

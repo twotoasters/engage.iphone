@@ -62,6 +62,7 @@ typedef enum
 {
     RSNone,
     RSInfo,
+    RSGood,
     RSError,
     RSWarn,
     RSErrorStarting,

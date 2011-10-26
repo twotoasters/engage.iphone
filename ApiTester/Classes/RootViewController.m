@@ -15,6 +15,7 @@
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #import "RootViewController.h"
+#import "ConfigurationData.h"
 
 @implementation RootViewController
 @synthesize delegate;
@@ -27,7 +28,6 @@
     [super viewDidLoad];
 
     config = [ConfigurationData sharedConfigurationData];
-    config.applicationNavigationController = self.navigationController;
 
     UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -42,6 +42,7 @@
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         config.iPad = YES;
+
 
     DLog(@"%f, %f, %f, %f", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
 

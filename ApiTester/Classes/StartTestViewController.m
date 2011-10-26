@@ -43,6 +43,9 @@
     config = [ConfigurationData sharedConfigurationData];
 //    startButton.titleLabel.numberOfLines = 2;
 
+    config.applicationNavigationController = self.navigationController;
+
+
     titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 180, 44)] autorelease];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
@@ -184,6 +187,16 @@
     [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fadeOutToast) userInfo:nil repeats:NO];
 }
 
+- (void)startTest
+{
+    if (navigationRadio.selectedSegmentIndex == 0)
+        [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+    else if (navigationRadio.selectedSegmentIndex == 1)
+        [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
+    else
+        [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
+}
+
 - (IBAction)startButtonPressed:(id)sender
 {
     DLog(@"");
@@ -191,25 +204,27 @@
     if (config.iPad)
     {
         if (padDisplayRadio.selectedSegmentIndex == 0)
-            [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+            [self startTest];
         else
             [self startPopoverPressListener];
     }
     else
     {
-        if (navigationRadio.selectedSegmentIndex == 0)
-            [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
-        else if (navigationRadio.selectedSegmentIndex == 1)
-            [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
-        else
-            [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
+        [self startTest];
+//        if (navigationRadio.selectedSegmentIndex == 0)
+//            [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+//        else if (navigationRadio.selectedSegmentIndex == 1)
+//            [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
+//        else
+//            [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
     }
 }
 
 - (void)barButtonPressed:(id)sender
 {
     [config setPopoverBarButtonItem:padDisplayBarButtonItem andArrowDirection:arrowDirection];
-    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+    [self startTest];
+//    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
 }
 
 
@@ -258,7 +273,8 @@
     DLog(@"");
 
     [config setPopoverRect:padDisplayLocation andArrowDirection:arrowDirection];
-    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
+    [self startTest];
+//    [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -119,6 +119,7 @@
             return @"orange_dot.png";
         case RSWarn:
             return @"yellow_dot.png";
+        case RSGood:
         case RSAuthSucceeded:
         case RSPublishSucceeded:
         case RSPublishCompleted:
