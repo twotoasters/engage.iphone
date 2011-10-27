@@ -134,12 +134,14 @@
     if (sw.on == YES)
     {
         smsLabel.textColor = [UIColor blackColor];
-        [selectedSmsChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
+        [selectedSmsChoices replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:YES]];
+        //[selectedSmsChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
         smsLabel.textColor = [UIColor lightGrayColor];
-        [selectedSmsChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
+        [selectedSmsChoices replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
+        //[selectedSmsChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 
@@ -156,7 +158,8 @@
         if ([emailLabel.text isEqualToString:@"Make the email html (currently plain text)"])
             emailLabel.text = @"Make the email html";
 
-        [selectedEmailChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
+        [selectedEmailChoices replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:YES]];
+        //[selectedEmailChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
@@ -164,7 +167,8 @@
         if ([emailLabel.text isEqualToString:@"Make the email html"])
             emailLabel.text = @"Make the email html (currently plain text)";
 
-        [selectedEmailChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
+        [selectedEmailChoices replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
+        //[selectedEmailChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 

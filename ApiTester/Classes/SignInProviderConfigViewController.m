@@ -89,14 +89,16 @@
         providerLabel.text =
                 [NSString stringWithFormat:@"%@ (excluded)", [configuredProviders objectAtIndex:index]];
 
-        [excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:YES] atIndex:index];
+        [excludedProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:YES]];
+        //[excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
         providerLabel.textColor = [UIColor blackColor];
         providerLabel.text = [configuredProviders objectAtIndex:index];
 
-        [excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:index];
+        [excludedProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
+        //[excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 
