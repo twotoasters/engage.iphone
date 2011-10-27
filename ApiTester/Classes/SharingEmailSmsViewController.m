@@ -60,6 +60,8 @@
 
     smsCustomizationsView   = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, ([allSmsChoices count] * 35) + 25)];
     emailCustomizationsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, ([allEmailChoices count] * 35) + 25)];
+    selectedSmsChoices      = [[NSMutableArray alloc] initWithCapacity:[allSmsChoices count]];
+    selectedEmailChoices    = [[NSMutableArray alloc] initWithCapacity:[allEmailChoices count]];
 
     for (NSUInteger i = 0; i < [allSmsChoices count]; i++)
     {
@@ -76,6 +78,8 @@
         [smsSwitch addTarget:self
                       action:@selector(smsSwitchChanged:)
             forControlEvents:UIControlEventValueChanged];
+
+        [selectedSmsChoices insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
         smsLabel.tag  = SMS_LABEL_OFFSET + i;
         smsSwitch.tag = SMS_SWITCH_OFFSET + i;
@@ -101,6 +105,8 @@
                            action:@selector(emailSwitchChanged:)
                  forControlEvents:UIControlEventValueChanged];
 
+        [selectedEmailChoices insertObject:[NSNumber numberWithBool:NO] atIndex:i];
+
         emailLabel.tag  = EMAIL_LABEL_OFFSET + i;
         emailSwitch.tag = EMAIL_SWITCH_OFFSET + i;
 
@@ -121,34 +127,44 @@
 - (void)smsSwitchChanged:(id)sender
 {
     UISwitch *sw = (UISwitch*)sender;
+    NSUInteger index = ((NSUInteger)sw.tag - SMS_SWITCH_OFFSET);
 
-    UILabel *smsLabel = (UILabel*)[emailCustomizationsView viewWithTag:sw.tag - SMS_SWITCH_OFFSET + SMS_LABEL_OFFSET];
+    UILabel *smsLabel = (UILabel*)[emailCustomizationsView viewWithTag:index + SMS_LABEL_OFFSET];
+
     if (sw.on == YES)
     {
-        smsLabel.textColor = [UIColor darkGrayColor];
+        smsLabel.textColor = [UIColor blackColor];
+        [selectedSmsChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
         smsLabel.textColor = [UIColor lightGrayColor];
+        [selectedSmsChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 
 - (void)emailSwitchChanged:(id)sender
 {
     UISwitch *sw = (UISwitch*)sender;
+    NSUInteger index = ((NSUInteger)sw.tag - EMAIL_SWITCH_OFFSET);
 
-    UILabel *emailLabel = (UILabel*)[emailCustomizationsView viewWithTag:sw.tag - EMAIL_SWITCH_OFFSET + EMAIL_LABEL_OFFSET];
+    UILabel *emailLabel = (UILabel*)[emailCustomizationsView viewWithTag:index + EMAIL_LABEL_OFFSET];
+
     if (sw.on == YES)
     {
-        emailLabel.textColor = [UIColor darkGrayColor];
+        emailLabel.textColor = [UIColor blackColor];
         if ([emailLabel.text isEqualToString:@"Make the email html (currently plain text)"])
             emailLabel.text = @"Make the email html";
+
+        [selectedEmailChoices insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
         emailLabel.textColor = [UIColor lightGrayColor];
         if ([emailLabel.text isEqualToString:@"Make the email html"])
             emailLabel.text = @"Make the email html (currently plain text)";
+
+        [selectedEmailChoices insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 
@@ -346,12 +362,49 @@ typedef enum
     return cell;
 }
 
+- (void)turnOnSmsSwitches
+{
+    for (NSUInteger i = 0; i < [selectedSmsChoices count]; i++)
+        if([((NSNumber*)[selectedSmsChoices objectAtIndex:i]) boolValue])
+            [(UISwitch *)([smsCustomizationsView viewWithTag:(i + SMS_SWITCH_OFFSET)]) setOn:YES animated:YES];
+}
+
+- (void)turnOffSmsSwitches
+{
+    for (NSUInteger i = 0; i < [selectedSmsChoices count]; i++)
+        [(UISwitch *)([smsCustomizationsView viewWithTag:(i + SMS_SWITCH_OFFSET)]) setOn:NO animated:YES];
+}
+
+- (void)turnOnEmailSwitches
+{
+    for (NSUInteger i = 0; i < [selectedEmailChoices count]; i++)
+        if([((NSNumber*)[selectedEmailChoices objectAtIndex:i]) boolValue])
+            [(UISwitch *)([emailCustomizationsView viewWithTag:(i + EMAIL_SWITCH_OFFSET)]) setOn:YES animated:YES];
+}
+
+- (void)turnOffEmailSwitches
+{
+    for (NSUInteger i = 0; i < [selectedEmailChoices count]; i++)
+        [(UISwitch *)([emailCustomizationsView viewWithTag:(i + EMAIL_SWITCH_OFFSET)]) setOn:NO animated:YES];
+}
+
 - (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch
 {
     NSInteger cellIndex = cell.tag - CELL_TAG_OFFSET;
 
     if (cellIndex < [cellSwitchStates count])
         [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
+
+    if (cellIndex == CISms)
+    {
+        if (cellSwitch.on) [self turnOnSmsSwitches];
+        else               [self turnOffSmsSwitches];
+    }
+    else if (cellIndex == CIEmail)
+    {
+        if (cellSwitch.on) [self turnOnEmailSwitches];
+        else               [self turnOffEmailSwitches];
+    }
 }
 
 
@@ -433,6 +486,8 @@ typedef enum
     [emailCustomizationsView release];
     [smsCustomizationsView release];
     [cellSwitchStates release];
+    [selectedEmailChoices release];
+    [selectedSmsChoices release];
     [super dealloc];
 }
 

@@ -154,6 +154,8 @@ static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
 
 static ConfigurationData *sharedConfigurationData = nil;
 
+//#define DANIEL_1
+//#define DANIEL_2
 #define VALID_DEFAULTS
 #ifdef  VALID_DEFAULTS
 static NSString * const defaultAction         = @"is sharing an activity";
@@ -182,6 +184,61 @@ static NSString * const defaultEmailHtmlBody  =
 <li><a href=\"http://www.janrain.com (janrain)\">this link probably won't work...</a></li>\
 <li>www.facebook.com (facebook)</li>";
 #else
+#ifdef DANIEL_1
+static NSString * const defaultAction         = @"is sharing an activity";
+static NSString * const defaultUrl            = @"http://www.google.com";
+static NSString * const defaultTitle          = @"This is the default title";
+static NSString * const defaultDescription    = @"This is the default description";
+static NSString * const defaultImageSrc       = @"http://www.janrain.com/sites/default/themes/janrain/logo.png";
+static NSString * const defaultImageHref      = @"http://www.janrain.com";
+static NSString * const defaultSongSrc        = @"http://www.myspace.com/music/song-embed?songid=25313324&getSwf=true";
+static NSString * const defaultVideoSwfsrc    = @"http://vimeo.com/23496497";
+static NSString * const defaultVideoImgsrc    = @"http://b.vimeocdn.com/ts/153/117/153117150_100.jpg";
+static NSString * const defaultActionLinkText = @"Action Link Text";
+static NSString * const defaultActionLinkHref = @"http://janrain.com";
+static NSString * const defaultSmsMessage     = @"I am sending you text and this is the message. Here is a url: http://facebook.com";
+static NSString * const defaultEmailSubject   = @"I am sending you an email and this is the subject";
+static NSString * const defaultEmailBody      =
+@"I am sending you an email and this is the body.\nHere are some urls:\n\
+http://google.com (google)\n\
+https://rpxnow.com (rpxnow)\n\
+http://www.janrain.com (janrain)\n\
+www.facebook.com (facebook)";
+static NSString * const defaultEmailHtmlBody  =
+@"<p>I am sending you an email and this is the body <b>in HTML</b>.</p><p>Here are some urls:</p><ul>\
+<li><a href=\"http://google.com\">http://google.com</a> (google)</li>\
+<li><a href=\"https://rpxnow.com\">(rpxnow)</a></li>\
+<li><a href=\"http://www.janrain.com (janrain)\">this link probably won't work...</a></li>\
+<li>www.facebook.com (facebook)</li>";
+#else
+#ifdef DANIEL_2
+static NSString * const defaultAction         = @"something different";
+static NSString * const defaultUrl            = @"http://www.google.com";
+static NSString * const defaultTitle          = @"This is the default title";
+static NSString * const defaultDescription    = @"This is the default description";
+static NSString * const defaultImageSrc       = @"http://www.janrain.com/sites/default/themes/janrain/logo.png";
+static NSString * const defaultImageHref      = @"http://www.janrain.com";
+static NSString * const defaultSongSrc        = @"http://www.myspace.com/music/song-embed?songid=25313324&getSwf=true";
+static NSString * const defaultVideoSwfsrc    = @"http://vimeo.com/23496497";
+static NSString * const defaultVideoImgsrc    = @"http://b.vimeocdn.com/ts/153/117/153117150_100.jpg";
+static NSString * const defaultActionLinkText = @"Action Link Text";
+static NSString * const defaultActionLinkHref = @"http://janrain.com";
+static NSString * const defaultSmsMessage     = @"I am sending you text and this is the message. Here is a url: http://facebook.com";
+static NSString * const defaultEmailSubject   = @"I am sending you an email and this is the subject";
+static NSString * const defaultEmailBody      =
+@"I am sending you an email and this is the body.\nHere are some urls:\n\
+http://google.com (google)\n\
+https://rpxnow.com (rpxnow)\n\
+http://www.janrain.com (janrain)\n\
+www.facebook.com (facebook)";
+static NSString * const defaultEmailHtmlBody  =
+@"<p>I am sending you an email and this is the body <b>in HTML</b>.</p><p>Here are some urls:</p><ul>\
+<li><a href=\"http://google.com\">http://google.com</a> (google)</li>\
+<li><a href=\"https://rpxnow.com\">(rpxnow)</a></li>\
+<li><a href=\"http://www.janrain.com (janrain)\">this link probably won't work...</a></li>\
+<li>www.facebook.com (facebook)</li>";
+#endif
+#endif
 #endif
 
 - (id)init
