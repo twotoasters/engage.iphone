@@ -218,6 +218,16 @@ typedef enum
     BOOL activityAddDefaultEmailObject;
     BOOL activityAddDefaultSmsObject;
 
+    BOOL emailObjectToHtml;
+    BOOL emailObjectToShortenAllUrls;
+    BOOL emailObjectToShortenSomeUrls;
+    BOOL emailObjectToShortenNonexistentUrls;
+    BOOL emailObjectToShortenBadUrls;
+
+    BOOL smsObjectToShortenUrl;
+    BOOL smsObjectToShortenNonexistentUrls;
+    BOOL smsObjectToShortenBadUrls;
+
     NSMutableDictionary *customInterface;
 }
 
@@ -262,12 +272,23 @@ typedef enum
 @property BOOL activityAddDefaultEmailObject;
 @property BOOL activityAddDefaultSmsObject;
 
+@property(nonatomic) BOOL emailObjectToHtml;
+@property(nonatomic) BOOL emailObjectToShortenAllUrls;
+@property(nonatomic) BOOL emailObjectToShortenBadUrls;
+@property(nonatomic) BOOL emailObjectToShortenNonexistentUrls;
+@property(nonatomic) BOOL emailObjectToShortenSomeUrls;
+@property(nonatomic) BOOL smsObjectToShortenBadUrls;
+@property(nonatomic) BOOL smsObjectToShortenNonexistentUrls;
+@property(nonatomic) BOOL smsObjectToShortenUrl;
+
 @property (copy) NSString *activityAction;
 @property (copy) NSString *activityUrl;
 @property (copy) NSString *activityTitle;
 @property (copy) NSString *activityDescription;
 
 @property (retain, nonatomic) UINavigationController *applicationNavigationController;
+
+
 - (void)resetSignIn;
 - (void)resetActivity;
 - (void)resetCustomInterface;

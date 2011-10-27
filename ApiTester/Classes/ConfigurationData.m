@@ -136,6 +136,15 @@
 @synthesize activityDescription;
 
 @synthesize applicationNavigationController;
+@synthesize emailObjectToHtml;
+@synthesize emailObjectToShortenAllUrls;
+@synthesize emailObjectToShortenBadUrls;
+@synthesize emailObjectToShortenNonexistentUrls;
+@synthesize emailObjectToShortenSomeUrls;
+@synthesize smsObjectToShortenBadUrls;
+@synthesize smsObjectToShortenNonexistentUrls;
+@synthesize smsObjectToShortenUrl;
+
 
 #pragma mark singleton_methods
 static NSString * const appId = @"appcfamhnpkagijaeinl";

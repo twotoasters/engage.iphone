@@ -7,10 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ConfigurationData.h"
+#import "StartTestViewController.h"
+#import "TestConfigurationTableViewCell.h"
 
+@interface SharingEmailSmsViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
+{
 
-@interface SharingEmailSmsViewController : UITableViewController {
+    NSArray *cellTitles;
+    ConfigurationData *config;
 
+    UIView  *emailCustomizationsView;
+    UIView  *smsCustomizationsView;
+
+    NSArray *allEmailChoices;
+    NSArray *allSmsChoices;
+
+    NSMutableArray *selectedEmailChoices;
+    NSMutableArray *selectedSmsChoices;
+
+    NSMutableArray *cellSwitchStates;
 }
 
 @end

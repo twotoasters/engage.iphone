@@ -228,8 +228,6 @@ typedef enum
     return cell;
 }
 
-- (void)reset:(id)sender {}
-
 - (void)next:(id)sender
 {
     [config resetSignIn];

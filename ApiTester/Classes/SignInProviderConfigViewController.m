@@ -27,7 +27,7 @@
                     @"Add Native Login", @"Add custom login above the list of providers", @"sl",
                     @"Always Force Reauthentication", @"Force the user to always reenter his login credentials", @"sl",
 //                    @"Skip The User Landing Page", @"Always open to the list of providers first",  @"sl",
-                    @"Exclude Providers", @"Select providers below that you wish to exclude", @"sl" ,nil];
+                    @"Exclude Providers", @"Select providers below that you wish to exclude", @"sl", nil];
 
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
@@ -100,8 +100,8 @@ typedef enum
     CIExcludeProviders,
 } CellIndex;
 
-- (void)reset:(id)sender {}
 
+// TODO: This will stop working if too many cells; do what sign in custom ui does
 - (void)next:(id)sender
 {
     [config resetSignIn];
