@@ -12,15 +12,17 @@
 #import "StartTestViewController.h"
 #import "JRSessionData.h"
 
-@interface SignInProviderConfigViewController : UITableViewController
+@interface SignInProviderConfigViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
 {
-    NSArray *cellTitles;
     ConfigurationData *config;
 
+    NSArray *cellTitles;
     UIView  *excludeProvidersView;
     NSArray *configuredProviders;
-//  NSArray *excludeProvidersSwitches;
+
     NSMutableArray *excludedProviders;
+    NSMutableArray *cellSwitchStates;
+    NSMutableArray *excludedProvidersSwitchStates;
 }
 
 @end

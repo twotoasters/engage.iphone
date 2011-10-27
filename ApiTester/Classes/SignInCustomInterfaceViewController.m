@@ -285,7 +285,8 @@ typedef enum
     }
 
     StartTestViewController *startTestViewController =
-        [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
+            [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
+
     [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 

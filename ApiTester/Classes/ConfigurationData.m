@@ -835,9 +835,8 @@ This may have been intentional or this may have been caused by passing an invali
             else
                 [jrEngage alwaysForceReauthentication:NO];
 
-            if (signinExcludeProviders)
+            if (signinExcludeProviders && excludeProvidersArray)
             {
-                DLog(@"excluded providers: %@", [excludeProvidersArray description]);
                 [customInterface setObject:excludeProvidersArray forKey:kJRRemoveProvidersFromAuthentication];
             }
         }
