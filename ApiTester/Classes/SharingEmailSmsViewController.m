@@ -31,7 +31,7 @@
     config = [ConfigurationData sharedConfigurationData];
 
     cellTitles = [[NSArray alloc] initWithObjects:
-                                @"Add Sms", @"Add an sms message to the activity", @"ss"
+                                @"Add Sms", @"Add an sms message to the activity", @"ss",
                                 @"Add Email", @"Add an email to the activity", @"ss", nil];
 
     allSmsChoices =  [[NSArray alloc] initWithObjects:
@@ -58,44 +58,44 @@
     else
         width = 320;
 
-    smsCustomizationsView   = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, [allSmsChoices count] * 35)];
-    emailCustomizationsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, [allEmailChoices count] * 35)];
+    smsCustomizationsView   = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, ([allSmsChoices count] * 35) + 25)];
+    emailCustomizationsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, ([allEmailChoices count] * 35) + 25)];
 
     for (NSUInteger i = 0; i < [allSmsChoices count]; i++)
     {
-        UILabel *smsLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), width - 117, 35)] autorelease];
+        UILabel *smsLabel = [[[UILabel alloc] initWithFrame:CGRectMake(15, (i * 35), width - 152, 35)] autorelease];
 
         smsLabel.backgroundColor = [UIColor clearColor];
         smsLabel.font            = [UIFont systemFontOfSize:12.0];
-        smsLabel.text            = [allEmailChoices objectAtIndex:i];
-        smsLabel.textColor       = [UIColor lightGrayColor];
+        smsLabel.text            = [allSmsChoices objectAtIndex:i];
+        smsLabel.textColor       = [UIColor grayColor];
         smsLabel.numberOfLines   = 2;
 
-        UISwitch *smsSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(width - 117, (i * 35) + 4, 97, 27)] autorelease];
+        UISwitch *smsSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(width - 132, (i * 35) + 4, 97, 27)] autorelease];
 
         [smsSwitch addTarget:self
-                           action:@selector(smsSwitchChanged:)
-                 forControlEvents:UIControlEventValueChanged];
+                      action:@selector(smsSwitchChanged:)
+            forControlEvents:UIControlEventValueChanged];
 
         smsLabel.tag  = SMS_LABEL_OFFSET + i;
         smsSwitch.tag = SMS_SWITCH_OFFSET + i;
 
-        [emailCustomizationsView addSubview:smsLabel];
-        [emailCustomizationsView addSubview:smsSwitch];
+        [smsCustomizationsView addSubview:smsLabel];
+        [smsCustomizationsView addSubview:smsSwitch];
     }
 
     for (NSUInteger i = 0; i < [allEmailChoices count]; i++)
     {
-        UILabel *emailLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), width - 117, 35)] autorelease];
+        UILabel *emailLabel = [[[UILabel alloc] initWithFrame:CGRectMake(15, (i * 35), width - 152, 35)] autorelease];
 
         emailLabel.backgroundColor = [UIColor clearColor];
         emailLabel.font            = [UIFont systemFontOfSize:12.0];
         emailLabel.text            = [allEmailChoices objectAtIndex:i];
-        emailLabel.textColor       = [UIColor lightGrayColor];
+        emailLabel.textColor       = [UIColor grayColor];
         emailLabel.numberOfLines   = 2;
 
 
-        UISwitch *emailSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(width - 117, (i * 35) + 4, 97, 27)] autorelease];
+        UISwitch *emailSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(width - 132, (i * 35) + 4, 97, 27)] autorelease];
 
         [emailSwitch addTarget:self
                            action:@selector(emailSwitchChanged:)
@@ -111,9 +111,6 @@
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
 
-
-
-
     self.navigationItem.rightBarButtonItem =
             [[[UIBarButtonItem alloc] initWithTitle:@"Next"
                                               style:UIBarButtonItemStyleDone
@@ -125,18 +122,14 @@
 {
     UISwitch *sw = (UISwitch*)sender;
 
-    UILabel *smsLabel = (UILabel*)[emailCustomizationsView viewWithTag:sw.tag - EMAIL_SWITCH_OFFSET + EMAIL_LABEL_OFFSET];
+    UILabel *smsLabel = (UILabel*)[emailCustomizationsView viewWithTag:sw.tag - SMS_SWITCH_OFFSET + SMS_LABEL_OFFSET];
     if (sw.on == YES)
     {
         smsLabel.textColor = [UIColor darkGrayColor];
-        if ([smsLabel.text isEqualToString:@"Make the email html (currently plain text)"])
-            smsLabel.text = @"Make the email html";
     }
     else
     {
         smsLabel.textColor = [UIColor lightGrayColor];
-        if ([smsLabel.text isEqualToString:@"Make the email html"])
-            smsLabel.text = @"Make the email html (currently plain text)";
     }
 }
 
@@ -223,7 +216,6 @@ typedef enum
             }
         }
     }
-
 
     if (config.activityAddDefaultEmailObject)
     {
@@ -312,9 +304,9 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0)
+    if (indexPath.row == CISms)
         return 65 + smsCustomizationsView.frame.size.height;
-    else if (indexPath.row == 1)
+    else if (indexPath.row == CIEmail)
         return 65 + emailCustomizationsView.frame.size.height;
 
     return 65;
@@ -341,9 +333,9 @@ typedef enum
     cell.previewStyle = TCTableViewCellPreviewStyleCustom;
     [cell.cellPreview setBackgroundImage:nil forState:UIControlStateNormal];
 
-    if (indexPath.row == 0)
+    if (indexPath.row == CISms)
         [cell.cellPreview addSubview:smsCustomizationsView];
-    else
+    else if (indexPath.row == CIEmail)
         [cell.cellPreview addSubview:emailCustomizationsView];
 
     [cell.cellBorder setHidden:YES];

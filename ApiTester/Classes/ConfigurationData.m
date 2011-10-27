@@ -156,24 +156,33 @@ static ConfigurationData *sharedConfigurationData = nil;
 
 #define VALID_DEFAULTS
 #ifdef  VALID_DEFAULTS
-static NSString * const defaultAction       = @"is sharing an activity";
-static NSString * const defaultUrl          = @"http://www.google.com";
-static NSString * const defaultTitle        = @"This is the default title";
-static NSString * const defaultDescription  = @"This is the default description";
-static NSString * const defaultImageSrc     = @"http://www.janrain.com/sites/default/themes/janrain/logo.png";
-static NSString * const defaultImageHref    = @"http://www.janrain.com";
-static NSString * const defaultSongSrc      = @"http://www.myspace.com/music/song-embed?songid=25313324&getSwf=true";
-static NSString * const defaultVideoSwfsrc  = @"http://vimeo.com/23496497";
-static NSString * const defaultVideoImgsrc  = @"http://b.vimeocdn.com/ts/153/117/153117150_100.jpg";
-static NSString * const defaultEmailSubject = @"I am sending you an email and this is the subject";
-static NSString * const defaultEmailBody    = @"I am sending you an email and this is the body";
-static NSString * const defaultSmsMessage   = @"I am sending you text and this is the message";
+static NSString * const defaultAction         = @"is sharing an activity";
+static NSString * const defaultUrl            = @"http://www.google.com";
+static NSString * const defaultTitle          = @"This is the default title";
+static NSString * const defaultDescription    = @"This is the default description";
+static NSString * const defaultImageSrc       = @"http://www.janrain.com/sites/default/themes/janrain/logo.png";
+static NSString * const defaultImageHref      = @"http://www.janrain.com";
+static NSString * const defaultSongSrc        = @"http://www.myspace.com/music/song-embed?songid=25313324&getSwf=true";
+static NSString * const defaultVideoSwfsrc    = @"http://vimeo.com/23496497";
+static NSString * const defaultVideoImgsrc    = @"http://b.vimeocdn.com/ts/153/117/153117150_100.jpg";
 static NSString * const defaultActionLinkText = @"Action Link Text";
 static NSString * const defaultActionLinkHref = @"http://janrain.com";
+static NSString * const defaultSmsMessage     = @"I am sending you text and this is the message. Here is a url: http://facebook.com";
+static NSString * const defaultEmailSubject   = @"I am sending you an email and this is the subject";
+static NSString * const defaultEmailBody      =
+@"I am sending you an email and this is the body.\nHere are some urls:\n\
+http://google.com (google)\n\
+https://rpxnow.com (rpxnow)\n\
+http://www.janrain.com (janrain)\n\
+www.facebook.com (facebook)";
+static NSString * const defaultEmailHtmlBody  =
+@"<p>I am sending you an email and this is the body <b>in HTML</b>.</p><p>Here are some urls:</p><ul>\
+<li><a href=\"http://google.com\">http://google.com</a> (google)</li>\
+<li><a href=\"https://rpxnow.com\">(rpxnow)</a></li>\
+<li><a href=\"http://www.janrain.com (janrain)\">this link probably won't work...</a></li>\
+<li>www.facebook.com (facebook)</li>";
 #else
 #endif
-
-
 
 - (id)init
 {
@@ -198,6 +207,11 @@ static NSString * const defaultActionLinkHref = @"http://janrain.com";
         defaultActivityEmail      = [[JREmailObject alloc] initWithSubject:defaultEmailSubject
                                                             andMessageBody:defaultEmailBody
                                                                     isHtml:NO
+                                                      andUrlsToBeShortened:nil];
+
+        defaultActivityEmailHtml  = [[JREmailObject alloc] initWithSubject:defaultEmailSubject
+                                                            andMessageBody:defaultEmailHtmlBody
+                                                                    isHtml:YES
                                                       andUrlsToBeShortened:nil];
 
         defaultActivitySms        = [[JRSmsObject alloc] initWithMessage:defaultSmsMessage
@@ -675,15 +689,59 @@ This may have been intentional or this may have been caused by passing an invali
 
     if (activityEmailObject)
        activity.email = activityEmailObject;
-    else if (activityAddDefaultEmailObject)
+    else if (activityAddDefaultEmailObject && emailObjectToHtml)
+        activity.email = defaultActivityEmailHtml;
+    else if (activityAddDefaultEmailObject && !emailObjectToHtml)
         activity.email = defaultActivityEmail;
     else ; // Do nothing
+
+    if (activityAddDefaultEmailObject && (emailObjectToShortenAllUrls || emailObjectToShortenSomeUrls ||
+        emailObjectToShortenBadUrls || emailObjectToShortenNonexistentUrls))
+    {
+        NSArray *urls = nil;
+        if (emailObjectToShortenAllUrls)
+            urls = [NSArray arrayWithObjects:
+                 @"http://google.com", @"https://rpxnow.com", @"http://www.janrain.com", @"www.facebook.com", nil];
+
+        else if (emailObjectToShortenSomeUrls)
+            urls = [NSArray arrayWithObjects:
+                 @" http://google.com   ", @"http://www.janrain.com", nil];
+
+        else if (emailObjectToShortenNonexistentUrls)
+            urls = [NSArray arrayWithObjects:
+                 @"http://linkedin.com", @"https://ebay.com", @"http://www.uiuc.edu", nil];
+
+        else if (emailObjectToShortenBadUrls)
+            urls = [NSArray arrayWithObjects:
+                 @"this is not a valid url", @"$#@!$@))@()!$*(*!)", @"http://fkdjklafjdklajkfldas.com", nil];
+
+        activity.email.urls = urls;
+    }
 
     if (activitySmsObject)
         activity.sms = activitySmsObject;
     else if (activityAddDefaultSmsObject)
         activity.sms = defaultActivitySms;
     else ; // Do nothing
+
+    if (activityAddDefaultSmsObject && (smsObjectToShortenUrl ||
+        smsObjectToShortenNonexistentUrls || smsObjectToShortenBadUrls))
+    {
+        NSArray *urls = nil;
+        if (smsObjectToShortenUrl)
+            urls = [NSArray arrayWithObjects:
+                 @"http://facebook.com", nil];
+
+        else if (smsObjectToShortenNonexistentUrls)
+            urls = [NSArray arrayWithObjects:
+                 @"http://linkedin.com", @"https://ebay.com", @"http://www.uiuc.edu", nil];
+
+        else if (smsObjectToShortenBadUrls)
+            urls = [NSArray arrayWithObjects:
+                 @"this is not a valid url", @"$#@!$@))@()!$*(*!)", @"http://fkdjklafjdklajkfldas.com", nil];
+
+        activity.email.urls = urls;
+    }
 
     if (activityMediaArray)
         activity.media = activityMediaArray;
@@ -1135,6 +1193,7 @@ Using the %@ navigation controller instead.", (iPad ? @" application or library'
     [activityTitle release];
     [activityDescription release];
     [applicationNavigationController release];
+    [defaultActivityEmailHtml release];
     [super dealloc];
 }
 

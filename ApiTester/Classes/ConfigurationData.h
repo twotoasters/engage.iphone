@@ -202,6 +202,7 @@ typedef enum
     JRMp3MediaObject    *defaultActivitySong;
     JRFlashMediaObject  *defaultActivityVideo;
     JREmailObject       *defaultActivityEmail;
+    JREmailObject       *defaultActivityEmailHtml;
     JRSmsObject         *defaultActivitySms;
     JRActionLink        *defaultActivityActionLink;
     NSMutableDictionary *defaultActivityProperties;
