@@ -56,7 +56,7 @@
 
 - (void)viewDidLoad
 {
-    DLog(@"");
+//    DLog(@"");
 
     [super viewDidLoad];
     config = [ConfigurationData sharedConfigurationData];

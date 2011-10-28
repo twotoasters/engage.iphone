@@ -403,7 +403,7 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DLog(@"");
+//    DLog(@"");
 
     TestConfigurationTableViewCell *cell =
             (TestConfigurationTableViewCell*)

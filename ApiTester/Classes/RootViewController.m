@@ -44,8 +44,7 @@
         config.iPad = YES;
 
 
-    DLog(@"%f, %f, %f, %f", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
-
+//    DLog(@"%f, %f, %f, %f", self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
 
 //    if (config.iPad)
 //    {

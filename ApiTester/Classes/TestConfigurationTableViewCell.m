@@ -30,7 +30,7 @@
 
 - (id)initTestConfigurationTableViewCellWithStyle:(TCTableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier;
 {
-    DLog(@"%@", reuseIdentifier);
+//    DLog(@"%@", reuseIdentifier);
     cellStyle = style;
 
     if (style < TCTableViewCellStyleSwitch)
@@ -105,7 +105,7 @@
 
 - (void)layoutSubviews
 {
-    DLog(@"%@", self.reuseIdentifier);
+//    DLog(@"%@", self.reuseIdentifier);
     [super layoutSubviews];
 
     CGFloat cellContentWidth  = self.contentView.frame.size.width;
@@ -193,7 +193,7 @@
 
 - (void)switchChanged:(id)sender
 {
-    DLog(@"%@: %@", self.reuseIdentifier, cellSwitch.on ? @"ON" : @"OFF");
+//    DLog(@"%@: %@", self.reuseIdentifier, cellSwitch.on ? @"ON" : @"OFF");
 
     if (cellSwitch.on == YES)
     {
