@@ -14,6 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <Foundation/Foundation.h>
 #import "SharingActivityChangesViewController.h"
 #import "ConfigurationData.h"
 
@@ -306,31 +307,39 @@ static NSString * const title_bits[NUM_TITLES + 1] = {
     nil };
 
 static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
-    @" EMPT DESCR",
-    @" 1 LN DESCR",
-    @" 2 LN DESCR",
-    @" 3 LN DESCR",
-    @" 4 LN DESCR",
-    @" 5 LN DESCR",
-    @" 6 LN DESCR",
+    @"EMPT DESCR",
+    @"1 LN DESCR",
+    @"2 LN DESCR",
+    @"3 LN DESCR",
+    @"4 LN DESCR",
+    @"5 LN DESCR",
+    @"6 LN DESCR",
     nil };
 
 - (void)buildActivityArray
 {
-    activityArray = [[NSMutableArray alloc] initWithCapacity:42];
+    activityArray = [[NSMutableArray alloc] initWithCapacity:NUM_PICKER_ACTIVITIES];
 
-    for (int i = 0; i < NUM_PICKER_ACTIVITIES; i++)
+    for (NSUInteger i = 0; i < NUM_PICKER_ACTIVITIES; i++)
     {
-        NSString *activityTitle = [title_bits[i% NUM_TITLES] expandIfPad:config.iPad];
-        NSString *activityDescr =
-                    [descr_bits[(i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)))] expandIfPad:config.iPad];
+        NSUInteger titleIndex = i % NUM_TITLES;
+        NSUInteger descrIndex = (i/NUM_DESCRIPTIONS - (NUM_DESCRIPTIONS * (i / NUM_PICKER_ACTIVITIES)));
 
-        NSMutableString *pickerTitle = [NSMutableString stringWithString:activityTitle];
-        [pickerTitle appendString:activityDescr];
+//        NSString *activityTitle = [title_bits[titleIndex] expandIfPad:config.iPad];
+//        NSString *activityDescr = [descr_bits[descrIndex] expandIfPad:config.iPad];
 
-        [activityArray addObject:[PickerActivity pickerActivityWithPickerTitle:pickerTitle
-                                                                 activityTitle:activityTitle
-                                                        andActivityDescription:activityDescr]];
+//        NSMutableString *pickerTitle =
+//                [NSMutableString stringWithString:[title_bits[titleIndex] expandIfPad:config.iPad]];
+//        [pickerTitle appendString:[descr_bits[descrIndex] expandIfPad:config.iPad]];
+
+        NSString *pickerTitle = [NSString stringWithFormat:@"%@ %@",
+                    [title_bits[titleIndex] expandIfPad:config.iPad],
+                    [descr_bits[descrIndex] expandIfPad:config.iPad]];
+
+        [activityArray addObject:
+                    [PickerActivity pickerActivityWithPickerTitle:pickerTitle
+                                                    activityTitle:[titles[titleIndex] expandIfPad:config.iPad]
+                                           andActivityDescription:[descrs[descrIndex] expandIfPad:config.iPad]]];
     }
 }
 
