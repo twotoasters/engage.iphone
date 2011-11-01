@@ -224,6 +224,7 @@ a:active  { color:#7AC143; }";
 
 - (IBAction)shareButtonPressed:(id)sender
 {
+    weAreSharing = YES;
     JRActivityObject *activity = [[[JRActivityObject alloc]
                                   initWithAction:@"shared an article from the Janrain Blog."
                                   andUrl:story.link] autorelease];
@@ -257,6 +258,14 @@ a:active  { color:#7AC143; }";
     activity.sms = [JRSmsObject smsObjectWithMessage:[NSString stringWithFormat:@"Check out this article from the Janrain Blog!\n\n%@", story.link]
                                 andUrlsToBeShortened:[NSArray arrayWithObjects:story.link, nil]];
 
+
+    if (iPad)
+    {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        [[FeedReader feedReader] setLibraryDialogDelegate:self];
+    }
+
+
     // TODO: Why are we setting this??
 //    [FeedReader feedReader].feedReaderDetail = self;
 
@@ -264,11 +273,18 @@ a:active  { color:#7AC143; }";
 //        [[[FeedReader feedReader] jrEngage] setCustomNavigationController:self.navigationController];
 
     NSDictionary *custom = [NSDictionary dictionaryWithObjectsAndKeys:
-                            self.navigationItem.rightBarButtonItem, kJRPopoverPresentationBarButtonItem, 
+                            self.navigationItem.rightBarButtonItem, kJRPopoverPresentationBarButtonItem,
                             self.navigationController, kJRApplicationNavigationController, nil];
 
     [[[FeedReader feedReader] jrEngage] showSocialPublishingDialogWithActivity:activity andCustomInterfaceOverrides:custom];
 //    [[[FeedReader feedReader] jrEngage] showAuthenticationDialogWithCustomInterfaceOverrides:custom];
+}
+
+- (void)libraryDialogClosed
+{
+    weAreSharing = NO;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [[FeedReader feedReader] setLibraryDialogDelegate:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -280,7 +296,8 @@ a:active  { color:#7AC143; }";
 {
     [super viewWillDisappear:animated];
 
-//    [[[FeedReader feedReader] jrEngage] cancelPublishing];
+    if (weAreSharing)
+        [[[FeedReader feedReader] jrEngage] cancelPublishing];
 
     [webview stopLoading];
 	[webview loadHTMLString:@"" baseURL:[NSURL URLWithString:@"/"]];

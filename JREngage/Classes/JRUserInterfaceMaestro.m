@@ -33,21 +33,22 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #ifdef DEBUG
-#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define DLog(...)
 #endif
 
-#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <UIKit/UIKit.h>
 #import "JRUserInterfaceMaestro.h"
 #import "JREngage+CustomInterface.h"
 
 static void handleCustomInterfaceException(NSException* exception, NSString* kJRKeyString)
 {
-    NSLog (@"*** Exception thrown. Problem is most likely with jrEngage custom interface object %@ : Caught %@ : %@", 
+    NSLog (@"*** Exception thrown. Problem is most likely with jrEngage custom interface object %@ : Caught %@ : %@",
                  (kJRKeyString ? [NSString stringWithFormat:@" possibly from kJRKeyString, %@", kJRKeyString] : @""),
-                 [exception name], 
+                 [exception name],
                  [exception reason]);
 
 #ifdef DEBUG
@@ -77,10 +78,15 @@ static void handleCustomInterfaceException(NSException* exception, NSString* kJR
 {
     DLog (@"");
     UIView *view = [[[UIView alloc] initWithFrame:[[UIApplication sharedApplication] keyWindow].frame] autorelease];
-    [view setAutoresizingMask:UIViewAutoresizingNone | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
         iPad = YES;
+
+//    if (iPad)
+//        [view setAutoresizingMask:UIViewAutoresizingNone | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+//                                  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
+//    else
+        [view setAutoresizingMask:UIViewAutoresizingNone | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 
     shouldUnloadSubviews = NO;
 
@@ -157,10 +163,15 @@ static void handleCustomInterfaceException(NSException* exception, NSString* kJR
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-//    DLog(@"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXXXXXXXXXXXXXXXXX");
+    DLog(@"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXXXXXXXXXXXXXXXXX");
 //    return YES;
-    
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    DLog(@"bbbbbbbbbbbbbbbbbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXXXXXXXXXXXXXXXXX");
 }
 
 - (void)dealloc
