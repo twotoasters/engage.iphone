@@ -6,6 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "TestConfigurationTableViewCell.h"
 
 #ifdef DEBUG
@@ -41,7 +44,8 @@
     cellTitle    = [[UILabel alloc] init];
     cellSubtitle = [[UILabel alloc] init];
     cellSwitch   = [[UISwitch alloc] init];
-    cellPreview  = [[UIButton alloc] init];
+    cellPreview  = [[UIView alloc] init];
+//    cellPreview  = [[UIButton alloc] init];
 
     cellBorder   = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"divider.png"]];
     cellDisabled = [[UIView alloc] init];
@@ -71,11 +75,11 @@
         [cellSubtitle setNumberOfLines:2];
     }
 
-    [cellPreview setBackgroundImage:[UIImage imageNamed:@"enabledLightGray"] forState:UIControlStateNormal];
-    [cellPreview setEnabled:NO];
-    [cellPreview.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];
-    [cellPreview setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [cellPreview setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+//    [cellPreview setBackgroundImage:[UIImage imageNamed:@"enabledLightGray"] forState:UIControlStateNormal];
+//    [cellPreview setEnabled:NO];
+//    [cellPreview.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];
+//    [cellPreview setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+//    [cellPreview setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
 
     [cellTitle    setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
     [cellSubtitle setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
@@ -177,16 +181,27 @@
             break;
     }
 
+    UIView *cellPreviewSubview = ([[cellPreview subviews] count]) ? [[cellPreview subviews] objectAtIndex:0] : nil;
+
+    cellPreviewSubview.frame = CGRectMake(0, 0, cellPreview.frame.size.width, cellPreview.frame.size.height);
+
     if (cellSwitch.on == YES)
     {
         [cellDisabled setHidden:YES];
-        [cellPreview setEnabled:YES];
+
+        // Casting to remove warning... probably a better way, but...
+        if ([cellPreviewSubview respondsToSelector:@selector(setEnabled:)])
+            [(UIButton*)cellPreviewSubview setEnabled:YES];
+
         [self setBackgroundColor:[UIColor whiteColor]];
     }
     else
     {
         [cellDisabled setHidden:NO];
-        [cellPreview setEnabled:NO];
+
+        if ([cellPreviewSubview respondsToSelector:@selector(setEnabled:)])
+            [(UIButton*)cellPreviewSubview setEnabled:NO];
+
         [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
     }
 }
@@ -195,22 +210,37 @@
 {
 //    DLog(@"%@: %@", self.reuseIdentifier, cellSwitch.on ? @"ON" : @"OFF");
 
+    UIView *cellPreviewSubview = ([[cellPreview subviews] count]) ? [[cellPreview subviews] objectAtIndex:0] : nil;
+
     if (cellSwitch.on == YES)
     {
         [cellDisabled setHidden:YES];
-        [cellPreview setEnabled:YES];
+
+        if ([cellPreviewSubview respondsToSelector:@selector(setEnabled:)])
+            [(UIButton*)cellPreviewSubview setEnabled:YES];
+
         [self setBackgroundColor:[UIColor whiteColor]];
     }
     else
     {
         [cellDisabled setHidden:NO];
-        [cellPreview setEnabled:NO];
+
+        if ([cellPreviewSubview respondsToSelector:@selector(setEnabled:)])
+            [(UIButton*)cellPreviewSubview setEnabled:NO];
+
         [self setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
     }
 
     if ([delegate respondsToSelector:(@selector(testConfigurationTableViewCell:switchDidChange:))])
         [delegate testConfigurationTableViewCell:self switchDidChange:cellSwitch];
 }
+
+- (void)previewChanged:(id)sender
+{
+    if ([delegate respondsToSelector:(@selector(testConfigurationTableViewCell:previewDidChange:))])
+        [delegate testConfigurationTableViewCell:self previewDidChange:cellPreview];
+}
+
 
 - (void)dealloc
 {

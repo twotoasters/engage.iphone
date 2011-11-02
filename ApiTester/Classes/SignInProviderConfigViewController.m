@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
 #import "SignInProviderConfigViewController.h"
-
 
 @implementation SignInProviderConfigViewController
 
@@ -269,7 +267,7 @@ typedef enum
     if (indexPath.row == CIExcludeProviders)//([cellTitles count] / 3) - 1)
     {
         cell.previewStyle = TCTableViewCellPreviewStyleCustom;
-        [cell.cellPreview setBackgroundImage:nil forState:UIControlStateNormal];
+        [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
         [cell.cellPreview addSubview:excludeProvidersView];
     }
     else

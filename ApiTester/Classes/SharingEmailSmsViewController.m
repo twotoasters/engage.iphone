@@ -6,14 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "SharingEmailSmsViewController.h"
-#import "ConfigurationData.h"
-
 
 @implementation SharingEmailSmsViewController
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -276,10 +271,6 @@ typedef enum
                 [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 
-
-
-
-
 /*
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -307,7 +298,6 @@ typedef enum
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -351,7 +341,7 @@ typedef enum
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
     cell.previewStyle = TCTableViewCellPreviewStyleCustom;
-    [cell.cellPreview setBackgroundImage:nil forState:UIControlStateNormal];
+    [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
 
     if (indexPath.row == CISms)
         [cell.cellPreview addSubview:smsCustomizationsView];

@@ -130,6 +130,11 @@
 @synthesize activityAddDefaultEmailObject;
 @synthesize activityAddDefaultSmsObject;
 
+@synthesize numberOfDefaultImages;
+@synthesize numberOfDefaultSongs;
+@synthesize numberOfDefaultVideos;
+@synthesize numberOfDefaultActionLinks;
+
 @synthesize activityAction;
 @synthesize activityUrl;
 @synthesize activityTitle;
@@ -657,6 +662,49 @@ This is a property off the providers."
         [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
 }
 
+
+
+- (void)add:(NSInteger)number objects:(NSObject *)object toArray:(NSMutableArray *)array
+{
+    for (NSInteger i = 0; i < number; i++)
+    {
+        if (i == 0)
+           [array addObject:object];
+
+        else
+        {
+            if ([object isKindOfClass:[JRImageMediaObject class]])
+            {
+                JRImageMediaObject *imageMediaObject =
+                                           [JRImageMediaObject imageMediaObjectWithSrc:defaultImageSrc
+                                                                               andHref:
+                                   [NSString stringWithFormat:@"http://www.google.com/search?q=%d&ie=UTF-8&hl=en", i]];
+
+                if (imageMediaObject)
+                    [array addObject:imageMediaObject];
+            }
+            else if ([object isKindOfClass:[JRMp3MediaObject class]])
+            {
+                ((JRMp3MediaObject *)object).title = [NSString stringWithFormat:@"Song Number %d", i];
+                [array addObject:object];
+            }
+            else if ([object isKindOfClass:[JRFlashMediaObject class]])
+            {
+                [array addObject:[JRFlashMediaObject flashMediaObjectWithSwfsrc:
+                                 [defaultVideoSwfsrc stringByReplacingOccurrencesOfString:@"25313324"
+                                                                               withString:[NSString stringWithFormat:@"2531332%d", i]]
+                                                                      andImgsrc:defaultVideoImgsrc]];
+
+            }
+            else if ([object isKindOfClass:[JRActionLink class]])
+            {
+                ((JRActionLink *)object).text = [NSString stringWithFormat:@"%@ %d", defaultActionLinkText, i];
+                [array addObject:object];
+            }
+        }
+    }
+}
+
 - (void)buildActivity
 {
     if (!activity)
@@ -717,13 +765,13 @@ This may have been intentional or this may have been caused by passing an invali
             activityMediaArray = [[NSMutableArray alloc] initWithCapacity:5];
 
         if (activityAddDefaultImage)
-            [activityMediaArray addObject:defaultActivityImage];
+            [self add:numberOfDefaultImages objects:defaultActivityImage toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivityImage];
 
         if (activityAddDefaultSong)
-            [activityMediaArray addObject:defaultActivitySong];
+            [self add:numberOfDefaultSongs objects:defaultActivitySong toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivitySong];
 
         if (activityAddDefaultVideo)
-            [activityMediaArray addObject:defaultActivityVideo];
+            [self add:numberOfDefaultVideos objects:defaultActivityVideo toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivityVideo];
     }
 
     [self checkActivityMediaArray:activityMediaArray];
@@ -733,7 +781,7 @@ This may have been intentional or this may have been caused by passing an invali
         if (!activityActionLinksArray)
             activityActionLinksArray = [[NSMutableArray alloc] initWithCapacity:1];
 
-        [activityActionLinksArray addObject:defaultActivityActionLink];
+        [self add:numberOfDefaultActionLinks objects:defaultActivityActionLink toArray:activityActionLinksArray];//[activityActionLinksArray addObject:defaultActivityActionLink];
     }
 
     if (activityAddDefaultProperties)

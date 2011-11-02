@@ -207,6 +207,11 @@ typedef enum
     JRActionLink        *defaultActivityActionLink;
     NSMutableDictionary *defaultActivityProperties;
 
+    NSInteger numberOfDefaultImages;
+    NSInteger numberOfDefaultSongs;
+    NSInteger numberOfDefaultVideos;
+    NSInteger numberOfDefaultActionLinks;
+
     BOOL activityAddDefaultAction;
     BOOL activityAddDefaultUrl;
     BOOL activityAddDefaultTitle;
@@ -272,6 +277,12 @@ typedef enum
 @property BOOL activityAddDefaultProperties;
 @property BOOL activityAddDefaultEmailObject;
 @property BOOL activityAddDefaultSmsObject;
+
+@property NSInteger numberOfDefaultImages;
+@property NSInteger numberOfDefaultSongs;
+@property NSInteger numberOfDefaultVideos;
+@property NSInteger numberOfDefaultActionLinks;
+
 
 @property(nonatomic) BOOL emailObjectToHtml;
 @property(nonatomic) BOOL emailObjectToShortenAllUrls;
