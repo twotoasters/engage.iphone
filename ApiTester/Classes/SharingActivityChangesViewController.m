@@ -14,10 +14,9 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "SharingActivityChangesViewController.h"
-#import "TestConfigurationTableViewCell.h"
+#import "ConfigurationData.h"
 
 @interface NSString (EXPAND_IF_PAD)
 - (NSString *)expandIfPad:(BOOL)isPad;
@@ -123,17 +122,14 @@
                   @"Action Link", @"Add an action link to the activity",
                   @"Properties Dictionary", @"Add a properties dictionary to the activity", nil];
 
-    cellSwitchStates            = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 2)];
-    cellPreviewTextFieldNumbers = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 2)];
+    cellSwitchStates = [[NSMutableArray alloc] initWithCapacity:([cellTitles count] / 2)];
 
     for (NSUInteger i = 0; i < ([cellTitles count] / 2); i++)
         [cellSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
-    for (NSUInteger i = 0; i < ([cellTitles count] / 2); i++)
-        [cellPreviewTextFieldNumbers insertObject:[NSNumber numberWithInt:1] atIndex:i];
-
     [table setSeparatorColor:[UIColor darkGrayColor]];
     [table setAllowsSelection:NO];
+
 
     if (config.iPad)
     {
@@ -172,13 +168,11 @@
     [super viewWillAppear:animated];
 }
 */
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self resignFirstResponder];
+/*
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
-
+*/
 
 typedef enum
 {
@@ -203,8 +197,7 @@ typedef enum
 
     for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
     {
-        BOOL      switchState   = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
-        NSInteger numberOfThose = [((NSNumber*)[cellPreviewTextFieldNumbers objectAtIndex:i]) integerValue];
+        BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
 
         switch ((CellIndex)i)
         {
@@ -215,22 +208,18 @@ typedef enum
             case CIAddImage:
                 if (switchState == YES) [config setActivityAddDefaultImage:YES];
                 else [config setActivityAddDefaultImage:NO];
-                [config setNumberOfDefaultImages:numberOfThose];
                 break;
             case CIAddSong:
                 if (switchState == YES) [config setActivityAddDefaultSong:YES];
                 else [config setActivityAddDefaultSong:NO];
-                [config setNumberOfDefaultSongs:numberOfThose];
                 break;
             case CIAddVideo:
                 if (switchState == YES) [config setActivityAddDefaultVideo:YES];
                 else [config setActivityAddDefaultVideo:NO];
-                [config setNumberOfDefaultVideos:numberOfThose];
                 break;
             case CIAddActionLink:
                 if (switchState == YES) [config setActivityAddDefaultActionLinks:YES];
                 else [config setActivityAddDefaultActionLinks:NO];
-                [config setNumberOfDefaultActionLinks:numberOfThose];
                 break;
             case CIAddProperties:
                 if (switchState == YES) [config setActivityAddDefaultProperties:YES];
@@ -259,14 +248,6 @@ typedef enum
             [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
                 [self.navigationController pushViewController:startTestViewController animated:YES];
 }
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 #pragma mark -
 #pragma mark Picker set-up methods
@@ -435,42 +416,17 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
                  initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
                                              reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
-
-        cell.previewStyle = TCTableViewCellPreviewStyleSquare;
-
-        if (indexPath.row >= CIAddImage && indexPath.row <= CIAddActionLink)
-        {
-            UITextField *cellPreviewTextField = [[[UITextField alloc] initWithFrame:CGRectMake(0, 0, 27, 27)] autorelease];
-
-            [cellPreviewTextField setBorderStyle:UITextBorderStyleBezel];
-            [cellPreviewTextField setKeyboardType:UIKeyboardTypePhonePad];
-            [cellPreviewTextField setReturnKeyType:UIReturnKeyDone];
-            [cellPreviewTextField setClearsOnBeginEditing:YES];
-            [cellPreviewTextField setFont:[UIFont systemFontOfSize:14.0]];
-
-            [cellPreviewTextField addTarget:cell
-                                     action:@selector(previewChanged:)
-                           forControlEvents:UIControlEventEditingChanged | UIControlEventEditingDidEnd |
-                                                    UIControlEventEditingDidEndOnExit];
-
-            [cell.cellPreview addSubview:cellPreviewTextField];
-        }
-
-        cell.tag = CELL_TAG_OFFSET + indexPath.row;
-        cell.delegate = self;
-
-        [cell.cellBorder setHidden:YES];
-
     }
 
-    UITextField *cellPreviewTextField = ([[cell.cellPreview subviews] count]) ?
-            [[cell.cellPreview subviews] objectAtIndex:0] : nil;
+    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 2)];
+    cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 2) + 1)];
 
-    cell.cellTitle.text       = [cellTitles objectAtIndex:(indexPath.row * 2)];
-    cell.cellSubtitle.text    = [cellTitles objectAtIndex:((indexPath.row * 2) + 1)];
-    cellPreviewTextField.text =
-            [NSString stringWithFormat:@"%d",
-                    [((NSNumber*)[cellPreviewTextFieldNumbers objectAtIndex:indexPath.row]) integerValue]];
+    cell.previewStyle = TCTableViewCellPreviewStyleSquare;
+
+    cell.tag = CELL_TAG_OFFSET + indexPath.row;
+    cell.delegate = self;
+
+    [cell.cellBorder setHidden:YES];
 
     return cell;
 }
@@ -483,59 +439,27 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
         [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 }
 
-- (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell previewDidChange:(UIView*)cellPreview
-{
-    NSInteger cellIndex = cell.tag - CELL_TAG_OFFSET;
-
-    UITextField *cellPreviewTextField = ((UITextField *)[[cellPreview subviews] objectAtIndex:0]);
-
-    [cellPreviewTextField removeTarget:cell
-                             action:@selector(previewChanged:)
-                   forControlEvents:UIControlEventEditingChanged];
-
-    NSString *startText = cellPreviewTextField.text;
-
-    if (!startText || [startText isEqualToString:@""])
-        startText = @"1";
-
-    NSString *lastCharacter = [startText substringFromIndex:([startText length] - 1)];
-
-    if ([lastCharacter rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location == NSNotFound)
-        lastCharacter = [startText substringToIndex:1];
-
-    NSInteger number = [lastCharacter integerValue];
-
-    if (cellIndex < [cellPreviewTextFieldNumbers count])
-        [cellPreviewTextFieldNumbers replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithInteger:number]];
-
-    cellPreviewTextField.text = lastCharacter;
-
-    [cellPreviewTextField addTarget:cell
-                             action:@selector(previewChanged:)
-                   forControlEvents:UIControlEventEditingChanged];
-
-//    DLog(@"text field text: %@", lastCharacter);
-}
-
 #pragma mark -
 #pragma mark Memory management
 
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    for (NSUInteger i = CIAddImage; i <= CIAddActionLink; i++)
-        [[[((TestConfigurationTableViewCell*)
-            [table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]])
-                .cellPreview subviews] objectAtIndex:0] resignFirstResponder];
-
+/*
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
-
+*/
 /*
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
 */
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (config.iPad)
+        return YES;
+
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -562,7 +486,6 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     [sliderDivider release];
     [sliderButton release];
 
-    [cellPreviewTextFieldNumbers release];
     [super dealloc];
 }
 

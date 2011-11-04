@@ -20,6 +20,8 @@
 {
     [super viewDidLoad];
 
+    config = [ConfigurationData sharedConfigurationData];
+
     self.navigationItem.rightBarButtonItem =
             [[[UIBarButtonItem alloc] initWithTitle:@"Next"
                                               style:UIBarButtonItemStyleDone
@@ -48,14 +50,14 @@
     [super viewDidDisappear:animated];
 }
 */
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (config.iPad)
+        return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
-
 
 #pragma mark -
 #pragma mark Table view data source

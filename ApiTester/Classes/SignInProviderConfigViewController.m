@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "SignInProviderConfigViewController.h"
+
 
 @implementation SignInProviderConfigViewController
 
@@ -217,13 +219,14 @@ typedef enum
     [super viewDidDisappear:animated];
 }
 */
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (config.iPad)
+        return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
 
 #pragma mark -
 #pragma mark Table view data source
@@ -267,7 +270,7 @@ typedef enum
     if (indexPath.row == CIExcludeProviders)//([cellTitles count] / 3) - 1)
     {
         cell.previewStyle = TCTableViewCellPreviewStyleCustom;
-        [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
+        [cell.cellPreview setBackgroundImage:nil forState:UIControlStateNormal];
         [cell.cellPreview addSubview:excludeProvidersView];
     }
     else

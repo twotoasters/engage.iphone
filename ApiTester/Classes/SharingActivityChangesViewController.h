@@ -16,9 +16,6 @@
                                                                     UIPickerViewDataSource, UIPickerViewDelegate,
                                                                     UITableViewDataSource, UITableViewDelegate>
 {
-    ConfigurationData *config;
-    NSArray           *cellTitles;
-
     UIPickerView *picker;
     UITableView  *table;
     UIImageView  *thinDivider;
@@ -27,7 +24,9 @@
 
     NSMutableArray *activityArray;
     NSMutableArray *cellSwitchStates;
-    NSMutableArray *cellPreviewTextFieldNumbers;
+
+    NSArray *cellTitles;
+    ConfigurationData *config;
 
     BOOL sliderUp;
 }

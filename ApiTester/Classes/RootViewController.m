@@ -133,13 +133,13 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (config.iPad)
+        return YES;
+
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
 
 #pragma mark -
 #pragma mark Table view delegate

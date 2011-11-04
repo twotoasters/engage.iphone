@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ConfigurationData.h"
 
 
-@interface SharingCustomInterfaceViewController : UITableViewController {
-
+@interface SharingCustomInterfaceViewController : UITableViewController
+{
+    ConfigurationData *config;
 }
 
 @end

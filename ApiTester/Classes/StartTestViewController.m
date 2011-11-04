@@ -136,6 +136,8 @@
 
 - (void)libraryDialogClosed
 {
+    libraryDialogShowing = NO;
+
     [self.navigationItem setRightBarButtonItem:nil animated:YES];
 
     [UIView beginAnimations:@"listener_disappear" context:nil];
@@ -187,13 +189,28 @@
     [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(fadeOutToast) userInfo:nil repeats:NO];
 }
 
+enum
+{
+    NRLibraryNavigationController = 0,
+    NRApplicationNavigationController,
+    NRCustomNavigationController,
+} NRNavigationRadioIndex;
+
+enum
+{
+    PDRModalPadDisplay = 0,
+    PDRPopoverPadDisplay,
+} PDRPadDisplayRadioIndex;
+
 - (void)startTest
 {
-    if (navigationRadio.selectedSegmentIndex == 0)
+    libraryDialogShowing = YES;
+
+    if (navigationRadio.selectedSegmentIndex == NRLibraryNavigationController)
         [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
-    else if (navigationRadio.selectedSegmentIndex == 1)
+    else if (navigationRadio.selectedSegmentIndex == NRApplicationNavigationController)
         [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
-    else
+    else /* (navigationRadio.selectedSegmentIndex == NRCustomNavigationController) */
         [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
 }
 
@@ -203,20 +220,24 @@
 
     if (config.iPad)
     {
-        if (padDisplayRadio.selectedSegmentIndex == 0)
+        if (padDisplayRadio.selectedSegmentIndex == PDRModalPadDisplay)
             [self startTest];
-        else
+        else /* (padDisplayRadio.selectedSegmentIndex == PDRPopoverPadDisplay) */
             [self startPopoverPressListener];
     }
     else
     {
+        if (UIDeviceOrientationIsLandscape(self.interfaceOrientation) &&
+            navigationRadio.selectedSegmentIndex != NRApplicationNavigationController)
+                [config addResultObjectToResultsArray:
+                    [ResultObject resultObjectWithTimestamp:nil
+                                                    summary:@"Landscape mode not supported by library UI unless pushed onto the application's navigation controller"
+                                                     detail:@"The library UI does not support landscape mode if it is not pushed onto the application's navigation controller"
+                                              andResultStat:RSWarn]
+                                        andLogMessage:@"Landscape mode not supported by library UI unless pushed onto the application's navigation controller"
+                                               ofType:LMWarn];
+
         [self startTest];
-//        if (navigationRadio.selectedSegmentIndex == 0)
-//            [config startTestWithNavigationController:CDNavigationControllerTypeLibrary];
-//        else if (navigationRadio.selectedSegmentIndex == 1)
-//            [config startTestWithNavigationController:CDNavigationControllerTypeApplication];
-//        else
-//            [config startTestWithNavigationController:CDNavigationControllerTypeCustom];
     }
 }
 
@@ -359,13 +380,16 @@
     return cell;
 }
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+//    if (config.iPad)
+    if (!config.iPad && libraryDialogShowing && navigationRadio.selectedSegmentIndex != NRApplicationNavigationController)
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+
+    return YES;
+
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
 
 - (void)viewWillDisappear:(BOOL)animated
 {

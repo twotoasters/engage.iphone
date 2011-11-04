@@ -130,11 +130,6 @@
 @synthesize activityAddDefaultEmailObject;
 @synthesize activityAddDefaultSmsObject;
 
-@synthesize numberOfDefaultImages;
-@synthesize numberOfDefaultSongs;
-@synthesize numberOfDefaultVideos;
-@synthesize numberOfDefaultActionLinks;
-
 @synthesize activityAction;
 @synthesize activityUrl;
 @synthesize activityTitle;
@@ -435,9 +430,9 @@ static NSString * const defaultEmailHtmlBody  =
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Attempt to add image failed"
                                                                              detail:[NSString stringWithFormat:
-@"You tried to create a JRImageMediaObject, but result was nil.  \n\
-No image was added to the media array. \n\
-This may or may not have been your intention.\n\
+@"You tried to create a JRImageMediaObject, but result was nil.  \n \
+No image was added to the media array. \n \
+This may or may not have been your intention.\n \
 src : %@ \n href: %@\n", src, href]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRImageMediaObject, but result was nil.  No image was added to the media array."
@@ -461,9 +456,9 @@ src : %@ \n href: %@\n", src, href]
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Attempt to add song failed"
                                                                              detail:[NSString stringWithFormat:
-@"You tried to create a JRMp3MediaObject, but result was nil.  \n\
-No song was added to the media array. \n\
-This may or may not have been your intention.\n\
+@"You tried to create a JRMp3MediaObject, but result was nil.  \n \
+No song was added to the media array. \n \
+This may or may not have been your intention.\n \
 src   : %@ \n title : %@ \n artist: %@ \n album : %@\n", src, title, artist, album]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRMp3MediaObject, but result was nil.  No song was added to the media array."
@@ -489,9 +484,9 @@ src   : %@ \n title : %@ \n artist: %@ \n album : %@\n", src, title, artist, alb
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Attempt to add video failed"
                                                                              detail:[NSString stringWithFormat:
-@"You tried to create a JRFlashMediaObject, but result was nil.  \n\
-No video was added to the media array. \n\
-This may or may not have been your intention.\n\
+@"You tried to create a JRFlashMediaObject, but result was nil.  \n \
+No video was added to the media array. \n \
+This may or may not have been your intention.\n \
 swfsrc        : %@ \n imgsrc        : %@ \n width         : %u \n height        : %u \n expandedWidth : %u \n expandedHeight: %u\n",
 swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
@@ -523,9 +518,9 @@ swfsrc, imgsrc, width, height, expandedWidth, expandedHeight]
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Attempt to add email failed"
                                                                              detail:[NSString stringWithFormat:
-@"You tried to create a JREmailObject, but result was nil.  \n\
-No email was added to the activity. \n\
-This may or may not have been your intention.\n\
+@"You tried to create a JREmailObject, but result was nil.  \n \
+No email was added to the activity. \n \
+This may or may not have been your intention.\n \
 subject: %@ \n body:    %@\n", subject, body]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JREmailObject, but result was nil. This may or may not have been your intention."
@@ -543,9 +538,9 @@ subject: %@ \n body:    %@\n", subject, body]
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Attempt to add sms failed"
                                                                              detail:[NSString stringWithFormat:
-@"You tried to create a JRSmsObject, but result was nil.  \n\
-No sms was added to the activity. \n\
-This may or may not have been your intention.\n\
+@"You tried to create a JRSmsObject, but result was nil.  \n \
+No sms was added to the activity. \n \
+This may or may not have been your intention.\n \
 message: %@\n",message]
                                                                       andResultStat:RSBadParametersRecoverableFailure]
                               andLogMessage:@"You tried to create a JRSmsObject, but result was nil. This may or may not have been your intention."
@@ -573,8 +568,8 @@ message: %@\n",message]
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Images, songs, and video added to activity"
                                                                              detail:
-@"You have added images, songs, and video to the activity. \n\
-Only the images will be used.  The songs and video will be ignored. \n\
+@"You have added images, songs, and video to the activity. \n \
+Only the images will be used.  The songs and video will be ignored. \n \
 This is a property off the providers."
                                                                       andResultStat:RSWarn]
                               andLogMessage:@"Images, songs, and video added to activity. Only the images will be used; the songs and video will be ignored."
@@ -584,8 +579,8 @@ This is a property off the providers."
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Images and songs added to activity"
                                                                              detail:
-@"You have added images and songs to the activity. \n\
-Only the images will be used.  The songs will be ignored. \n\
+@"You have added images and songs to the activity. \n \
+Only the images will be used.  The songs will be ignored. \n \
 This is a property off the providers."
                                                                       andResultStat:RSWarn]
                               andLogMessage:@"Images and songs added to activity. Only the images will be used; the songs will be ignored."
@@ -595,8 +590,8 @@ This is a property off the providers."
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Images and video added to activity"
                                                                              detail:
-@"You have added images and video to the activity. \n\
-Only the images will be used.  The video will be ignored. \n\
+@"You have added images and video to the activity. \n \
+Only the images will be used.  The video will be ignored. \n \
 This is a property off the providers."
                                                                       andResultStat:RSWarn]
                               andLogMessage:@"Images and video added to activity. Only the images will be used; the video will be ignored."
@@ -606,53 +601,13 @@ This is a property off the providers."
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Songs and video added to activity"
                                                                              detail:
-@"You have added songs and video to the activity. \n\
-Only the songs will be used.  The video will be ignored. \n\
+@"You have added songs and video to the activity. \n \
+Only the songs will be used.  The video will be ignored. \n \
 This is a property off the providers."
                                                                       andResultStat:RSWarn]
                               andLogMessage:@"Songs and video added to activity. Only the songs will be used; the video will be ignored."
                                      ofType:LMWarn];
 
-
-    if (numImages)
-    {
-        if (numImages > 5)
-            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                summary:@"Max number of images exceded"
-                                                                                 detail:
-@"You have added more than 5 images to the activity. \n\
-Facebook only uses 5, and other providers may use less. \n\
-This is a property off the providers."
-                                                                      andResultStat:RSWarn]
-                              andLogMessage:@"Max number of images exceded.  Facebook only allows 5."
-                                     ofType:LMWarn];
-    }
-    else if (numSongs)
-    {
-        if (numSongs > 1)
-            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                summary:@"Max number of songs exceded"
-                                                                                 detail:
-@"You have added more than 1 song to the activity. \n\
-Facebook only uses 1, and other providers may not use any. \n\
-This is a property off the providers."
-                                                                      andResultStat:RSWarn]
-                              andLogMessage:@"Max number of songs exceded.  Facebook only allows 1."
-                                     ofType:LMWarn];
-    }
-    else if (numVideos)
-    {
-        if (numVideos > 1)
-            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                summary:@"Max number of videos exceded"
-                                                                                 detail:
-@"You have added more than 1 video to the activity. \n\
-Facebook only uses 1, and other providers may not use any. \n\
-This is a property off the providers."
-                                                                      andResultStat:RSWarn]
-                              andLogMessage:@"Max number of videos exceded.  Facebook only allows 1."
-                                     ofType:LMWarn];
-    }
 }
 
 - (void)setPopoverRect:(CGPoint)rect andArrowDirection:(UIPopoverArrowDirection)arrowDirection
@@ -702,49 +657,6 @@ This is a property off the providers."
         [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
 }
 
-
-
-- (void)add:(NSInteger)number objects:(NSObject *)object toArray:(NSMutableArray *)array
-{
-    for (NSInteger i = 0; i < number; i++)
-    {
-        if (i == 0)
-           [array addObject:object];
-
-        else
-        {
-            if ([object isKindOfClass:[JRImageMediaObject class]])
-            {
-                JRImageMediaObject *imageMediaObject =
-                                           [JRImageMediaObject imageMediaObjectWithSrc:defaultImageSrc
-                                                                               andHref:
-                                   [NSString stringWithFormat:@"http://www.google.com/search?q=%d&ie=UTF-8&hl=en", i]];
-
-                if (imageMediaObject)
-                    [array addObject:imageMediaObject];
-            }
-            else if ([object isKindOfClass:[JRMp3MediaObject class]])
-            {
-                ((JRMp3MediaObject *)object).title = [NSString stringWithFormat:@"Song Number %d", i];
-                [array addObject:object];
-            }
-            else if ([object isKindOfClass:[JRFlashMediaObject class]])
-            {
-                [array addObject:[JRFlashMediaObject flashMediaObjectWithSwfsrc:
-                                 [defaultVideoSwfsrc stringByReplacingOccurrencesOfString:@"25313324"
-                                                                               withString:[NSString stringWithFormat:@"2531332%d", i]]
-                                                                      andImgsrc:defaultVideoImgsrc]];
-
-            }
-            else if ([object isKindOfClass:[JRActionLink class]])
-            {
-                ((JRActionLink *)object).text = [NSString stringWithFormat:@"%@ %d", defaultActionLinkText, i];
-                [array addObject:object];
-            }
-        }
-    }
-}
-
 - (void)buildActivity
 {
     if (!activity)
@@ -760,8 +672,8 @@ This is a property off the providers."
             [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                                 summary:@"Attempt to add activity failed"
                                                                                  detail:[NSString stringWithFormat:
-@"You tried to create a JRActivityObject, but result was nil.  \n\
-Without an activity, sharing will not work. \n\
+@"You tried to create a JRActivityObject, but result was nil.  \n \
+Without an activity, sharing will not work. \n \
 This may or may not have been your intention.\n"]
                                                                           andResultStat:RSBadParametersPermanentFailure]
                                   andLogMessage:@"You tried to create a JRActivityObject, but result was nil.  Without an activity, sharing will not work. This may or may not have been your intention."
@@ -780,9 +692,8 @@ This may or may not have been your intention.\n"]
         [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                             summary:@"Sharing an activity with no url"
                                                                              detail:
-@"The activity you are sharing does not have a url. \n\
-If you share an activity without a url, some providers will thunk to set_status, \
-and not share any of the rich data (e.g., images, the title and description, etc.). \n\
+@"The activity you are sharing does not have a url. \n \
+If you share an activity without a url, some providers will thunk to set_status, and not share any of the rich data (e.g., images, the title and description, etc.). \n \
 This may have been intentional or this may have been caused by passing an invalid url."
                                                                       andResultStat:RSInfo]
                               andLogMessage:@"Sharing an activity with no url. This may have been intentional or this may have been caused by passing an invalid url."
@@ -806,13 +717,13 @@ This may have been intentional or this may have been caused by passing an invali
             activityMediaArray = [[NSMutableArray alloc] initWithCapacity:5];
 
         if (activityAddDefaultImage)
-            [self add:numberOfDefaultImages objects:defaultActivityImage toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivityImage];
+            [activityMediaArray addObject:defaultActivityImage];
 
         if (activityAddDefaultSong)
-            [self add:numberOfDefaultSongs objects:defaultActivitySong toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivitySong];
+            [activityMediaArray addObject:defaultActivitySong];
 
         if (activityAddDefaultVideo)
-            [self add:numberOfDefaultVideos objects:defaultActivityVideo toArray:activityMediaArray];//[activityMediaArray addObject:defaultActivityVideo];
+            [activityMediaArray addObject:defaultActivityVideo];
     }
 
     [self checkActivityMediaArray:activityMediaArray];
@@ -822,19 +733,7 @@ This may have been intentional or this may have been caused by passing an invali
         if (!activityActionLinksArray)
             activityActionLinksArray = [[NSMutableArray alloc] initWithCapacity:1];
 
-        [self add:numberOfDefaultActionLinks objects:defaultActivityActionLink toArray:activityActionLinksArray];//[activityActionLinksArray addObject:defaultActivityActionLink];
-
-        if (numberOfDefaultActionLinks > 1)
-            [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
-                                                                                summary:@"Max number of action links exceded"
-                                                                                 detail:
-@"You have added more than 1 action link to the activity. \n\
-Facebook only uses 1, and other providers may not use any. \n\
-This is a property off the providers."
-                                                                          andResultStat:RSWarn]
-                                  andLogMessage:@"Max number of songs exceded.  Facebook only allows 1."
-                                         ofType:LMWarn];
-
+        [activityActionLinksArray addObject:defaultActivityActionLink];
     }
 
     if (activityAddDefaultProperties)
@@ -1017,8 +916,8 @@ This is a property off the providers."
 - (void)jrEngageDialogDidFailToShowWithError:(NSError*)error
 {
     NSString *message = [NSString stringWithFormat:
-@"Library dialog failed to show. \n\
-                 error     : %@ \n\
+@"Library dialog failed to show. \n \
+                 error     : %@ \n \
                  error code: %u", [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
@@ -1049,7 +948,7 @@ This is a property off the providers."
 - (void)jrAuthenticationDidSucceedForUser:(NSDictionary*)auth_info forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"Authentication completed for user. \n\
+@"Authentication completed for user. \n \
 user: \n %@ \n provider: %@", [auth_info description], provider];
 
     [self addResultObjectToResultsArray:
@@ -1067,8 +966,8 @@ user: \n %@ \n provider: %@", [auth_info description], provider];
 - (void)jrAuthenticationDidFailWithError:(NSError*)error forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"Authentication failed for provider: %@. \n\
-                  error:      %@ \n\
+@"Authentication failed for provider: %@. \n \
+                  error:      %@ \n \
                   error code: %u", provider, [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
@@ -1087,7 +986,7 @@ user: \n %@ \n provider: %@", [auth_info description], provider];
                               andPayload:(NSData*)tokenUrlPayload forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"Successfully reached token url: %@. \n\
+@"Successfully reached token url: %@. \n \
 token url response: \n %@ \n provider: %@",
 tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStringEncoding] autorelease], provider];
 
@@ -1104,9 +1003,9 @@ tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStrin
                            forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"Token url failed for provider: %@. \n\
-                  token url:  %@ \n\
-                  error:      %@ \n\
+@"Token url failed for provider: %@. \n \
+                  token url:  %@ \n \
+                  error:      %@ \n \
                   error code: %u", provider, tokenUrl, [error localizedDescription], [error code]];
 
     [self addResultObjectToResultsArray:
@@ -1154,7 +1053,7 @@ tokenUrl,  [[[NSString alloc] initWithData:tokenUrlPayload encoding:NSASCIIStrin
 - (void)jrSocialDidPublishActivity:(JRActivityObject*)theActivity forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"User has successfully shared the activity for provider: %@ \n\
+@"User has successfully shared the activity for provider: %@ \n \
 activity: \n %@", provider, [[theActivity dictionaryForObject] description]];
 
     [self addResultObjectToResultsArray:
@@ -1171,7 +1070,7 @@ activity: \n %@", provider, [[theActivity dictionaryForObject] description]];
                        forProvider:(NSString*)provider
 {
     NSString *message = [NSString stringWithFormat:
-@"The activity failed to share for provider: %@. \n\
+@"The activity failed to share for provider: %@. \n \
 activity: \n %@ \n error:      %@ \n error code: %u",
 provider, [[theActivity dictionaryForObject] description], [error localizedDescription], [error code]];
 
@@ -1200,7 +1099,7 @@ provider, [[theActivity dictionaryForObject] description], [error localizedDescr
             [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
                                                                                 summary:@"Can't use the application's nav controller on the iPad"
                                                                                  detail:
-@"You are trying to use the application's navigation controller on the iPad. \n\
+@"You are trying to use the application's navigation controller on the iPad. \n \
 This is not allowed.  The library will default to using its own navigation controller or the custom navigation controller."
                                                                           andResultStat:RSWarn]
                                   andLogMessage:@"You are trying to use the application's navigation controller on the iPad. This is not allowed. The library will default to using its own navigation controller or the custom navigation controller."

@@ -14,11 +14,8 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "SignInCustomInterfaceViewController.h"
 #import "ConfigurationData.h"
-#import "TestConfigurationTableViewCell.h"
 
 @implementation SignInCustomInterfaceViewController
 
@@ -84,13 +81,14 @@
     [super viewDidDisappear:animated];
 }
 */
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (config.iPad)
+        return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-*/
 
 #pragma mark -
 #pragma mark Table view data source
@@ -120,64 +118,53 @@ typedef enum
 
 - (void)setPreviewForCell:(TestConfigurationTableViewCell*)cell atIndex:(CellIndex)cellIndex
 {
-
-    UIButton *cellPreviewButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 300, 24)] autorelease];
-
-    [cellPreviewButton setBackgroundImage:[UIImage imageNamed:@"enabledLightGray"] forState:UIControlStateNormal];
-    [cellPreviewButton setEnabled:NO];
-    [cellPreviewButton.titleLabel setFont:[UIFont boldSystemFontOfSize:12.0]];
-    [cellPreviewButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [cellPreviewButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-
     switch (cellIndex)
     {
         case CIAuthenticationBackgroundColor:
-            [cellPreviewButton setImage:[UIImage imageNamed:@"enabledCyan"] forState:UIControlStateNormal];
+            [cell.cellPreview setImage:[UIImage imageNamed:@"enabledCyan"] forState:UIControlStateNormal];
             break;
         case CIAuthenticationBackgroundImageView:
-            [cellPreviewButton setImage:[UIImage imageNamed:@"enabledWeave"] forState:UIControlStateNormal];
+            [cell.cellPreview setImage:[UIImage imageNamed:@"enabledWeave"] forState:UIControlStateNormal];
             break;
         case CIProviderTableTitleView:
-            [cellPreviewButton setTitle:@"Custom Title View" forState:UIControlStateNormal];
-            [cellPreviewButton.titleLabel setBackgroundColor:[UIColor magentaColor]];
-            [cellPreviewButton.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
+            [cell.cellPreview setTitle:@"Custom Title View" forState:UIControlStateNormal];
+            [cell.cellPreview.titleLabel setBackgroundColor:[UIColor magentaColor]];
+            [cell.cellPreview.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
             break;
         case CIProviderTableTitleString:
-            [cellPreviewButton setTitle:@"Custom Title String" forState:UIControlStateNormal];
+            [cell.cellPreview setTitle:@"Custom Title String" forState:UIControlStateNormal];
             break;
         case CIProviderTableHeaderView:
-            [cellPreviewButton setTitle:@"Custom Table Header View" forState:UIControlStateNormal];
-            [cellPreviewButton.titleLabel setBackgroundColor:[UIColor yellowColor]];
-            [cellPreviewButton.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
-            [cellPreviewButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+            [cell.cellPreview setTitle:@"Custom Table Header View" forState:UIControlStateNormal];
+            [cell.cellPreview.titleLabel setBackgroundColor:[UIColor yellowColor]];
+            [cell.cellPreview.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
+            [cell.cellPreview setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
             break;
         case CIProviderTableFooterView:
-            [cellPreviewButton setTitle:@"Custom Table Footer View" forState:UIControlStateNormal];
-            [cellPreviewButton.titleLabel setBackgroundColor:[UIColor greenColor]];
-            [cellPreviewButton.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
-            [cellPreviewButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+            [cell.cellPreview setTitle:@"Custom Table Footer View" forState:UIControlStateNormal];
+            [cell.cellPreview.titleLabel setBackgroundColor:[UIColor greenColor]];
+            [cell.cellPreview.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
+            [cell.cellPreview setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
             break;
         case CIProviderTableSectionHeaderView:
-            [cellPreviewButton setTitle:@"Custom Section Header View" forState:UIControlStateNormal];
-            [cellPreviewButton.titleLabel setBackgroundColor:[UIColor purpleColor]];
-            [cellPreviewButton.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
+            [cell.cellPreview setTitle:@"Custom Section Header View" forState:UIControlStateNormal];
+            [cell.cellPreview.titleLabel setBackgroundColor:[UIColor purpleColor]];
+            [cell.cellPreview.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
             break;
         case CIProviderTableSectionFooterView:
-            [cellPreviewButton setTitle:@"Custom Section Footer View" forState:UIControlStateNormal];
-            [cellPreviewButton.titleLabel setBackgroundColor:[UIColor blueColor]];
-            [cellPreviewButton.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
+            [cell.cellPreview setTitle:@"Custom Section Footer View" forState:UIControlStateNormal];
+            [cell.cellPreview.titleLabel setBackgroundColor:[UIColor blueColor]];
+            [cell.cellPreview.titleLabel setFont:[UIFont fontWithName:@"MarkerFelt-Wide" size:12.0]];
             break;
         case CIProviderTableSectionHeaderTitleString:
-            [cellPreviewButton setTitle:@"Custom Section Header String" forState:UIControlStateNormal];
+            [cell.cellPreview setTitle:@"Custom Section Header String" forState:UIControlStateNormal];
             break;
         case CIProviderTableSectionFooterTitleString:
-            [cellPreviewButton setTitle:@"Custom Section Footer String" forState:UIControlStateNormal];
+            [cell.cellPreview setTitle:@"Custom Section Footer String" forState:UIControlStateNormal];
             break;
         default:
             break;
     }
-
-    [cell.cellPreview addSubview:cellPreviewButton];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

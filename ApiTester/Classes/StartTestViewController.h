@@ -34,6 +34,8 @@
 
     CGPoint padDisplayLocation;
     UIPopoverArrowDirection arrowDirection;
+
+    BOOL libraryDialogShowing;
 }
 @property (nonatomic, retain) IBOutlet UIButton           *startButton;
 @property (nonatomic, retain) IBOutlet UILabel            *padDisplayLabel;

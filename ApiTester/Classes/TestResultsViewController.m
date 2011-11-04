@@ -222,7 +222,9 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
+    if (config.iPad)
+        return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
