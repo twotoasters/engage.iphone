@@ -35,6 +35,7 @@
 
 #import "JRProvidersController.h"
 #import "JREngage+CustomInterface.h"
+#import "JRSessionData.h"
 
 #ifdef DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
@@ -328,7 +329,9 @@ Please try again later."
 {
 //    DLog(@"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 //    return YES;
-    
+    if (sessionData.canRotate)
+        return YES;
+
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
