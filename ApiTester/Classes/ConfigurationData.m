@@ -24,7 +24,6 @@
 
 
 #import "ConfigurationData.h"
-#import "CustomViewBuilder.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -977,6 +976,16 @@ This is a property off the providers."
         }
         else if (signInTestType == CDSignInTestTypeProviderConfiguration)
         {
+            if (signinStraightToProvider && goStraightToProvider && ![goStraightToProvider isEqualToString:@""])
+            {
+                DLog(@"provider: %@", goStraightToProvider);
+                [jrEngage setCustomInterfaceDefaults:customInterface];
+                [jrEngage showAuthenticationDialogForProvider:goStraightToProvider];
+                [jrEngage setCustomInterfaceDefaults:nil];
+
+                return;
+            }
+
             if (signinAddNativeLogin)
             {
                 UINavigationController *navigationController;

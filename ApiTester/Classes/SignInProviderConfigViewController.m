@@ -5,15 +5,25 @@
 //  Created by lilli on 9/26/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
+#ifdef DEBUG
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define DLog(...)
+#endif
+
+#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #import "SignInProviderConfigViewController.h"
 
 @implementation SignInProviderConfigViewController
 
 
-#define PROVIDER_LABEL_OFFSET  100
-#define PROVIDER_SWITCH_OFFSET 200
-#define CELL_TAG_OFFSET        300
+#define CELL_TAG_OFFSET                 100
+#define EXCLUDED_PROVIDER_LABEL_OFFSET  200
+#define EXCLUDED_PROVIDER_SWITCH_OFFSET 300
+#define DIRECT_PROVIDER_LABEL_OFFSET    400
+#define DIRECT_PROVIDER_SWITCH_OFFSET   500
+
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -28,6 +38,7 @@
     cellTitles = [[NSArray alloc] initWithObjects:
                     @"Add Native Login", @"Add custom login above the list of providers", @"sl",
                     @"Always Force Reauthentication", @"Force the user to always reenter his login credentials", @"sl",
+                    @"Direct Sign-In", @"Choose a provider with which you can authenticate directly", @"sl",
 //                    @"Skip The User Landing Page", @"Always open to the list of providers first",  @"sl",
                     @"Exclude Providers", @"Select providers below that you wish to exclude", @"sl", nil];
 
@@ -36,30 +47,47 @@
         [cellSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
     configuredProviders           = [[NSArray alloc] initWithArray:[[JRSessionData jrSessionData] basicProviders]];
+
     excludeProvidersView          = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [configuredProviders count] * 35)];
     excludedProvidersSwitchStates = [[NSMutableArray alloc] initWithCapacity:[configuredProviders count]];
 
+    directProvidersView           = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, [configuredProviders count] * 35)];
+    directProvidersSwitchStates   = [[NSMutableArray alloc] initWithCapacity:[configuredProviders count]];
+
     for (NSUInteger i = 0; i < [configuredProviders count]; i++)
     {
-        UILabel *providerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), 125, 35)] autorelease];
+        UILabel *dProviderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), 125, 35)] autorelease];
+        UILabel *eProviderLabel = [[[UILabel alloc] initWithFrame:CGRectMake(25, (i * 35), 125, 35)] autorelease];
 
-        providerLabel.backgroundColor = [UIColor clearColor];
-        providerLabel.font = [UIFont systemFontOfSize:15.0];
-        providerLabel.text = [configuredProviders objectAtIndex:i];
-        providerLabel.tag  = PROVIDER_LABEL_OFFSET + i;
+        dProviderLabel.backgroundColor = eProviderLabel.backgroundColor = [UIColor clearColor];
+        dProviderLabel.font            = eProviderLabel.font            = [UIFont systemFontOfSize:15.0];
+        dProviderLabel.text            = eProviderLabel.text            = [configuredProviders objectAtIndex:i];
 
-        UISwitch *providerSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(155, (i * 35) + 4, 97, 27)] autorelease];
+        dProviderLabel.tag = DIRECT_PROVIDER_LABEL_OFFSET   + i;
+        eProviderLabel.tag = EXCLUDED_PROVIDER_LABEL_OFFSET + i;
 
-        [providerSwitch addTarget:self
-                           action:@selector(switchChanged:)
-                 forControlEvents:UIControlEventValueChanged];
+        UISwitch *dProviderSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(155, (i * 35) + 4, 97, 27)] autorelease];
+        UISwitch *eProviderSwitch = [[[UISwitch alloc] initWithFrame:CGRectMake(155, (i * 35) + 4, 97, 27)] autorelease];
 
-        providerSwitch.tag = PROVIDER_SWITCH_OFFSET + i;
+        [dProviderSwitch addTarget:self
+                            action:@selector(directSwitchChanged:)
+                  forControlEvents:UIControlEventValueChanged];
 
+        [eProviderSwitch addTarget:self
+                            action:@selector(excludeSwitchChanged:)
+                  forControlEvents:UIControlEventValueChanged];
+
+        dProviderSwitch.tag = DIRECT_PROVIDER_SWITCH_OFFSET   + i;
+        eProviderSwitch.tag = EXCLUDED_PROVIDER_SWITCH_OFFSET + i;
+
+        [directProvidersSwitchStates   insertObject:[NSNumber numberWithBool:NO] atIndex:i];
         [excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:i];
 
-        [excludeProvidersView addSubview:providerLabel];
-        [excludeProvidersView addSubview:providerSwitch];
+        [directProvidersView addSubview:dProviderLabel];
+        [directProvidersView addSubview:dProviderSwitch];
+
+        [excludeProvidersView addSubview:eProviderLabel];
+        [excludeProvidersView addSubview:eProviderSwitch];
     }
 
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
@@ -72,13 +100,45 @@
                                              action:@selector(next:)] autorelease];
 }
 
-- (void)switchChanged:(id)sender
+- (void)directSwitchChanged:(id)sender
 {
-    UISwitch *sw = (UISwitch*)sender;
-    NSUInteger index = ((NSUInteger)sw.tag - PROVIDER_SWITCH_OFFSET);
+    UISwitch  *sw    = (UISwitch*)sender;
+    NSUInteger index = ((NSUInteger)sw.tag - DIRECT_PROVIDER_SWITCH_OFFSET);
 
     UILabel *providerLabel =
-                (UILabel*)[excludeProvidersView viewWithTag:index + PROVIDER_LABEL_OFFSET];
+                (UILabel*)[excludeProvidersView viewWithTag:index + DIRECT_PROVIDER_LABEL_OFFSET];
+
+    if (sw.on == YES)
+    {
+        providerLabel.textColor = [UIColor blackColor];
+
+        NSArray *directProvidersSwitchStatesCopy = [[directProvidersSwitchStates copy] autorelease];
+        for (NSUInteger i = 0; i < [directProvidersSwitchStatesCopy count]; i++)
+        {
+            if([((NSNumber*)[directProvidersSwitchStatesCopy objectAtIndex:i]) boolValue])
+            {
+                [(UISwitch *)([directProvidersView viewWithTag:(i + DIRECT_PROVIDER_SWITCH_OFFSET)]) setOn:NO animated:YES];
+                [directProvidersSwitchStates replaceObjectAtIndex:i withObject:[NSNumber numberWithBool:NO]];
+            }
+        }
+
+        [directProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:YES]];
+    }
+    else
+    {
+        providerLabel.textColor = [UIColor lightGrayColor];
+
+        [directProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
+    }
+}
+
+- (void)excludeSwitchChanged:(id)sender
+{
+    UISwitch  *sw    = (UISwitch*)sender;
+    NSUInteger index = ((NSUInteger)sw.tag - EXCLUDED_PROVIDER_SWITCH_OFFSET);
+
+    UILabel *providerLabel =
+                (UILabel*)[excludeProvidersView viewWithTag:index + EXCLUDED_PROVIDER_LABEL_OFFSET];
 
     if (sw.on == YES)
     {
@@ -87,7 +147,6 @@
                 [NSString stringWithFormat:@"%@ (excluded)", [configuredProviders objectAtIndex:index]];
 
         [excludedProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:YES]];
-        //[excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:YES] atIndex:index];
     }
     else
     {
@@ -95,7 +154,6 @@
         providerLabel.text = [configuredProviders objectAtIndex:index];
 
         [excludedProvidersSwitchStates replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:NO]];
-        //[excludedProvidersSwitchStates insertObject:[NSNumber numberWithBool:NO] atIndex:index];
     }
 }
 
@@ -103,6 +161,7 @@ typedef enum
 {
     CINativeLogin = 0,
     CIAlwaysForceReauth,
+    CIGoStraightToProvider,
 //    CISkipUserLanding,
     CIExcludeProviders,
 } CellIndex;
@@ -132,6 +191,9 @@ typedef enum
                 if (switchState == YES) [config setSigninAlwaysForceReauth:YES];
                 else [config setSigninAlwaysForceReauth:NO];
                 break;
+            case CIGoStraightToProvider:
+                if (switchState == YES) [config setSigninStraightToProvider:YES];
+                else [config setSigninStraightToProvider:NO];
 //            case CISkipUserLanding:
 //                if (switchState == YES) [config setSigninSkipUserLanding:YES];
 //                else [config setSigninSkipUserLanding:NO];
@@ -145,13 +207,32 @@ typedef enum
         }
     }
 
+    if (config.signinStraightToProvider)
+    {
+        for (NSUInteger i = 0; i < [configuredProviders count]; i++)
+        {
+            UILabel  *providerLabel  =  (UILabel*)[directProvidersView viewWithTag:i + DIRECT_PROVIDER_LABEL_OFFSET];
+            UISwitch *providerSwitch = (UISwitch*)[directProvidersView viewWithTag:i + DIRECT_PROVIDER_SWITCH_OFFSET];
+
+            if (providerSwitch.on == YES)
+                directProvider = providerLabel.text;
+
+            DLog(@"provider: %@", directProvider);
+        }
+
+        if (directProvider)
+            [config setGoStraightToProvider:directProvider];
+        else
+            [config setSigninStraightToProvider:NO];
+    }
+
     if (config.signinExcludeProviders)
     {
         excludedProviders = [NSMutableArray arrayWithCapacity:10];
 
         for (NSUInteger i = 0; i < [configuredProviders count]; i++)
         {
-            UISwitch *sw = (UISwitch*)[excludeProvidersView viewWithTag:i + PROVIDER_SWITCH_OFFSET];
+            UISwitch *sw = (UISwitch*)[excludeProvidersView viewWithTag:i + EXCLUDED_PROVIDER_SWITCH_OFFSET];
 
             if (sw.on == YES)
                 [excludedProviders addObject:[configuredProviders objectAtIndex:i]];
@@ -167,17 +248,30 @@ typedef enum
     [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 
+- (void)turnOnDirectProviderSwitches
+{
+    for (NSUInteger i = 0; i < [directProvidersSwitchStates count]; i++)
+        if([((NSNumber*)[directProvidersSwitchStates objectAtIndex:i]) boolValue])
+            [(UISwitch *)([directProvidersView viewWithTag:(i + DIRECT_PROVIDER_SWITCH_OFFSET)]) setOn:YES animated:YES];
+}
+
+- (void)turnOffDirectProviderSwitches
+{
+    for (NSUInteger i = 0; i < [directProvidersSwitchStates count]; i++)
+        [(UISwitch *)([directProvidersView viewWithTag:(i + DIRECT_PROVIDER_SWITCH_OFFSET)]) setOn:NO animated:YES];
+}
+
 - (void)turnOnExcludedProviderSwitches
 {
     for (NSUInteger i = 0; i < [excludedProvidersSwitchStates count]; i++)
         if([((NSNumber*)[excludedProvidersSwitchStates objectAtIndex:i]) boolValue])
-            [(UISwitch *)([excludeProvidersView viewWithTag:(i + PROVIDER_SWITCH_OFFSET)]) setOn:YES animated:YES];
+            [(UISwitch *)([excludeProvidersView viewWithTag:(i + EXCLUDED_PROVIDER_SWITCH_OFFSET)]) setOn:YES animated:YES];
 }
 
 - (void)turnOffExcludedProviderSwitches
 {
     for (NSUInteger i = 0; i < [excludedProvidersSwitchStates count]; i++)
-        [(UISwitch *)([excludeProvidersView viewWithTag:(i + PROVIDER_SWITCH_OFFSET)]) setOn:NO animated:YES];
+        [(UISwitch *)([excludeProvidersView viewWithTag:(i + EXCLUDED_PROVIDER_SWITCH_OFFSET)]) setOn:NO animated:YES];
 }
 
 - (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch
@@ -187,7 +281,14 @@ typedef enum
     if (cellIndex < [cellSwitchStates count])
         [cellSwitchStates replaceObjectAtIndex:(NSUInteger)cellIndex withObject:[NSNumber numberWithBool:cellSwitch.on]];
 
-    if (cellIndex == CIExcludeProviders)
+    if (cellIndex == CIGoStraightToProvider)
+    {
+        if (cellSwitch.on)
+            [self turnOnDirectProviderSwitches];
+        else
+            [self turnOffDirectProviderSwitches];
+    }
+    else if (cellIndex == CIExcludeProviders)
     {
         if (cellSwitch.on)
             [self turnOnExcludedProviderSwitches];
@@ -240,13 +341,15 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == ([cellTitles count] / 3) - 1)
+    if (indexPath.row == CIGoStraightToProvider)
+        return 65 + directProvidersView.frame.size.height;
+
+    if (indexPath.row == CIExcludeProviders)
         return 65 + excludeProvidersView.frame.size.height;
 
     return 65;
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TestConfigurationTableViewCell *cell =
@@ -261,15 +364,22 @@ typedef enum
                 autorelease];
 
         cell.cellBorder.hidden = YES;
-        cell.delegate          = self;
+
+        cell.delegate = self;
     }
 
     cell.cellTitle.text    = [cellTitles objectAtIndex:(indexPath.row * 3)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
-    if (indexPath.row == CIExcludeProviders)//([cellTitles count] / 3) - 1)
+    if (indexPath.row == CIGoStraightToProvider)
     {
-        cell.previewStyle = TCTableViewCellPreviewStyleCustom;
+        [cell setPreviewStyle:TCTableViewCellPreviewStyleCustom];
+        [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
+        [cell.cellPreview addSubview:directProvidersView];
+    }
+    else if (indexPath.row == CIExcludeProviders)
+    {
+        [cell setPreviewStyle:TCTableViewCellPreviewStyleCustom];
         [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
         [cell.cellPreview addSubview:excludeProvidersView];
     }
@@ -307,6 +417,8 @@ typedef enum
     [cellSwitchStates release];
 
     [excludedProvidersSwitchStates release];
+    [directProvidersView release];
+    [directProvidersSwitchStates release];
     [super dealloc];
 }
 

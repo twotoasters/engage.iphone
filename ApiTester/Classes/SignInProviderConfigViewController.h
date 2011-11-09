@@ -14,14 +14,19 @@
 
 @interface SignInProviderConfigViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
 {
+    NSArray           *cellTitles;
     ConfigurationData *config;
 
-    NSArray *cellTitles;
-    UIView  *excludeProvidersView;
-    NSArray *configuredProviders;
-
+    NSArray        *configuredProviders;
+    NSString       *directProvider;
     NSMutableArray *excludedProviders;
+
+    UIView *directProvidersView;
+    UIView *excludeProvidersView;
+
+
     NSMutableArray *cellSwitchStates;
+    NSMutableArray *directProvidersSwitchStates;
     NSMutableArray *excludedProvidersSwitchStates;
 }
 
