@@ -40,7 +40,6 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <UIKit/UIKit.h>
 #import "JRUserInterfaceMaestro.h"
 #import "JREngage+CustomInterface.h"
 
@@ -163,15 +162,10 @@ static void handleCustomInterfaceException(NSException* exception, NSString* kJR
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    DLog(@"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXXXXXXXXXXXXXXXXX");
-//    return YES;
+    DLog(@"");
+    return YES;
 
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    DLog(@"bbbbbbbbbbbbbbbbbbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXXXXXXXXXXXXXXXXX");
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)dealloc
@@ -295,7 +289,7 @@ static JRUserInterfaceMaestro* singleton = nil;
     if (newSessionData == nil)
         return nil;
 
-    return [((JRUserInterfaceMaestro*)[super allocWithZone:nil]) initWithSessionData:newSessionData];
+    return [[((JRUserInterfaceMaestro*)[super allocWithZone:nil]) initWithSessionData:newSessionData] autorelease];
 }
 
 - (void)useApplicationNavigationController:(UINavigationController*)navigationController
@@ -367,7 +361,7 @@ static JRUserInterfaceMaestro* singleton = nil;
         { handleCustomInterfaceException(exception, @"kJRUseApplicationNavigationController"); }
     }
 
-    if (usingAppNav) sessionData.canRotate = YES;
+    if (usingAppNav || iPad) sessionData.canRotate = YES;
 }
 
 - (void)tearDownDialogPresentation
@@ -687,7 +681,7 @@ static JRUserInterfaceMaestro* singleton = nil;
 
 - (void)unloadApplicationNavigationController
 {
-    DLog(@""); 
+    DLog(@"");
     [applicationNavigationController popToViewController:viewControllerToPopTo animated:YES];
 }
 
