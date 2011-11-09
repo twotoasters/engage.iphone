@@ -23,7 +23,9 @@
 #define ILog(fmt, ...) NSLog((@"\n\n***    FYI    *** " fmt), ##__VA_ARGS__)
 
 
+#import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
+#import "JREngage.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -331,13 +333,15 @@ static NSString * const defaultEmailHtmlBody  =
 - (void)resetSignIn
 {
     [excludeProvidersArray release], excludeProvidersArray = nil;
+    [goStraightToProvider release],  goStraightToProvider  = nil;
 
     [jrEngage alwaysForceReauthentication:NO];
 
-    signinAddNativeLogin    = NO;
-    signinAlwaysForceReauth = NO;
-    signinSkipUserLanding   = NO;
-    signinExcludeProviders  = NO;
+    signinAddNativeLogin     = NO;
+    signinAlwaysForceReauth  = NO;
+    signinStraightToProvider = NO;
+    signinSkipUserLanding    = NO;
+    signinExcludeProviders   = NO;
 }
 
 - (void)resetCustomInterface
@@ -976,15 +980,18 @@ This is a property off the providers."
         }
         else if (signInTestType == CDSignInTestTypeProviderConfiguration)
         {
-            if (signinStraightToProvider && goStraightToProvider && ![goStraightToProvider isEqualToString:@""])
-            {
-                DLog(@"provider: %@", goStraightToProvider);
-                [jrEngage setCustomInterfaceDefaults:customInterface];
-                [jrEngage showAuthenticationDialogForProvider:goStraightToProvider];
-                [jrEngage setCustomInterfaceDefaults:nil];
-
-                return;
-            }
+//            if (signinStraightToProvider && goStraightToProvider && ![goStraightToProvider isEqualToString:@""])
+//            {
+//                DLog(@"provider: %@", goStraightToProvider);
+//
+//                if (customInterface && [customInterface count] != 0)
+//                    [jrEngage showAuthenticationDialogForProvider:goStraightToProvider
+//                                     withCustomInterfaceOverrides:customInterface];
+//                else
+//                    [jrEngage showAuthenticationDialogForProvider:goStraightToProvider];
+//
+//                return;
+//            }
 
             if (signinAddNativeLogin)
             {
@@ -1024,6 +1031,19 @@ This is a property off the providers."
             if (signinExcludeProviders && excludeProvidersArray)
             {
                 [customInterface setObject:excludeProvidersArray forKey:kJRRemoveProvidersFromAuthentication];
+            }
+
+            if (signinStraightToProvider && goStraightToProvider && ![goStraightToProvider isEqualToString:@""])
+            {
+                DLog(@"provider: %@", goStraightToProvider);
+
+                if ([customInterface count] != 0)
+                    [jrEngage showAuthenticationDialogForProvider:goStraightToProvider
+                                     withCustomInterfaceOverrides:customInterface];
+                else
+                    [jrEngage showAuthenticationDialogForProvider:goStraightToProvider];
+
+                return;
             }
         }
 
@@ -1301,11 +1321,50 @@ Using the %@ navigation controller instead.", (iPad ? @" application or library'
                 }
             }
 
-            if (signinAlwaysForceReauth)
-                [testing appendString:@", and we are always forced to reauthenticate"];
+            if (signinStraightToProvider && goStraightToProvider && ![goStraightToProvider isEqualToString:@""])
+            {
+                [testing appendString:[NSString stringWithFormat:@", and we are authenticating directly on the provider %@", goStraightToProvider]];
 
-            if (signinExcludeProviders)
-                [testing appendString:[NSString stringWithFormat:@", and we are excluding the providers: %@", [excludeProvidersArray description]]];
+                if (signinAlwaysForceReauth)
+                    [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                        summary:@"Directly signing in to one provider automatically sets force reauth"
+                                                                                         detail:[NSString stringWithFormat:
+@"You are trying to sign in directly to %@ and you have set force reauth.  Directly signing in to one provider automatically sets force reauth to be true", goStraightToProvider]
+                                                                                  andResultStat:RSWarn]
+                                          andLogMessage:@"You are trying to sign in directly to %@ and you have set force reauth.  Directly signing in to one provider automatically sets force reauth to be true"
+                                                 ofType:LMWarn];
+                if (signinExcludeProviders)
+                {
+                    if ([excludeProvidersArray containsObject:goStraightToProvider])
+                        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                            summary:@"Directly signing in to one provider ignores the list of excluded providers"
+                                                                                             detail:[NSString stringWithFormat:
+@"You are trying to sign in directly to %@ and you have added this provider to the list of excluded providers.\n\
+Directly signing in to one provider causes the library to ignore any providers in the list of excluded providers", goStraightToProvider]
+                                                                                      andResultStat:RSWarn]
+                                              andLogMessage:@"Directly signing in to one provider ignores the list of excluded providers"
+                                                     ofType:LMWarn];
+
+                    else
+                        [self addResultObjectToResultsArray:[ResultObject resultObjectWithTimestamp:[self getCurrentTime]
+                                                                                            summary:@"Directly signing in to one provider ignores the list of excluded providers"
+                                                                                             detail:[NSString stringWithFormat:
+@"You are trying to sign in directly to %@ and you also have providers added to the list of excluded providers.\n\
+Directly signing in to one provider causes the library to ignore any providers in the list of excluded providers", goStraightToProvider]
+                                                                                      andResultStat:RSWarn]
+                                              andLogMessage:@"Directly signing in to one provider ignores the list of excluded providers"
+                                                     ofType:LMWarn];
+                }
+            }
+            else
+            {
+                if (signinAlwaysForceReauth)
+                    [testing appendString:@", and we are always forced to reauthenticate"];
+
+                if (signinExcludeProviders)
+                    [testing appendString:[NSString stringWithFormat:@", and we are excluding the providers: %@", [excludeProvidersArray description]]];
+            }
+
 
             [testing appendString:@". "];
         }
