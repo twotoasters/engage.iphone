@@ -147,7 +147,7 @@
 @synthesize smsObjectToShortenBadUrls;
 @synthesize smsObjectToShortenNonexistentUrls;
 @synthesize smsObjectToShortenUrl;
-@synthesize signinStraightToProvider = _signinStraightToProvider;
+@synthesize signinStraightToProvider;
 @synthesize goStraightToProvider;
 @synthesize sharingBackgroundColor;
 @synthesize sharingBackgroundImageView;
