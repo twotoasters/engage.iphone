@@ -168,13 +168,19 @@ typedef enum
     BOOL providerTableSectionHeaderTitleString;
     BOOL providerTableSectionFooterTitleString;
 
+    BOOL sharingBackgroundColor;
+    BOOL sharingBackgroundImageView;
+    BOOL sharingTitleView;
+    BOOL sharingTitleString;
 
     BOOL signinAddNativeLogin;
     BOOL signinAlwaysForceReauth;
     BOOL signinSkipUserLanding;
     BOOL signinExcludeProviders;
+    BOOL signinStraightToProvider;
 
-    NSArray *excludeProvidersArray;
+    NSArray  *excludeProvidersArray;
+    NSString *goStraightToProvider;
 
     JRActivityObject    *activity;
 
@@ -259,12 +265,19 @@ typedef enum
 @property BOOL providerTableSectionHeaderTitleString;
 @property BOOL providerTableSectionFooterTitleString;
 
+@property BOOL sharingBackgroundColor;
+@property BOOL sharingBackgroundImageView;
+@property BOOL sharingTitleView;
+@property BOOL sharingTitleString;
+
 @property BOOL signinAddNativeLogin;
 @property BOOL signinAlwaysForceReauth;
 @property BOOL signinSkipUserLanding;
 @property BOOL signinExcludeProviders;
+@property BOOL signinStraightToProvider;
 
-@property (copy) NSArray *excludeProvidersArray;
+@property (copy) NSArray  *excludeProvidersArray;
+@property (copy) NSString *goStraightToProvider;
 
 @property BOOL activityAddDefaultAction;
 @property BOOL activityAddDefaultUrl;
@@ -299,7 +312,6 @@ typedef enum
 @property (copy) NSString *activityDescription;
 
 @property (retain, nonatomic) UINavigationController *applicationNavigationController;
-
 
 - (void)resetSignIn;
 - (void)resetActivity;

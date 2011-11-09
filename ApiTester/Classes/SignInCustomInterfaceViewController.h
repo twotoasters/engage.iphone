@@ -13,10 +13,10 @@
 
 @interface SignInCustomInterfaceViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
 {
-    NSArray *cellTitles;
+    NSArray           *cellTitles;
     ConfigurationData *config;
 
-    NSMutableArray *cellSwitchStates;
+    NSMutableArray    *cellSwitchStates;
 }
 
 @end

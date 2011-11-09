@@ -23,9 +23,8 @@
 #define ILog(fmt, ...) NSLog((@"\n\n***    FYI    *** " fmt), ##__VA_ARGS__)
 
 
-#import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
-#import "JRActivityObject.h"
+#import "CustomViewBuilder.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -149,13 +148,18 @@
 @synthesize smsObjectToShortenBadUrls;
 @synthesize smsObjectToShortenNonexistentUrls;
 @synthesize smsObjectToShortenUrl;
-
+@synthesize signinStraightToProvider = _signinStraightToProvider;
+@synthesize goStraightToProvider;
+@synthesize sharingBackgroundColor;
+@synthesize sharingBackgroundImageView;
+@synthesize sharingTitleView;
+@synthesize sharingTitleString;
 
 #pragma mark singleton_methods
-//static NSString * const appId = @"appcfamhnpkagijaeinl";
-//static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
-static NSString * const appId = @"gifpkeongnkpdhdlejno";
-static NSString * const tokenUrl = @"mulciber.janrain.com/token.php";
+static NSString * const appId = @"appcfamhnpkagijaeinl";
+static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
+//static NSString * const appId = @"gifpkeongnkpdhdlejno";
+//static NSString * const tokenUrl = @"http://mulciber.janrain.com/token.php";
 //static NSString * const appId = @"fccdmobdiafiebjhbghn";
 //static NSString * const tokenUrl = nil;
 
@@ -704,7 +708,20 @@ This is a property off the providers."
         [customInterface setObject:[CustomViewBuilder providerTableSectionFooterTitleString] forKey:kJRProviderTableSectionFooterTitleString];
 }
 
+- (void)buildSharingCustomInterface
+{
+    if (sharingBackgroundColor)
+        [customInterface setObject:[CustomViewBuilder sharingBackgroundColor] forKey:kJRSocialSharingBackgroundColor];
 
+    if (sharingBackgroundImageView)
+        [customInterface setObject:[CustomViewBuilder sharingBackgroundImageView] forKey:kJRSocialSharingBackgroundImageView];
+
+    if (sharingTitleView)
+        [customInterface setObject:[CustomViewBuilder sharingTitleView] forKey:kJRSocialSharingTitleView];
+
+    if (sharingTitleString)
+        [customInterface setObject:[CustomViewBuilder sharingTitleString] forKey:kJRSocialSharingTitleString];
+}
 
 - (void)add:(NSInteger)number objects:(NSObject *)object toArray:(NSMutableArray *)array
 {
@@ -1005,6 +1022,9 @@ This is a property off the providers."
     }
     else if (signInOrSharing == CDSharing)
     {
+        if (sharingTestType == CDSharingTestTypeCustomInterface)
+            [self buildSharingCustomInterface];
+
         [self buildActivity];
         [jrEngage showSocialPublishingDialogWithActivity:activity andCustomInterfaceOverrides:customInterface];
         [activity release], activity = nil;
@@ -1287,7 +1307,7 @@ Using the %@ navigation controller instead.", (iPad ? @" application or library'
     }
     else if (signInOrSharing == CDSharing)
     {
-        testType = @"Sign-in test started";
+        testType = @"Sharing test started";
 
         if (sharingTestType == CDSharingTestTypeActivityChanges)
             testing = [NSMutableString stringWithString:@"Testing sharing by adding different default objects to the activity. "];
@@ -1352,6 +1372,7 @@ Using the %@ navigation controller instead.", (iPad ? @" application or library'
     [applicationNavigationController release];
     [defaultActivityEmailHtml release];
 
+    [goStraightToProvider release];
     [super dealloc];
 }
 

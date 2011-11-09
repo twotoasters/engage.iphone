@@ -6,11 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "TestResultsViewController.h"
-#import "ConfigurationData.h"
 
 @implementation TestResultsViewController
 @synthesize resultsTable;

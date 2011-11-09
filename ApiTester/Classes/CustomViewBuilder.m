@@ -40,7 +40,7 @@
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Title View";
 
-	return (UIView*)label;
+	return label;
 }
 
 + (NSString*)providerTableTitleString
@@ -60,7 +60,7 @@
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Table Header View";
 
-	return (UIView*)label;
+	return label;
 }
 
 + (UIView*)providerTableFooterView
@@ -74,7 +74,7 @@
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Table Footer View";
 
-	return (UIView*)label;
+	return label;
 }
 
 + (UIView*)providerTableSectionHeaderView
@@ -88,7 +88,7 @@
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Section Header View";
 
-	return (UIView*)label;
+	return label;
 }
 
 + (UIView*)providerTableSectionFooterView
@@ -102,7 +102,7 @@
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Section Footer View";
 
-	return (UIView*)label;
+	return label;
 }
 
 + (NSString*)providerTableSectionHeaderTitleString
@@ -115,6 +115,38 @@
 {
     DLog(@"");
 	return @"Custom Section Footer String";
+}
+
++ (UIColor*)sharingBackgroundColor
+{
+    DLog(@"");
+    return [UIColor cyanColor];
+}
+
++ (UIImageView*)sharingBackgroundImageView
+{
+    DLog(@"");
+    return [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundWeave"]] autorelease];
+}
+
++ (UIView*)sharingTitleView
+{
+    DLog(@"");
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 44)] autorelease];
+    label.backgroundColor = [UIColor magentaColor];
+    label.font = [UIFont fontWithName:@"MarkerFelt-Wide" size:20.0];
+    label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    label.text = @"Custom Title View";
+
+	return label;
+}
+
++ (NSString*)sharingTitleString
+{
+    DLog(@"");
+	return @"Custom Title String";
 }
 
 @end

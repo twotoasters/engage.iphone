@@ -14,10 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import "StartTestViewController.h"
-#import "ConfigurationData.h"
 
 @implementation StartTestViewController
 @synthesize startButton;

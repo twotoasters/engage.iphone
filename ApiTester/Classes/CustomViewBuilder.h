@@ -20,4 +20,8 @@
 + (UIView*)providerTableSectionFooterView;
 + (NSString*)providerTableSectionHeaderTitleString;
 + (NSString*)providerTableSectionFooterTitleString;
++ (UIColor*)sharingBackgroundColor;
++ (UIImageView*)sharingBackgroundImageView;
++ (UIView*)sharingTitleView;
++ (NSString*)sharingTitleString;
 @end

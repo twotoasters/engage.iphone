@@ -14,10 +14,8 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <UIKit/UIKit.h>
 #import "TestTypesViewController.h"
 #import "SharingActivityWithBadParamsViewController.h"
-#import "ConfigurationData.h"
 
 @implementation TestTypesViewController
 @synthesize delegate;

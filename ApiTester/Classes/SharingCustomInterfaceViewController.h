@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ConfigurationData.h"
+#import "TestConfigurationTableViewCell.h"
 
 
-@interface SharingCustomInterfaceViewController : UITableViewController
+@interface SharingCustomInterfaceViewController : UITableViewController <TestConfigurationTableViewCellDelegate>
 {
+    NSArray           *cellTitles;
     ConfigurationData *config;
+
+    NSMutableArray    *cellSwitchStates;
 }
 
 @end

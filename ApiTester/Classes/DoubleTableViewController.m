@@ -13,9 +13,7 @@
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 
-#import <UIKit/UIKit.h>
 #import "DoubleTableViewController.h"
-#import "ConfigurationData.h"
 
 @implementation DoubleTableViewController
 @synthesize rootViewController;

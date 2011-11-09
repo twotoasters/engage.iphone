@@ -14,10 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <UIKit/UIKit.h>
 #import "SharingActivityWithBadParamsViewController.h"
-#import "ConfigurationData.h"
 
 @implementation SharingActivityWithBadParamsViewController
 @synthesize scrollView;

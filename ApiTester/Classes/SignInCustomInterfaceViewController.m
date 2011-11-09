@@ -37,7 +37,7 @@
                     @"Providers Table Section Header View", @"Use a custom view over the list of providers section of the table", @"ll",
                     @"Providers Table Section Footer View", @"Use a custom view over the list of providers section of the table", @"ll",
                     @"Providers Table Section Header Title String", @"Use a custom view over the list of providers section of the table", @"ll",
-                    @"Providers Table Section Footer Title String", @"Use a custom view over the list of providers section of the table", @"ll",nil];
+                    @"Providers Table Section Footer Title String", @"Use a custom view over the list of providers section of the table", @"ll", nil];
 
     [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     [self.tableView setAllowsSelection:NO];
@@ -52,12 +52,6 @@
                                               style:UIBarButtonItemStyleDone
                                              target:self
                                              action:@selector(next:)] autorelease];
-
-//    [self setToolbarItems:
-//        [NSArray arrayWithObjects:
-//         [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)] autorelease],
-//         [[[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next:)] autorelease],
-//         [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], nil]];
 }
 
 /*
@@ -89,16 +83,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark -
-#pragma mark Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 1; }
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [cellTitles count] / 3;
-}
-
 typedef enum
 {
     CIAuthenticationBackgroundColor = 0,
@@ -114,6 +98,78 @@ typedef enum
 } CellIndex;
 
 #define CELL_TAG_OFFSET 100
+
+- (void)next:(id)sender
+{
+    [config resetSignIn];
+    [config resetCustomInterface];
+
+    for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
+    {
+        BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
+
+        switch ((CellIndex)i)
+        {
+            case CIAuthenticationBackgroundColor:
+                if (switchState == YES) [config setAuthenticationBackgroundColor:YES];
+                else  [config setAuthenticationBackgroundColor:NO];
+                break;
+            case CIAuthenticationBackgroundImageView:
+                if (switchState == YES) [config setAuthenticationBackgroundImageView:YES];
+                else  [config setAuthenticationBackgroundImageView:NO];
+                break;
+            case CIProviderTableTitleView:
+                if (switchState == YES) [config setProviderTableTitleView:YES];
+                else  [config setProviderTableTitleView:NO];
+                break;
+            case CIProviderTableTitleString:
+                if (switchState == YES) [config setProviderTableTitleString:YES];
+                else  [config setProviderTableTitleString:NO];
+                break;
+            case CIProviderTableHeaderView:
+                if (switchState == YES) [config setProviderTableHeaderView:YES];
+                else  [config setProviderTableHeaderView:NO];
+                break;
+            case CIProviderTableFooterView:
+                if (switchState == YES) [config setProviderTableFooterView:YES];
+                else  [config setProviderTableFooterView:NO];
+                break;
+            case CIProviderTableSectionHeaderView:
+                if (switchState == YES) [config setProviderTableSectionHeaderView:YES];
+                else  [config setProviderTableSectionHeaderView:NO];
+                break;
+            case CIProviderTableSectionFooterView:
+                if (switchState == YES) [config setProviderTableSectionFooterView:YES];
+                else  [config setProviderTableSectionFooterView:NO];
+                break;
+            case CIProviderTableSectionHeaderTitleString:
+                if (switchState == YES) [config setProviderTableSectionHeaderTitleString:YES];
+                else  [config setProviderTableSectionHeaderTitleString:NO];
+                break;
+            case CIProviderTableSectionFooterTitleString:
+                if (switchState == YES) [config setProviderTableSectionFooterTitleString:YES];
+                else  [config setProviderTableSectionFooterTitleString:NO];
+                break;
+            default:
+                break;
+        }
+    }
+
+    StartTestViewController *startTestViewController =
+            [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
+
+    [self.navigationController pushViewController:startTestViewController animated:YES];
+}
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView { return 1; }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [cellTitles count] / 3;
+}
 
 - (void)setPreviewForCell:(TestConfigurationTableViewCell*)cell atIndex:(CellIndex)cellIndex
 {
@@ -226,79 +282,18 @@ typedef enum
                  initTestConfigurationTableViewCellWithStyle:style
                                              reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
+
+        cell.delegate = self;
     }
 
-    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 3)];
+    cell.cellTitle.text    = [cellTitles objectAtIndex:(indexPath.row * 3)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
-
-    cell.tag = CELL_TAG_OFFSET + indexPath.row;
-    cell.delegate = self;
 
     [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
 
+    cell.tag = CELL_TAG_OFFSET + indexPath.row;
+
     return cell;
-}
-
-- (void)next:(id)sender
-{
-    [config resetSignIn];
-    [config resetCustomInterface];
-
-    for (NSUInteger i = 0; i < [cellSwitchStates count]; i++)
-    {
-        BOOL switchState = [((NSNumber*)[cellSwitchStates objectAtIndex:i]) boolValue];
-
-        switch ((CellIndex)i)
-        {
-            case CIAuthenticationBackgroundColor:
-                if (switchState == YES) [config setAuthenticationBackgroundColor:YES];
-                else  [config setAuthenticationBackgroundColor:NO];
-                break;
-            case CIAuthenticationBackgroundImageView:
-                if (switchState == YES) [config setAuthenticationBackgroundImageView:YES];
-                else  [config setAuthenticationBackgroundImageView:NO];
-                break;
-            case CIProviderTableTitleView:
-                if (switchState == YES) [config setProviderTableTitleView:YES];
-                else  [config setProviderTableTitleView:NO];
-                break;
-            case CIProviderTableTitleString:
-                if (switchState == YES) [config setProviderTableTitleString:YES];
-                else  [config setProviderTableTitleString:NO];
-                break;
-            case CIProviderTableHeaderView:
-                if (switchState == YES) [config setProviderTableHeaderView:YES];
-                else  [config setProviderTableHeaderView:NO];
-                break;
-            case CIProviderTableFooterView:
-                if (switchState == YES) [config setProviderTableFooterView:YES];
-                else  [config setProviderTableFooterView:NO];
-                break;
-            case CIProviderTableSectionHeaderView:
-                if (switchState == YES) [config setProviderTableSectionHeaderView:YES];
-                else  [config setProviderTableSectionHeaderView:NO];
-                break;
-            case CIProviderTableSectionFooterView:
-                if (switchState == YES) [config setProviderTableSectionFooterView:YES];
-                else  [config setProviderTableSectionFooterView:NO];
-                break;
-            case CIProviderTableSectionHeaderTitleString:
-                if (switchState == YES) [config setProviderTableSectionHeaderTitleString:YES];
-                else  [config setProviderTableSectionHeaderTitleString:NO];
-                break;
-            case CIProviderTableSectionFooterTitleString:
-                if (switchState == YES) [config setProviderTableSectionFooterTitleString:YES];
-                else  [config setProviderTableSectionFooterTitleString:NO];
-                break;
-            default:
-                break;
-        }
-    }
-
-    StartTestViewController *startTestViewController =
-            [[[StartTestViewController alloc] initWithNibName:@"StartTestViewController" bundle:nil] autorelease];
-
-    [self.navigationController pushViewController:startTestViewController animated:YES];
 }
 
 - (void)testConfigurationTableViewCell:(TestConfigurationTableViewCell*)cell switchDidChange:(UISwitch*)cellSwitch

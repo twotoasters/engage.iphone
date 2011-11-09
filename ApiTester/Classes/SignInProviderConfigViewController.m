@@ -259,9 +259,12 @@ typedef enum
                  initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
                                              reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
+
+        cell.cellBorder.hidden = YES;
+        cell.delegate          = self;
     }
 
-    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 3)];
+    cell.cellTitle.text    = [cellTitles objectAtIndex:(indexPath.row * 3)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
     if (indexPath.row == CIExcludeProviders)//([cellTitles count] / 3) - 1)
@@ -275,10 +278,7 @@ typedef enum
         [cell.cellPreview setHidden:YES];
     }
 
-    [cell.cellBorder setHidden:YES];
-
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
-    cell.delegate = self;
 
     return cell;
 }

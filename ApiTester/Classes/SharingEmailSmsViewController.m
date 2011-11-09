@@ -6,6 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "SharingEmailSmsViewController.h"
 
 @implementation SharingEmailSmsViewController
@@ -336,23 +337,23 @@ typedef enum
                  initTestConfigurationTableViewCellWithStyle:TCTableViewCellStyleSwitch
                                              reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
+
+        cell.previewStyle                = TCTableViewCellPreviewStyleCustom;
+        cell.cellPreview.backgroundColor = [UIColor clearColor];
+        cell.cellBorder.hidden           = YES;
+
+        cell.delegate                    = self;
     }
 
-    cell.cellTitle.text = [cellTitles objectAtIndex:(indexPath.row * 3)];
+    cell.cellTitle.text    = [cellTitles objectAtIndex:(indexPath.row * 3)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
-
-    cell.previewStyle = TCTableViewCellPreviewStyleCustom;
-    [cell.cellPreview setBackgroundColor:[UIColor clearColor]];
 
     if (indexPath.row == CISms)
         [cell.cellPreview addSubview:smsCustomizationsView];
     else if (indexPath.row == CIEmail)
         [cell.cellPreview addSubview:emailCustomizationsView];
 
-    [cell.cellBorder setHidden:YES];
-
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
-    cell.delegate = self;
 
     return cell;
 }

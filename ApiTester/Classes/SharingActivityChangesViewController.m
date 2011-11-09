@@ -14,6 +14,7 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import <UIKit/UIKit.h>
 #import "SharingActivityChangesViewController.h"
 
 @interface NSString (EXPAND_IF_PAD)
@@ -444,11 +445,8 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
             [cell.cellPreview addSubview:cellPreviewTextField];
         }
 
-        cell.tag = CELL_TAG_OFFSET + indexPath.row;
-        cell.delegate = self;
-
-        [cell.cellBorder setHidden:YES];
-
+        cell.cellBorder.hidden = YES;
+        cell.delegate          = self;
     }
 
     UITextField *cellPreviewTextField = ([[cell.cellPreview subviews] count]) ?
@@ -459,6 +457,8 @@ static NSString * const descr_bits[NUM_DESCRIPTIONS + 1] = {
     cellPreviewTextField.text =
             [NSString stringWithFormat:@"%d",
                     [((NSNumber*)[cellPreviewTextFieldNumbers objectAtIndex:indexPath.row]) integerValue]];
+
+    cell.tag = CELL_TAG_OFFSET + indexPath.row;
 
     return cell;
 }
