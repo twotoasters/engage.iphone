@@ -117,17 +117,17 @@
 
     if (previewStyle == TCTableViewCellPreviewStyleSquare)
     {
-        cellSwitch.frame = CGRectMake(cellContentWidth - 140, 10, 94, 27);
+        cellSwitch.frame  = CGRectMake(cellContentWidth - 140, 10, 94, 27);
         cellPreview.frame = CGRectMake(cellContentWidth - 40, 10, 27, 27);
     }
     else if (previewStyle == TCTableViewCellPreviewStyleLong)
     {
-        cellSwitch.frame = CGRectMake(cellContentWidth - 104, 10, 94, 27);
+        cellSwitch.frame  = CGRectMake(cellContentWidth - 104, 10, 94, 27);
         cellPreview.frame = CGRectMake(10, 62, cellContentWidth - 20, 24);
     }
     else // if (previewStyle == TCTableViewCellPreviewStyleCustom)
     {
-        cellSwitch.frame = CGRectMake(cellContentWidth - 104, 10, 94, 27);
+        cellSwitch.frame  = CGRectMake(cellContentWidth - 104, 10, 94, 27);
         cellPreview.frame = CGRectMake(10, 62, cellContentWidth - 20, cellContentHeight - 62 - 10);
     }
 
@@ -136,13 +136,13 @@
     switch (cellStyle)
     {
         case TCTableViewCellStyleSwitch:
-            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
+            cellTitle.frame    = CGRectMake(10, 12, titleWidth, 24);
             cellSubtitle.frame = CGRectMake(10, 40, cellContentWidth - 20, 18);
 
             break;
 
         case TCTableViewCellStyleSwitchWithLongTitle:
-            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
+            cellTitle.frame    = CGRectMake(10, 6, titleWidth, 35);
             cellSubtitle.frame = CGRectMake(10, 42, cellContentWidth - 20, 18);
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)
@@ -153,7 +153,7 @@
             break;
 
         case TCTableViewCellStyleSwitchWithLongSubtitle:
-            cellTitle.frame = CGRectMake(10, 12, titleWidth, 24);
+            cellTitle.frame    = CGRectMake(10, 12, titleWidth, 24);
             cellSubtitle.frame = CGRectMake(10, 40, cellContentWidth - 20, 36);
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)
@@ -164,7 +164,7 @@
             break;
 
         case TCTableViewCellStyleSwitchWithLongTitleAndSubtitle:
-            cellTitle.frame = CGRectMake(10, 6, titleWidth, 35);
+            cellTitle.frame    = CGRectMake(10, 6, titleWidth, 35);
             cellSubtitle.frame = CGRectMake(10, 42, cellContentWidth - 20, 36);
 
             if (previewStyle == TCTableViewCellPreviewStyleLong)

@@ -173,7 +173,6 @@ typedef enum
 
 - (void)setPreviewForCell:(TestConfigurationTableViewCell*)cell atIndex:(CellIndex)cellIndex
 {
-
     UIButton *cellPreviewButton = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 300, 24)] autorelease];
 
     [cellPreviewButton setBackgroundImage:[UIImage imageNamed:@"enabledLightGray"] forState:UIControlStateNormal];
@@ -283,13 +282,15 @@ typedef enum
                                              reuseIdentifier:[NSString stringWithFormat:@"cell_%d", indexPath.row]]
                 autorelease];
 
+        [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
+
         cell.delegate = self;
     }
 
     cell.cellTitle.text    = [cellTitles objectAtIndex:(indexPath.row * 3)];
     cell.cellSubtitle.text = [cellTitles objectAtIndex:((indexPath.row * 3) + 1)];
 
-    [self setPreviewForCell:cell atIndex:(CellIndex)indexPath.row];
+
 
     cell.tag = CELL_TAG_OFFSET + indexPath.row;
 

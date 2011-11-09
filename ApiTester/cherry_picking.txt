@@ -1,5 +1,6 @@
 commits to be cherry-picked:
-  
+  187d773 Two minor changes to the view of the share ui to make it look better with a custom background
+
 commits already cherry-picked:
    Test  / Devel
   e5e0db5/945cd20 Added a few more debug logs to session data
