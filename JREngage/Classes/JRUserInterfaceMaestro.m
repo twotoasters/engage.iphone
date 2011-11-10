@@ -223,13 +223,10 @@ static JRUserInterfaceMaestro* singleton = nil;
 
 - (NSUInteger)retainCount
 {
-    return NSUIntegerMax;  //denotes an object that cannot be released
+    return NSUIntegerMax;
 }
 
-- (oneway void)release
-{
-    //do nothing
-}
+- (oneway void)release { }
 
 - (id)autorelease
 {
@@ -296,7 +293,6 @@ static JRUserInterfaceMaestro* singleton = nil;
 - (void)useApplicationNavigationController:(UINavigationController*)navigationController
 {
     self.savedNavigationController = navigationController;
-    //[customInterfaceDefaults setObject:navigationController forKey:kJRApplicationNavigationController];
 }
 
 - (void)buildCustomInterface:(NSDictionary*)customizations
@@ -663,9 +659,9 @@ static JRUserInterfaceMaestro* singleton = nil;
         rootViewController = myProvidersController;
 
     if (usingAppNav)
-        [self loadApplicationNavigationControllerWithViewController:rootViewController];//myProvidersController];
+        [self loadApplicationNavigationControllerWithViewController:rootViewController];
     else
-        [self loadModalNavigationControllerWithViewController:rootViewController];//myProvidersController];
+        [self loadModalNavigationControllerWithViewController:rootViewController];
 }
 
 - (void)showPublishingDialogForActivityWithCustomInterface:(NSDictionary*)customizations
