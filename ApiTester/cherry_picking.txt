@@ -1,8 +1,9 @@
 commits to be cherry-picked:
-  187d773 Two minor changes to the view of the share ui to make it look better with a custom background
-
+  
 commits already cherry-picked:
    Test  / Devel
+  0de566c/3cc8c57 Fixed a bug that was stopping the go straight to a provider bit from working correctly; added a convenience function to the JREngage API
+  187d773/3e5bc3f Two minor changes to the view of the share ui to make it look better with a custom background
   e5e0db5/945cd20 Added a few more debug logs to session data
   abdee41/5aa64f5 Updated the JRActivityObject to be more strict when taking urls; that is, if media objects or any url
   3031dd8/07a0ef1 Made the activity url property copy, not readonly
