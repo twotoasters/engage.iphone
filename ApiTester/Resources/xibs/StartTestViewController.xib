@@ -461,7 +461,7 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AQAAAABDZQAAA</bytes>
 					</object>
-					<string>RoundedRectView</string>
+					<string>JRRoundedRect</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

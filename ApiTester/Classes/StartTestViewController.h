@@ -23,7 +23,7 @@
     UISegmentedControl *navigationRadio;
     UISegmentedControl *padDisplayRadio;
 
-    RoundedRectView    *padDisplayToast;
+    JRRoundedRect      *padDisplayToast;
     UIButton           *padDisplayListener;
     UIImageView        *padDisplayTouchIndicator;
     UIBarButtonItem    *padDisplayBarButtonItem;
@@ -42,7 +42,7 @@
 @property (nonatomic, retain) IBOutlet UILabel            *navigationLabel;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *navigationRadio;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *padDisplayRadio;
-@property (nonatomic, retain) IBOutlet RoundedRectView    *padDisplayToast;
+@property (nonatomic, retain) IBOutlet JRRoundedRect      *padDisplayToast;
 - (IBAction)startButtonPressed:(id)sender;
 - (IBAction)resultsButtonPressed:(id)sender;
 //- (IBAction)navigationRadioChanged:(id)sender;
