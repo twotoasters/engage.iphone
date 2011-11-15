@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CustomViewBuilder.h"
+#import "ApiTesterAppDelegate.h"
 #import "SignInEmbeddedNativeLoginViewController.h"
 #import "JREngage.h"
 #import "JREngage+CustomInterface.h"

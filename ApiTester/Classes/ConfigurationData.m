@@ -22,10 +22,7 @@
 #define ELog(fmt, ...) NSLog((@"\n\n***   ERROR   *** " fmt), ##__VA_ARGS__)
 #define ILog(fmt, ...) NSLog((@"\n\n***    FYI    *** " fmt), ##__VA_ARGS__)
 
-
-#import <Foundation/Foundation.h>
 #import "ConfigurationData.h"
-#import "JREngage.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -157,12 +154,6 @@
 @synthesize sharingTitleString;
 
 #pragma mark singleton_methods
-static NSString * const appId = @"appcfamhnpkagijaeinl";
-static NSString * const tokenUrl = @"http://jrauthenticate.appspot.com/login";
-//static NSString * const appId = @"gifpkeongnkpdhdlejno";
-//static NSString * const tokenUrl = @"http://mulciber.janrain.com/token.php";
-//static NSString * const appId = @"fccdmobdiafiebjhbghn";
-//static NSString * const tokenUrl = nil;
 
 static ConfigurationData *sharedConfigurationData = nil;
 

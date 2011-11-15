@@ -34,7 +34,7 @@
 
     config = [ConfigurationData sharedConfigurationData];
 
-    resultsArray = [config resultsArray];
+    resultsArray = [[config resultsArray] copy];
 
     self.navigationItem.rightBarButtonItem =
             [[[UIBarButtonItem alloc] initWithTitle:@"Refresh"
@@ -71,7 +71,7 @@
 - (void)refresh:(id)sender
 {
     [resultsArray release];
-    resultsArray = [config resultsArray];
+    resultsArray = [[config resultsArray] copy];
 
     [resultsTable reloadData];
 }
@@ -243,6 +243,7 @@
 
     [detailViewController release];
 
+    [resultsArray release];
     [super dealloc];
 }
 
