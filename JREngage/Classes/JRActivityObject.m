@@ -46,12 +46,22 @@
 @implementation NSString (NSString_URL_HANDLING)
 - (NSString*)URLEscaped
 {
-    NSString *str = [self stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-    str = [str stringByReplacingOccurrencesOfString:@":" withString:@"%3a"];
-    str = [str stringByReplacingOccurrencesOfString:@"\"" withString:@"%34"];
-    str = [str stringByReplacingOccurrencesOfString:@";" withString:@"%3b"];
 
-    return str;
+    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                NULL,
+                                (CFStringRef)self,
+                                NULL,
+                                (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                kCFStringEncodingUTF8);
+
+    return encodedString;
+
+//    NSString *str = [self stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+//    str = [str stringByReplacingOccurrencesOfString:@":" withString:@"%3a"];
+//    str = [str stringByReplacingOccurrencesOfString:@"\"" withString:@"%34"];
+//    str = [str stringByReplacingOccurrencesOfString:@";" withString:@"%3b"];
+//
+//    return str;
 }
 
 - (BOOL)isWellFormedAbsoluteUrl
@@ -142,17 +152,10 @@
                                [[JRImageMediaObject allocWithZone:zone] initWithSrc:_src
                                                                             andHref:_href];
 
-	imageMediaObjectCopy.preview = [[_preview copy] autorelease];
+	imageMediaObjectCopy.preview = _preview;//[[_preview copy] autorelease];
 
 	return imageMediaObjectCopy;
 }
-
-//- (void)setPreviewImage:(UIImage*)image
-//{
-//    [image retain];
-//    [_preview release];
-//    _preview = image;
-//}
 
 - (NSDictionary*)dictionaryForObject
 {
@@ -206,12 +209,6 @@
     return [[[JRFlashMediaObject alloc] initWithSwfsrc:swfsrc andImgsrc:imgsrc] autorelease];
 }
 
-//- (void)setPreviewImage:(UIImage*)image
-//{
-//    [_preview release];
-//    _preview = [image retain];
-//}
-
 - (id)copyWithZone:(NSZone*)zone
 {
 	JRFlashMediaObject *flashMediaObjectCopy =
@@ -222,7 +219,7 @@
     flashMediaObjectCopy.height          = _height;
     flashMediaObjectCopy.expanded_width  = _expanded_width;
     flashMediaObjectCopy.expanded_height = _expanded_height;
-    flashMediaObjectCopy.preview         = [[_preview copy] autorelease];
+    flashMediaObjectCopy.preview         = _preview;//[[_preview copy] autorelease];
 
 	return flashMediaObjectCopy;
 }
@@ -489,13 +486,18 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
 
 @implementation JRActivityObject
 @synthesize action                 = _action;
-@synthesize url                    = _url;
-@synthesize user_generated_content = _user_generated_content;
-@synthesize title                  = _title;
-@synthesize description            = _description;
+//@synthesize url                    = _url;
+@synthesize userGeneratedContent   = _userGeneratedContent;
+@synthesize resourceTitle          = _resourceTitle;
+@synthesize resourceDescription    = _resourceDescription;
 @synthesize properties             = _properties;
 @synthesize email                  = _email;
 @synthesize sms                    = _sms;
+@dynamic url;
+@dynamic user_generated_content;
+@dynamic title;
+@dynamic description;
+@dynamic actionLinks;
 @dynamic action_links;
 @dynamic media;
 
@@ -555,13 +557,13 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
 	JRActivityObject *activityObjectCopy = [[JRActivityObject allocWithZone:zone] initWithAction:_action
                                                                                           andUrl:_url];
 
-    activityObjectCopy.user_generated_content = _user_generated_content;
-    activityObjectCopy.title                  = _title;
-    activityObjectCopy.description            = _description;
+    activityObjectCopy.userGeneratedContent   = _userGeneratedContent;//_user_generated_content;
+    activityObjectCopy.resourceTitle          = _resourceTitle;//_title;
+    activityObjectCopy.resourceDescription    = _resourceDescription;//_description;
     activityObjectCopy.properties             = _properties;
     activityObjectCopy.email                  = _email;
     activityObjectCopy.sms                    = _sms;
-    activityObjectCopy.action_links           = _action_links;
+    activityObjectCopy.actionLinks            = _actionLinks;//_action_links;
     activityObjectCopy.media                  = _media;
 
     return activityObjectCopy;
@@ -575,7 +577,7 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
         _url = [url copy];
 }
 
-- (NSString *)getUrl
+- (NSString *)url
 {
     return [[_url copy] autorelease];
 }
@@ -587,8 +589,8 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
    that the app will crash.                                                          */
 - (void)setMedia:(NSArray*)media
 {
-    NSPredicate *predicate = [NSPredicate predicateForMediaObjectBaseClass];
-    NSMutableArray *oldMedia = _media;
+    NSPredicate    *predicate = [NSPredicate predicateForMediaObjectBaseClass];
+    NSMutableArray *oldMedia  = _media;
 
     _media = [[NSMutableArray alloc] initWithArray:[media filteredArrayUsingPredicate:predicate]
                                          copyItems:YES];
@@ -598,31 +600,37 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
 
 - (NSArray*)media
 {
-//    if (!media)
-//        media = [[NSMutableArray alloc] initWithCapacity:1];
-
     return [[_media copy] autorelease];
 }
 
 /* This function filters the given array, actionlinks, and only keeps the objects that
    have the class name JRActionLinks                                                     */
-- (void)setAction_links:(NSArray*)action_links
+- (void)setActionLinks:(NSArray*)actionLinks
 {
-    NSPredicate *predicate = [NSPredicate predicateForActionLinkObjectClass];
-    NSMutableArray *oldActionLinks = _action_links;
+    NSPredicate    *predicate      = [NSPredicate predicateForActionLinkObjectClass];
+    NSMutableArray *oldActionLinks = _actionLinks;
 
-    _action_links = [[NSMutableArray alloc] initWithArray:[action_links filteredArrayUsingPredicate:predicate]
+    _actionLinks = [[NSMutableArray alloc] initWithArray:[actionLinks filteredArrayUsingPredicate:predicate]
                                                 copyItems:YES];
 
     [oldActionLinks release];
 }
 
+- (NSArray*)actionLinks
+{
+    return [[_actionLinks copy] autorelease];
+}
+
+/* Deprecated; calling new function instead. */
+- (void)setAction_links:(NSArray*)action_links
+{
+    [self setActionLinks:action_links];
+}
+
+/* Deprecated; calling new function instead. */
 - (NSArray*)action_links
 {
-//    if (!actionlinks)
-//        actionlinks = [[NSMutableArray alloc] initWithCapacity:1];
-
-    return [[_action_links copy] autorelease];
+    return [self actionLinks];
 }
 
 /* Some pre-processing of the activity object, mostly the media array, to deal with
@@ -689,20 +697,20 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
     else
         [dict setValue:@"" forKey:@"url"];
 
-    if (_user_generated_content)
-        [dict setValue:[_user_generated_content URLEscaped] forKey:@"user_generated_content"];
+    if (_userGeneratedContent)
+        [dict setValue:[_userGeneratedContent URLEscaped] forKey:@"user_generated_content"];
 
-    if (_title)
-        [dict setValue:[_title URLEscaped] forKey:@"title"];
+    if (_resourceTitle)
+        [dict setValue:[_resourceTitle URLEscaped] forKey:@"title"];
 
-    if (_description)
-        [dict setValue:[_description URLEscaped] forKey:@"description"];
+    if (_resourceDescription)
+        [dict setValue:[_resourceDescription URLEscaped] forKey:@"description"];
 
-    if ([_action_links count])
+    if ([_actionLinks count])
     {
-        NSMutableArray *arr = [[[NSMutableArray alloc] initWithCapacity:[_action_links count]] autorelease];
+        NSMutableArray *arr = [[[NSMutableArray alloc] initWithCapacity:[_actionLinks count]] autorelease];
 
-        for (JRActionLink *link in _action_links)
+        for (JRActionLink *link in _actionLinks)
         {
             [arr addObject:[link dictionaryForObject]];
         }
@@ -725,17 +733,24 @@ static NSArray* filteredArrayOfValidUrls (NSArray *urls)
     if ([_properties count])
         [dict setObject:_properties forKey:@"properties"];
 
-    return [NSDictionary dictionaryWithObject:dict forKey:@"activity"];
+    return dict;//[NSDictionary dictionaryWithObject:dict forKey:@"activity"];
 }
+
+- (void)setTitle:(NSString*)title                                   { self.resourceTitle = title;             }
+- (void)setDescription:(NSString*)description                       { self.resourceDescription = description; }
+- (void)setUser_generated_content:(NSString*)user_generated_content { self.userGeneratedContent = user_generated_content; }
+- (NSString *)title                  { return self.resourceTitle;        }
+- (NSString *)description            { return self.resourceDescription;  }
+- (NSString *)user_generated_content { return self.userGeneratedContent; }
 
 - (void)dealloc
 {
     [_action release];
     [_url release];
-    [_user_generated_content release];
-    [_title release];
-    [_description release];
-    [_action_links release];
+    [_userGeneratedContent release];
+    [_resourceTitle release];
+    [_resourceDescription release];
+    [_actionLinks release];
     [_media release];
     [_properties release];
     [_email release];

@@ -456,14 +456,19 @@
 {
     NSString       *_action;
     NSString       *_url;
-    NSString       *_user_generated_content;
-    NSString       *_title;
-    NSString       *_description;
-    NSMutableArray *_action_links;
+    NSString       *_userGeneratedContent;
+    NSString       *_resourceTitle;
+    NSString       *_resourceDescription;
+    NSMutableArray *_actionLinks;
     NSMutableArray *_media;
     NSDictionary   *_properties;
     JREmailObject  *_email;
     JRSmsObject    *_sms;
+
+//    NSString       *_user_generated_content;
+//    NSString       *_title;
+//    NSString       *_description;
+//    NSMutableArray *_action_links;
 
     NSString *_shortenedUrl;
 }
@@ -497,7 +502,7 @@
  * value is replaced by the JRActivityObject#action for most providers. Some providers
  * (Twitter in particular) may truncate this value.
  **/
-@property (copy) NSString *user_generated_content;
+@property (copy) NSString *userGeneratedContent;
 
 /**
  * The title of the resource being mentioned in the activity update.
@@ -506,12 +511,12 @@
  * No length restriction on the status is imposed by Janrain Engage,
  * however Yahoo truncates this value to 256 characters.
  **/
-@property (copy) NSString *title;
+@property (copy) NSString *resourceTitle;
 
 /**
  * A description of the resource mentioned in the activity update.
  **/
-@property (copy) NSString *description;
+@property (copy) NSString *resourceDescription;
 
 /**
  * An array of JRActionLink objects, each having two attributes: text and href.
@@ -535,7 +540,7 @@
  * @note
  * Any objects added to this array that are not of type JRActionLink will be ignored.
  **/
-@property (copy) NSArray *action_links;
+@property (copy) NSArray *actionLinks;
 
 /**
  * An array of objects with base class \e JRMediaObject (i.e., JRImageMediaObject,
@@ -597,6 +602,32 @@
 /*@}*/
 
 /**
+ * @name
+ * Deprecated properties.
+ **/
+/*@{*/
+/**
+* @deprecated Please use the JRActivityObject#userGeneratedContent property instead.
+**/
+@property (copy) NSString *user_generated_content;
+
+/**
+* @deprecated Please use the JRActivityObject#resourceTitle property instead.
+**/
+@property (copy) NSString *title;
+
+/**
+* @deprecated Please use the JRActivityObject#resourceDescription property instead.
+**/
+@property (copy) NSString *description;
+
+/**
+* @deprecated Please use the JRActivityObject#actionLinks property instead.
+**/
+@property (copy) NSArray *action_links;
+/*@}*/
+
+/**
  * @name Constructors
  **/
 /*@{*/
@@ -641,5 +672,5 @@
  * This function should not be used directly.  It is intended only for use by the
  * JREngage library
  **/
-- (NSDictionary*)dictionaryForObject;
+- (NSMutableDictionary*)dictionaryForObject;
 @end

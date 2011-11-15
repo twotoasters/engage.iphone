@@ -72,6 +72,9 @@
 
     NSInteger indexOfLastBreakingCharacter = -1;
     NSString *visibleString = @"";
+    CGFloat   lineHeight = ([font respondsToSelector:@selector(lineHeight)]) ? 
+                             font.lineHeight : font.ascender - font.descender + 1.0;
+
     for (NSUInteger i = 1; i <= self.length; i++)
     {
         unichar currentChar = [self characterAtIndex:i - 1];
@@ -81,7 +84,7 @@
         NSString *testString = [self substringToIndex:i];
 
         CGSize stringSize = [testString sizeWithFont:font
-                                   constrainedToSize:CGSizeMake(size.width, size.height + font.lineHeight)
+                                   constrainedToSize:CGSizeMake(size.width, size.height + lineHeight)
                                        lineBreakMode:lineBreakMode];
 
         if (stringSize.height > size.height || stringSize.width > size.width)
@@ -217,10 +220,11 @@
     textLabelLine2.text = @"";
     textLabelLine3.text = @"";
     urlLabel.text = @"";
-
+    
     CGFloat newContentHeight = 0;
     CGFloat lineWidth        = self.frame.size.width;
-    CGFloat lineHeight       = boldFont.lineHeight;
+    CGFloat lineHeight       = ([boldFont respondsToSelector:@selector(lineHeight)]) ? 
+                                 boldFont.lineHeight : boldFont.ascender - boldFont.descender + 1.0;
     CGFloat superviewHeight  = self.frame.size.height;
     CGFloat usernameMaxWidth = (lineWidth * 3) / 4;
     CGFloat urlMaxWidth      = (lineWidth * 3) / 4;
@@ -242,13 +246,15 @@
     NSString *thirdLineOfText  = @"";
     NSString *remainingText    = @"";
 
-    CGSize sizeOfUrl = [url sizeWithFont:font
-                       constrainedToSize:CGSizeMake(urlMaxWidth, lineHeight)
-                           lineBreakMode:UILineBreakModeTailTruncation];
+    CGSize sizeOfUrl = (!url) ? CGSizeMake(0, 0) :
+                                [url sizeWithFont:font
+                                constrainedToSize:CGSizeMake(urlMaxWidth, lineHeight)
+                                    lineBreakMode:UILineBreakModeTailTruncation];
 
-    CGSize sizeOfUsername = [username sizeWithFont:boldFont
-                                 constrainedToSize:CGSizeMake(usernameMaxWidth, lineHeight)
-                                     lineBreakMode:UILineBreakModeTailTruncation];
+    CGSize sizeOfUsername = (!username) ? CGSizeMake(0, 0):
+                                          [username sizeWithFont:boldFont
+                                               constrainedToSize:CGSizeMake(usernameMaxWidth, lineHeight)
+                                                   lineBreakMode:UILineBreakModeTailTruncation];
 
 
     CGFloat remainingLineOneWidth = lineWidth - sizeOfUsername.width - usernamePadding;
@@ -259,7 +265,7 @@
 
     if (sizeOfFirstLineOfText.height <= lineHeight)
     {
-        lengthOfFirstLineOfText = usertext.length;
+//        lengthOfFirstLineOfText = usertext.length;
         firstLineOfText = usertext;
     }
     else
@@ -281,7 +287,7 @@
 
         if (sizeOfSecondLineOfText.height <= lineHeight)
         {
-            lengthOfSecondLineOfText = remainingText.length;
+//            lengthOfSecondLineOfText = remainingText.length;
             secondLineOfText = remainingText;
         }
         else

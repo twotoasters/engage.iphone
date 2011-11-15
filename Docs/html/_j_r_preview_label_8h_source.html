@@ -13,7 +13,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>/Users/lillialexis/iPhone/engage.iphone/JREngage/classes/JRWebViewController.h</h1>  </div>
+<h1>/Users/lillialexis/iPhone/engage.iphone/JREngage/classes/JRPreviewLabel.h</h1>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *</span>
@@ -45,39 +45,53 @@
 <a name="l00027"></a>00027 <span class="comment"> (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
 <a name="l00028"></a>00028 <span class="comment"> SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
 <a name="l00029"></a>00029 <span class="comment"></span>
-<a name="l00030"></a>00030 <span class="comment"> File:   JRWebViewController.h</span>
+<a name="l00030"></a>00030 <span class="comment"> File:   JRSpecialLabel.h</span>
 <a name="l00031"></a>00031 <span class="comment"> Author: Lilli Szafranski - lilli@janrain.com, lillialexis@gmail.com</span>
-<a name="l00032"></a>00032 <span class="comment"> Date:   Tuesday, June 1, 2010</span>
+<a name="l00032"></a>00032 <span class="comment"> Date:   Wednesday, October 5, 2011</span>
 <a name="l00033"></a>00033 <span class="comment">* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */</span>
 <a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="preprocessor">#import &lt;UIKit/UIKit.h&gt;</span>
-<a name="l00036"></a>00036 <span class="preprocessor">#import &quot;JREngage.h&quot;</span>
-<a name="l00037"></a>00037 <span class="preprocessor">#import &quot;JRInfoBar.h&quot;</span>
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039 <span class="keyword">@protocol </span>JRConnectionManagerDelegate;
-<a name="l00040"></a>00040 <span class="keyword">@class</span> JRModalNavigationController;
-<a name="l00041"></a>00041 <span class="keyword">@class</span> JRSessionData;
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043 <span class="keyword">@interface </span>JRWebViewController : UIViewController &lt;UINavigationBarDelegate, UIWebViewDelegate, JRConnectionManagerDelegate&gt;
-<a name="l00044"></a>00044 {
-<a name="l00045"></a>00045     JRSessionData   *sessionData;
-<a name="l00046"></a>00046     NSDictionary    *customInterface;
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048     UIView    *titleView;
-<a name="l00049"></a>00049     UIView    *myBackgroundView;
-<a name="l00050"></a>00050     UIWebView *myWebView;
+<a name="l00035"></a>00035 <span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span>
+<a name="l00036"></a>00036 <span class="preprocessor">#import &lt;UIKit/UIKit.h&gt;</span>
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 <span class="keyword">@class</span> JRPreviewLabel;
+<a name="l00039"></a>00039 <span class="keyword">@protocol </span>JRPreviewLabelDelegate &lt;NSObject&gt;
+<a name="l00040"></a>00040 <span class="keyword">@optional</span>
+<a name="l00041"></a>00041 - (void)previewLabel:(JRPreviewLabel*)previewLabel didChangeContentHeightFrom:(CGFloat)fromHeight to:(CGFloat)toHeight;
+<a name="l00042"></a>00042 <span class="keyword">@end</span>
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044 <span class="keyword">@interface </span>JRPreviewLabel : UIView
+<a name="l00045"></a>00045 {
+<a name="l00046"></a>00046     UILabel *usernameLabel;
+<a name="l00047"></a>00047     UILabel *textLabelLine1;
+<a name="l00048"></a>00048     UILabel *textLabelLine2;
+<a name="l00049"></a>00049     UILabel *textLabelLine3;
+<a name="l00050"></a>00050     UILabel *urlLabel;
 <a name="l00051"></a>00051 
-<a name="l00052"></a>00052     JRInfoBar   *infoBar;
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     BOOL keepProgress;
-<a name="l00055"></a>00055     BOOL userHitTheBackButton;
-<a name="l00056"></a>00056     BOOL connectionDataAlreadyDownloadedThis;
-<a name="l00057"></a>00057 }
-<a name="l00058"></a>00058 @property (nonatomic, retain) IBOutlet UIView    *myBackgroundView;
-<a name="l00059"></a>00059 @property (nonatomic, retain) IBOutlet UIWebView *myWebView;
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 - (<span class="keywordtype">id</span>)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil andCustomInterface:(NSDictionary*)theCustomInterface;
-<a name="l00062"></a>00062 @end
+<a name="l00052"></a>00052     <span class="comment">// TODO: Use NSAttributedStrings so you can change individual pieces and</span>
+<a name="l00053"></a>00053     <span class="comment">// find words/line-breaks (nextWordFromIndex:forward:/lineBreakBeforeIndex:withinRange:)</span>
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055     NSString *username;
+<a name="l00056"></a>00056     NSString *url;
+<a name="l00057"></a>00057     NSString *usertext;
+<a name="l00058"></a>00058     NSString *text;
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     CGFloat fontSize;
+<a name="l00061"></a>00061     UIFont *font;
+<a name="l00062"></a>00062     UIFont *boldFont;
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     id&lt;JRPreviewLabelDelegate&gt; delegate;
+<a name="l00065"></a>00065     CGFloat contentHeight;
+<a name="l00066"></a>00066 }
+<a name="l00067"></a>00067 @property (retain) id&lt;JRPreviewLabelDelegate&gt; delegate;
+<a name="l00068"></a>00068 @property (copy) NSString *username;
+<a name="l00069"></a>00069 @property (copy) NSString *url;
+<a name="l00070"></a>00070 @property (copy) NSString *usertext;
+<a name="l00071"></a>00071 @property (readonly) NSString *text;
+<a name="l00072"></a>00072 @property CGFloat fontSize;
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 - (<span class="keywordtype">id</span>)initWithFrame:(CGRect)aRect defaultUsername:(NSString*)defaultUsername defaultUsertext:(NSString*)defaultUsertext
+<a name="l00075"></a>00075          defaultUrl:(NSString*)defaultUrl andDefaultFontSize:(CGFloat)defaultFontSize;
+<a name="l00076"></a>00076 @end
 </pre></div></div>
 </div>
 <!-- doxygen footer -->
