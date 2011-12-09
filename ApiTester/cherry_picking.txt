@@ -1,4 +1,5 @@
 commits to be cherry-picked:
+  fce1b73 Some minor bug fixes in Quick Publish: fixed the text on the first view to not stretch too much, fixed the butto
   
 commits already cherry-picked:
    Test  / Devel
