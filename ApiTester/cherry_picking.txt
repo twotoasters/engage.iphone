@@ -1,8 +1,8 @@
 commits to be cherry-picked:
-  fce1b73 Some minor bug fixes in Quick Publish: fixed the text on the first view to not stretch too much, fixed the butto
   
 commits already cherry-picked:
    Test  / Devel
+  fce1b73/d30494b Some minor bug fixes in Quick Publish: fixed the text on the first view to not stretch too much, fixed the butto
   6c7d73c/92fc429 Updated Doxygen docs
   0de566c/3cc8c57 Fixed a bug that was stopping the go straight to a provider bit from working correctly; added a convenience function to the JREngage API
   187d773/3e5bc3f Two minor changes to the view of the share ui to make it look better with a custom background
