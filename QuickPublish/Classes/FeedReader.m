@@ -678,6 +678,7 @@ JUST_FINISH:
 @synthesize currentlyReloadingBlog;
 @synthesize selectedStory;
 @dynamic dateOfLastUpdate;
+@synthesize customSharingDelegate;
 
 static FeedReader* singleton = nil;
 + (id)allocWithZone:(NSZone *)zone
@@ -718,6 +719,9 @@ static FeedReader* singleton = nil;
         singleton = self;
         feed      = [[Feed alloc] init];
         jrEngage  = [JREngage jrEngageWithAppId:appId andTokenUrl:nil/*tokenUrl*/ delegate:self];
+        self.customSharingDelegate =
+                [[CustomSharingTabViewController alloc] initWithNibName:@"CustomSharingTabViewController"
+                                                                 bundle:[NSBundle mainBundle]];
     }
 
     return self;

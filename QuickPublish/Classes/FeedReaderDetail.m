@@ -271,7 +271,11 @@ a:active  { color:#7AC143; }";
 
     NSDictionary *custom = [NSDictionary dictionaryWithObjectsAndKeys:
                             self.navigationItem.rightBarButtonItem, kJRPopoverPresentationBarButtonItem,
-                            self.navigationController, kJRApplicationNavigationController, nil];
+                            self.navigationController, kJRApplicationNavigationController,
+                            [FeedReader feedReader].customSharingDelegate, kJRCustomSharingTabDelegate,
+                            [FeedReader feedReader].customSharingDelegate.view, kJRCustomSharingTabView,
+                            @"FOO FOO", kJRCustomSharingTabLabel,
+                            [UIImage imageNamed:@"foo.png"], kJRCustomSharingTabIcon, nil];
 
     [[[FeedReader feedReader] jrEngage] showSocialPublishingDialogWithActivity:activity andCustomInterfaceOverrides:custom];
 }

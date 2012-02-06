@@ -308,6 +308,34 @@
 #define kJRRemoveProvidersFromAuthentication @"ProviderTable.RemoveProviders"
 /*@}*/
 
+
+@protocol JRCustomSharingTabDelegate <NSObject>
+- (NSString *)getUserGeneratedContent;
+- (void)setUserGeneratedContent:(NSString *)userGeneratedContent;
+- (void)onTab_RENAME_ME;
+- (void)offTab_RENAME_ME;
+@end
+
+
+/**
+ * @name Custom Sharing Tab
+ * Keys to specify UIViews and UIViewControllers to be used as an additional tab in the Sharing interface
+ **/
+/*@{*/
+
+/**
+ * Key for the \e UIView object to be set as the tab's view
+ **/
+#define kJRCustomSharingTabView       @"CustomSharingTab.View"
+
+#define kJRCustomSharingTabDelegate   @"CustomSharingTab.Delegate"
+
+#define kJRCustomSharingTabLabel      @"CustomSharingTab.Title.String"
+
+#define kJRCustomSharingTabIcon       @"CustomSharingTab.Image"
+/*@}*/
+
+
 /**
  * @name Deprecated
  * These keys have been deprecated in the current version of the JREngage library

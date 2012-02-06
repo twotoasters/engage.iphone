@@ -105,6 +105,60 @@
 
 @end
 
+@interface JRCustomSharingTab : NSObject
+@property (nonatomic, retain) id<JRConnectionManagerDelegate> delegate;
+@property (nonatomic, retain) UIView *view;
+@property (nonatomic, retain) UIImage *icon;
+@property (nonatomic, retain) NSString *title;
+@property                     NSInteger tabIndex;
+- (id)initWithDelegate:(id<JRConnectionManagerDelegate>)theDelegate view:(UIView *)theView icon:(UIImage *)theIcon
+              andTitle:(NSString *)theTitle;
++ (id)customSharingTabWithDelegate:(id<JRConnectionManagerDelegate>)theDelegate view:(UIView *)theView icon:(UIImage *)theIcon
+              andTitle:(NSString *)theTitle;
+@end
+
+@implementation JRCustomSharingTab
+@synthesize delegate, view, icon, title, tabIndex;
+- (id)initWithDelegate:(id<JRConnectionManagerDelegate>)theDelegate view:(UIView *)theView icon:(UIImage *)theIcon
+              andTitle:(NSString *)theTitle
+{
+    if (!theDelegate || !theView || !theIcon || !theTitle)
+    {
+        [self release];
+        return nil;
+    }
+
+    if ((self = [super init]))
+    {
+        self.delegate = theDelegate;
+        self.view = theView;
+        self.icon = theIcon;
+        self.title = theTitle;
+    }
+
+    return self;
+}
+
++ (id)customSharingTabWithDelegate:(id<JRConnectionManagerDelegate>)theDelegate view:(UIView *)theView
+                              icon:(UIImage *)theIcon andTitle:(NSString *)theTitle
+{
+    return [[[JRCustomSharingTab alloc] initWithDelegate:theDelegate
+                                                    view:theView
+                                                    icon:theIcon
+                                                andTitle:theTitle] autorelease];
+}
+
+- (void)dealloc
+{
+    [delegate release];
+    [view release];
+    [icon release];
+    [title release];
+
+    [super release];
+}
+@end
+
 @implementation JRRoundedRect
 @synthesize outerStrokeColor;
 @synthesize innerStrokeColor;
@@ -226,8 +280,12 @@ or opacity of our rounded rectangle. */
 - (void)setProfilePicToDefaultPic;
 - (void)fetchProfilePicFromUrl:(NSString*)profilePicUrl forProvider:(NSString*)providerName;
 - (void)setButtonImage:(UIButton*)button toData:(NSData*)data andSetLoading:(UIActivityIndicatorView*)actIndicator toLoading:(BOOL)loading;
-@property (retain) JRProvider *selectedProvider;
+@property (retain) JRProvider          *selectedProvider;
 @property (retain) JRAuthenticatedUser *loggedInUser;
+@property (retain) JRCustomSharingTab  *customSharingTab;
+@property          NSInteger customTabIndex;
+@property          NSInteger emailSmsTabIndex;
+@property          BOOL      weAreShowingTheCustomTab;
 @end
 
 @implementation JRPublishActivityController
@@ -241,6 +299,7 @@ or opacity of our rounded rectangle. */
             myMediaThumbnailActivityIndicator, myTitleLabel, myDescriptionLabel, myInfoButton, myPoweredByLabel,
             myProviderIcon, myShareToView, myTriangleIcon, myConnectAndShareButton, myJustShareButton, myProfilePic,
             myProfilePicActivityIndicator, myUserName, mySignOutButton, mySharedCheckMark, mySharedLabel;
+@synthesize customSharingTab, customTabIndex, emailSmsTabIndex, weAreShowingTheCustomTab;
 
 - (id)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil andCustomInterface:(NSDictionary*)theCustomInterface
 {
@@ -252,6 +311,7 @@ or opacity of our rounded rectangle. */
         currentActivity = [[sessionData activity] retain];
         customInterface = [theCustomInterface retain];
 
+        customTabIndex = emailSmsTabIndex = -1; /* Default value for extra tabs until we know they are present */
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
             iPad = YES;
         else
@@ -266,6 +326,12 @@ or opacity of our rounded rectangle. */
     DLog(@"");
 
     [super viewDidLoad];
+
+    self.customSharingTab =
+            [JRCustomSharingTab customSharingTabWithDelegate:[customInterface objectForKey:kJRCustomSharingTabDelegate]
+                                                        view:[customInterface objectForKey:kJRCustomSharingTabView]
+                                                        icon:[customInterface objectForKey:kJRCustomSharingTabIcon]
+                                                    andTitle:[customInterface objectForKey:kJRCustomSharingTabLabel]];
 
  /* There's a slight chance that their capacities could be 0, but that's OK; they're mutable. */
     alreadyShared     = [[NSMutableSet alloc] initWithCapacity:[[sessionData socialProviders] count]];
@@ -743,10 +809,27 @@ Please try again later."
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     DLog(@"");
+//    if (item.tag == customTabIndex)
+//        weAreShowingTheCustomTab = YES;
+//    else
+//        weAreShowingTheCustomTab = NO;
 
-#if JRENGAGE_INCLUDE_EMAIL_SMS
-    if (item.tag == [[sessionData socialProviders] count])
+    if (item.tag == customTabIndex)
     {
+        if (weAreShowingTheCustomTab) { } /* Then we are already on this tab, and don't need to do much */
+        else
+        {
+            [customSharingTab.delegate onTab_RENAME_ME];
+            [customSharingTab.delegate setUserGeneratedContent:myUserCommentTextView.text];
+
+            weAreShowingTheCustomTab = YES;
+
+            [myContentView addSubview:customSharingTab.view];
+        }
+    }
+    else if (item.tag == emailSmsTabIndex)//[[sessionData socialProviders] count])
+    {
+#if JRENGAGE_INCLUDE_EMAIL_SMS
         UIActionSheet *action;
         switch (emailAndOrSmsIndex)
         {
@@ -768,10 +851,20 @@ Please try again later."
             default:
                 break;
         }
+#endif
     }
     else
-#endif
     {
+        if (weAreShowingTheCustomTab)
+        {
+            [customSharingTab.delegate offTab_RENAME_ME];
+            myUserCommentTextView.text = [customSharingTab.delegate getUserGeneratedContent];
+
+            weAreShowingTheCustomTab = NO;
+
+            [customSharingTab.view removeFromSuperview];
+        }
+
         self.selectedProvider = [sessionData getSocialProviderAtIndex:item.tag];
         [sessionData setCurrentProvider:selectedProvider];
 
@@ -1497,8 +1590,12 @@ Please try again later."
 
     NSUInteger numberOfTabs = [[sessionData socialProviders] count];
     NSUInteger indexOfLastUsedProvider = 0;
-    BOOL weShouldAddTabForEmailAndOrSms = (BOOL)emailAndOrSmsIndex;
 
+    BOOL weShouldAddCustomTab = (customSharingTab) ? YES : NO;
+    if (weShouldAddCustomTab)
+        numberOfTabs++;
+
+    BOOL weShouldAddTabForEmailAndOrSms = (BOOL)emailAndOrSmsIndex;
     if (weShouldAddTabForEmailAndOrSms)
         numberOfTabs++;
 
@@ -1524,6 +1621,17 @@ Please try again later."
         [provider release];
     }
 
+    if (weShouldAddCustomTab)
+    {
+        UITabBarItem *custom = [[[UITabBarItem alloc] initWithTitle:customSharingTab.title
+                                                              image:customSharingTab.icon
+                                                                tag:[providerTabArr count]] autorelease];
+
+        customTabIndex = customSharingTab.tabIndex = [providerTabArr count];
+
+        [providerTabArr insertObject:custom atIndex:[providerTabArr count]];
+    }
+
     if (weShouldAddTabForEmailAndOrSms)
     {
 
@@ -1536,6 +1644,8 @@ Please try again later."
                                                                    tag:[providerTabArr count]] autorelease];
 
         [providerTabArr insertObject:emailTab atIndex:[providerTabArr count]];
+
+        emailSmsTabIndex = [providerTabArr count];
     }
 
     [myTabBar setItems:providerTabArr animated:YES];

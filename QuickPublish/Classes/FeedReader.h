@@ -41,6 +41,7 @@
 #import "RegexKitLite.h"
 #import "NSString+HTML.h"
 #import "NSDate+InternetDateTime.h"
+#import "CustomSharingTabViewController.h"
 
 @interface StoryImage : NSObject <JRConnectionManagerDelegate>
 {
@@ -115,6 +116,7 @@
 
     JREngage *jrEngage;
 
+
     id<FeedReaderDelegate>    feedReaderDelegate;
     id<LibraryDialogDelegate> libraryDialogDelegate;
 
@@ -132,6 +134,7 @@
 @property (readonly) NSDate   *dateOfLastUpdate;
 @property (retain)   Story    *selectedStory;
 @property (retain)   id<LibraryDialogDelegate>libraryDialogDelegate;
+@property (retain)   CustomSharingTabViewController *customSharingDelegate;
 + (FeedReader*)feedReader;
 - (void)downloadFeed:(id<FeedReaderDelegate>)delegate;
 @end
