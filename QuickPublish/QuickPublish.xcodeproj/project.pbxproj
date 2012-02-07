@@ -41,6 +41,10 @@
 		9F1E9DB614E098950084806A /* CustomSharingTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DB514E098950084806A /* CustomSharingTabViewController.xib */; };
 		9F1E9DB914E09C0C0084806A /* foo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DB714E09C0C0084806A /* foo.png */; };
 		9F1E9DBA14E09C0C0084806A /* foo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DB814E09C0C0084806A /* foo@2x.png */; };
+		9F1E9DBD14E1B24B0084806A /* janrain_favicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DBB14E1B24B0084806A /* janrain_favicon.png */; };
+		9F1E9DBE14E1B24B0084806A /* profilepic_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DBC14E1B24B0084806A /* profilepic_placeholder.png */; };
+		9F1E9DC114E1B3620084806A /* button_janrain_135x40.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DBF14E1B3620084806A /* button_janrain_135x40.png */; };
+		9F1E9DC214E1B3620084806A /* button_janrain_135x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1E9DC014E1B3620084806A /* button_janrain_135x40@2x.png */; };
 		9F25B07A12C2A9FF0083BB6A /* icon_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F25B07912C2A9FF0083BB6A /* icon_ipad.png */; };
 		9F5234FD12B29F460073ABAE /* janrain_blog.json in Resources */ = {isa = PBXBuildFile; fileRef = 9F5234FC12B29F460073ABAE /* janrain_blog.json */; };
 		9F7BC0CC146888980068BD40 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F7BC016146888980068BD40 /* JSONKit.m */; };
@@ -264,6 +268,10 @@
 		9F1E9DB514E098950084806A /* CustomSharingTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomSharingTabViewController.xib; sourceTree = "<group>"; };
 		9F1E9DB714E09C0C0084806A /* foo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foo.png; sourceTree = "<group>"; };
 		9F1E9DB814E09C0C0084806A /* foo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "foo@2x.png"; sourceTree = "<group>"; };
+		9F1E9DBB14E1B24B0084806A /* janrain_favicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = janrain_favicon.png; sourceTree = "<group>"; };
+		9F1E9DBC14E1B24B0084806A /* profilepic_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilepic_placeholder.png; sourceTree = "<group>"; };
+		9F1E9DBF14E1B3620084806A /* button_janrain_135x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_janrain_135x40.png; sourceTree = "<group>"; };
+		9F1E9DC014E1B3620084806A /* button_janrain_135x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_janrain_135x40@2x.png"; sourceTree = "<group>"; };
 		9F25B07912C2A9FF0083BB6A /* icon_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_ipad.png; sourceTree = "<group>"; };
 		9F5234FC12B29F460073ABAE /* janrain_blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = janrain_blog.json; path = Resources/janrain_blog.json; sourceTree = "<group>"; };
 		9F7BC015146888980068BD40 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = ../JREngage/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
@@ -600,6 +608,10 @@
 		9F01AA891294597C00AD6899 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				9F1E9DBF14E1B3620084806A /* button_janrain_135x40.png */,
+				9F1E9DC014E1B3620084806A /* button_janrain_135x40@2x.png */,
+				9F1E9DBB14E1B24B0084806A /* janrain_favicon.png */,
+				9F1E9DBC14E1B24B0084806A /* profilepic_placeholder.png */,
 				9F1E9DB714E09C0C0084806A /* foo.png */,
 				9F1E9DB814E09C0C0084806A /* foo@2x.png */,
 				9FB692C91492A2F500E5E956 /* dark_blue_button_disabled_280x40.png */,
@@ -1233,6 +1245,10 @@
 				9F1E9DB614E098950084806A /* CustomSharingTabViewController.xib in Resources */,
 				9F1E9DB914E09C0C0084806A /* foo.png in Resources */,
 				9F1E9DBA14E09C0C0084806A /* foo@2x.png in Resources */,
+				9F1E9DBD14E1B24B0084806A /* janrain_favicon.png in Resources */,
+				9F1E9DBE14E1B24B0084806A /* profilepic_placeholder.png in Resources */,
+				9F1E9DC114E1B3620084806A /* button_janrain_135x40.png in Resources */,
+				9F1E9DC214E1B3620084806A /* button_janrain_135x40@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

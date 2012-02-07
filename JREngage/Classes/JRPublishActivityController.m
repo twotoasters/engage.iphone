@@ -773,8 +773,6 @@ Please try again later."
                            myRichDataContainer.frame.size.width,
                            myRichDataContainer.frame.size.height)];
     [self adjustPreviewContainerLayout];
-
-
 }
 
 - (void)loadUserNameAndProfilePicForUser:(JRAuthenticatedUser*)user forProvider:(NSString*)providerName
@@ -1305,7 +1303,7 @@ Please try again later."
 - (void)setProfilePicToDefaultPic
 {
     [myProfilePic setImage:[UIImage imageNamed:@"profilepic_placeholder.png"] forState:UIControlStateNormal];
-    myProfilePic.backgroundColor = [UIColor clearColor];
+    [myProfilePic setBackgroundColor:[UIColor clearColor]];
     [myProfilePicActivityIndicator stopAnimating];
 }
 
