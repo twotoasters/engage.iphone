@@ -822,6 +822,8 @@ Please try again later."
 
             weAreShowingTheCustomTab = YES;
 
+            self.navigationItem.rightBarButtonItem  = nil;
+
             [myContentView addSubview:customSharingTab.view];
         }
     }
@@ -859,6 +861,15 @@ Please try again later."
             myUserCommentTextView.text = [customSharingTab.delegate getUserGeneratedContent];
 
             weAreShowingTheCustomTab = NO;
+            UIBarButtonItem *editButton = [[[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                             target:self
+                                                             action:@selector(editButtonPressed:)] autorelease];
+
+            self.navigationItem.rightBarButtonItem         = editButton;
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+
+            self.navigationItem.rightBarButtonItem.style   = UIBarButtonItemStyleBordered;
 
             [customSharingTab.view removeFromSuperview];
         }

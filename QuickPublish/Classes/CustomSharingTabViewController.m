@@ -137,6 +137,7 @@ or opacity of our rounded rectangle. */
 @synthesize mySignOutButton;
 @synthesize mySharedCheckMark;
 @synthesize mySharedLabel;
+@synthesize myKeyboardToolbar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -166,6 +167,8 @@ or opacity of our rounded rectangle. */
     [myUserCommentBoundingBox setOuterStrokeWidth:1.5];
     [myUserCommentBoundingBox setAlpha:0.5];
     [myUserCommentBoundingBox setNeedsDisplay];
+
+    [myUserCommentTextView setInputAccessoryView:myKeyboardToolbar];
 }
 
 
@@ -197,6 +200,11 @@ or opacity of our rounded rectangle. */
     [myJustShareButton setHidden:shared];
 }
 
+- (IBAction)keyboardDoneButtonPressed:(id)sender
+{
+    [myUserCommentTextView resignFirstResponder];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -219,6 +227,7 @@ or opacity of our rounded rectangle. */
     [mySignOutButton release];
     [mySharedCheckMark release];
     [mySharedLabel release];
+    [myKeyboardToolbar release];
     [super dealloc];
 }
 @end

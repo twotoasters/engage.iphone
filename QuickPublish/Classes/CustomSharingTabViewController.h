@@ -52,6 +52,6 @@
 @property (nonatomic, retain) IBOutlet UIButton                *mySignOutButton;
 @property (nonatomic, retain) IBOutlet UIImageView             *mySharedCheckMark;
 @property (nonatomic, retain) IBOutlet UILabel                 *mySharedLabel;
-
-
+@property (nonatomic, retain) IBOutlet UIToolbar               *myKeyboardToolbar;
+- (IBAction)keyboardDoneButtonPressed:(id)sender;
 @end
