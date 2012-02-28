@@ -2,6 +2,9 @@ commits to be cherry-picked:
   
 commits already cherry-picked:
    Test  / Devel
+  c912b57/04dfbb3 Fixed the bug where the table view background color/image wasn't being shown on the iPad
+  81a5b24/7c1b4aa Removed misc log messages
+  8b8e702/166d61a Fixed the bug where the 'Powered By' was shown on the first launch ever, even for customers who don't want it, and fixed a bug where the section foo
   fce1b73/d30494b Some minor bug fixes in Quick Publish: fixed the text on the first view to not stretch too much, fixed the butto
   6c7d73c/92fc429 Updated Doxygen docs
   0de566c/3cc8c57 Fixed a bug that was stopping the go straight to a provider bit from working correctly; added a convenience function to the JREngage API
