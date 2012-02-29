@@ -2,6 +2,7 @@ commits to be cherry-picked:
   
 commits already cherry-picked:
    Test  / Devel
+  5f8a237/c6c3efb Fixed modal dialog on ipad in wrong place landscape bug and custom nav not showing on ipad when loaded bug
   c912b57/04dfbb3 Fixed the bug where the table view background color/image wasn't being shown on the iPad
   81a5b24/7c1b4aa Removed misc log messages
   8b8e702/166d61a Fixed the bug where the 'Powered By' was shown on the first launch ever, even for customers who don't want it, and fixed a bug where the section foo
