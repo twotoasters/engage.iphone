@@ -32,11 +32,6 @@
  Date:   Tuesday, June 1, 2010
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#import <Foundation/Foundation.h>
-#import "JRSessionData.h"
-#import "JRActivityObject.h"
-#import "JSONKit.h"
-
 #ifdef DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
@@ -45,13 +40,19 @@
 
 #define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
+#import "JRSessionData.h"
+
 #pragma mark server_urls
 //#define ENGAGE_STAGING_SERVER
+//#define ENGAGE_TESTING_SERVER
 //#define LOCAL_ENGAGE_SERVER
 //#define NATHAN_ENGAGE_SERVER
 //#define OLEG_ENGAGE_SERVER
 #ifdef ENGAGE_STAGING_SERVER
 static NSString * const serverUrl = @"https://rpxstaging.com";
+#else
+#ifdef ENGAGE_TESTING_SERVER
+static NSString * const serverUrl = @"https://rpxtesting.com";
 #else
 #ifdef LOCAL_ENGAGE_SERVER
 static NSString * const serverUrl = @"http://lilli.janrain.com:8080";
@@ -63,6 +64,7 @@ static NSString * const serverUrl = @"http://nathan-dev.janrain.com:8080";
 static NSString * const serverUrl = @"http://oleg.janrain.com:8080";
 #else
 static NSString * const serverUrl = @"https://rpxnow.com";
+#endif
 #endif
 #endif
 #endif
@@ -611,7 +613,10 @@ static JRSessionData* singleton = nil;
 
         /* Load the base url and whether or not we need to hide the tagline */
         baseUrl = [[[NSUserDefaults standardUserDefaults] stringForKey:cJRBaseUrl] retain];
-        hidePoweredBy = [[NSUserDefaults standardUserDefaults] boolForKey:cJRHidePoweredBy];
+        if (!baseUrl) /* The we assume this is the first time running the library ever */
+            hidePoweredBy = YES; /* And say that hidePoweredBy is 'YES' for our Pro/Enterprise customers */
+        else
+            hidePoweredBy = [[NSUserDefaults standardUserDefaults] boolForKey:cJRHidePoweredBy];
 
         /* And load the last used basic and social providers */
         returningSocialProvider = [[[NSUserDefaults standardUserDefaults] stringForKey:cJRLastUsedSocialProvider] retain];
@@ -776,11 +781,18 @@ static JRSessionData* singleton = nil;
     NSDictionary *jsonDict = (NSDictionary*)[dataStr objectFromJSONString];
 
     /* Double-check the return value */
-    if(!jsonDict)
+    if (!jsonDict)
     {
         DLog(@"%@", dataStr);
         return [JRError setError:@"There was a problem communicating with the Janrain server while configuring authentication."
                         withCode:JRJsonError];
+    }
+
+    if (![jsonDict objectForKey:@"baseurl"] || ![jsonDict objectForKey:@"provider_info"])
+    {
+        DLog(@"%@", dataStr);
+        return [JRError setError:@"There was a problem communicating with the Janrain server while configuring authentication."
+                        withCode:JRConfigurationInformationError];
     }
 
     [baseUrl release];
@@ -1060,7 +1072,7 @@ static JRSessionData* singleton = nil;
     return nil;
 }
 
-- (void) deleteWebviewCookiesForDomains:(NSArray*)domains
+- (void)deleteWebviewCookiesForDomains:(NSArray*)domains
 {
     NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 
@@ -1136,14 +1148,6 @@ static JRSessionData* singleton = nil;
     if (weNeedToForceReauth)
         [self deleteWebviewCookiesForDomains:currentProvider.cookieDomains];
 
-//    if ([currentProvider.name isEqualToString:@"facebook"])
-//        if (alwaysForceReauth || currentProvider.forceReauth)
-//            [self deleteFacebookCookies];
-//
-//    if ([currentProvider.name isEqualToString:@"live_id"])
-//        if (alwaysForceReauth || currentProvider.forceReauth)
-//            [self deleteLiveCookies];
-
     str = [NSString stringWithFormat:@"%@%@?%@%@device=%@&extended=true",
            baseUrl,
            currentProvider.url,
@@ -1162,7 +1166,6 @@ static JRSessionData* singleton = nil;
 {
     // TODO: Better error checking in sessionData's share activity bit
     NSMutableDictionary *activityDictionary = [activity dictionaryForObject];
-            //[NSMutableDictionary dictionaryWithDictionary:[activity dictionaryForObject]];
 
     if ([currentProvider.name isEqualToString:@"linkedin"])
     {
@@ -1170,12 +1173,9 @@ static JRSessionData* singleton = nil;
                 [[activity.resourceDescription substringToIndex:((activity.resourceDescription.length < 256) ?
                                                                   activity.resourceDescription.length : 256)] URLEscaped]
                                forKey:@"description"];
-//        [activityDictionary removeObjectForKey:@"media"];
     }
 
-//    DLog (@"activity dictionary: %@", [activityDictionary description]);
-
-    NSString *activityContent = [activityDictionary JSONString];//[[activityDictionary objectForKey:@"activity"] JSONString];
+    NSString *activityContent = [activityDictionary JSONString];
     NSString *deviceToken = user.deviceToken;
 
     DLog(@"activity json string \n %@" , activityContent);
@@ -1221,10 +1221,6 @@ static JRSessionData* singleton = nil;
     [body appendData:[[NSString stringWithFormat:@"&device=%@", device] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"&app_name=%@", applicationBundleDisplayName()] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"&provider=%@", currentProvider.name] dataUsingEncoding:NSUTF8StringEncoding]];
-
-//    NSMutableURLRequest* request = [[NSMutableURLRequest requestWithURL:
-//                                     [NSURL URLWithString:
-//                                      [NSString stringWithFormat:@"%@/api/v2/set_status", serverUrl]]] retain];
 
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:
                                      [NSURL URLWithString:
@@ -1492,7 +1488,6 @@ static JRSessionData* singleton = nil;
 {
     DLog ("Shortened Urls: %@", urls);
 
-//    NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     NSDictionary *dict = [urls objectFromJSONString];
 
     if (!dict)
@@ -1536,21 +1531,21 @@ CALL_DELEGATE_SELECTOR:
 {
     ALog (@"Calling token URL for %@:\n%@", providerName, _tokenUrl);
 
-    NSMutableData* body = [NSMutableData data];
+    NSMutableData *body = [NSMutableData data];
     [body appendData:[[NSString stringWithFormat:@"token=%@", token] dataUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_tokenUrl]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_tokenUrl]];
 
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:body];
 
-    NSDictionary* tag = [[NSDictionary dictionaryWithObjectsAndKeys:_tokenUrl, @"tokenUrl",
+    NSDictionary *tag = [[NSDictionary dictionaryWithObjectsAndKeys:_tokenUrl, @"tokenUrl",
                                                                     providerName, @"providerName",
                                                                     @"callTokenUrl", @"action", nil] retain];
 
     if (![JRConnectionManager createConnectionFromRequest:request forDelegate:self returnFullResponse:YES withTag:tag])
     {
         NSError *_error = [JRError setError:@"Problem initializing the connection to the token url"
-                                   withCode:JRAuthenticationFailedError];
+                                   withCode:JRAuthenticationTokenUrlFailedError];
 
         NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
         for (id<JRSessionDelegate> delegate in delegatesCopy)
@@ -1576,11 +1571,12 @@ CALL_DELEGATE_SELECTOR:
 }
 
 #pragma mark connection_manager_delegate_protocol
-- (void)connectionDidFinishLoadingWithFullResponse:(NSURLResponse*)fullResponse unencodedPayload:(NSData*)payload request:(NSURLRequest*)request andTag:(void*)userdata
+- (void)connectionDidFinishLoadingWithFullResponse:(NSURLResponse*)fullResponse unencodedPayload:(NSData*)payload
+                                           request:(NSURLRequest*)request andTag:(void*)userdata
 {
     NSObject *tag = (NSObject*)userdata;
 
-    NSDictionary *headers = nil;
+    NSDictionary      *headers      = nil;
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)fullResponse;
     if ([httpResponse respondsToSelector:@selector(allHeaderFields)])
         headers = [httpResponse allHeaderFields];
@@ -1614,17 +1610,9 @@ CALL_DELEGATE_SELECTOR:
         if ([(NSString*)tag isEqualToString:@"getConfiguration"])
         {
             NSString *payloadString = [[[NSString alloc] initWithData:payload encoding:NSASCIIStringEncoding] autorelease];
+            self.error = [self finishGetConfiguration:payloadString
+                                             withEtag:[headers objectForKey:@"Etag"]];
 
-            if ([payloadString rangeOfString:@"\"provider_info\":{"].length != 0)
-            {
-                self.error = [self finishGetConfiguration:payloadString
-                                                 withEtag:[headers objectForKey:@"Etag"]];
-            }
-            else // There was an error...
-            {
-                self.error = [JRError setError:@"There was a problem communicating with the Janrain server while configuring authentication."
-                                      withCode:JRConfigurationInformationError];
-            }
         }
     }
 
@@ -1672,7 +1660,6 @@ CALL_DELEGATE_SELECTOR:
         }
     }
 
-   // [payload release];
     [tag release];
 }
 
@@ -1716,7 +1703,7 @@ CALL_DELEGATE_SELECTOR:
                     [delegate authenticationCallToTokenUrl:[(NSDictionary*)tag objectForKey:@"tokenUrl"]
                                           didFailWithError:connectionError
                                                forProvider:[(NSDictionary*)tag objectForKey:@"providerName"]];
-            }
+            } // TODO: Perhaps update the error code to use a JRError enum?
         }
         else if ([action isEqualToString:@"shareActivity"])
         {
@@ -1832,31 +1819,21 @@ CALL_DELEGATE_SELECTOR:
 //    else if ([currentProvider.name isEqualToString:@"live_id"])
 //        [self deleteLiveCookies];
 
-    [currentProvider release];
-    currentProvider = nil;
-
-    [returningBasicProvider release];
-    returningBasicProvider = nil;
-
-    [returningSocialProvider release];
-    returningSocialProvider = nil;
-
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
     {
         if ([delegate respondsToSelector:@selector(authenticationDidFailWithError:forProvider:)])
             [delegate authenticationDidFailWithError:authError forProvider:currentProvider.name];
     }
+
+    [currentProvider release],         currentProvider         = nil;
+    [returningBasicProvider release],  returningBasicProvider  = nil;
+    [returningSocialProvider release], returningSocialProvider = nil;
 }
 
 - (void)triggerAuthenticationDidCancel
 {
     DLog (@"");
-    [currentProvider release];
-    currentProvider = nil;
-
-//    [returningBasicProvider release];
-//    returningBasicProvider = nil;
 
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
@@ -1864,6 +1841,8 @@ CALL_DELEGATE_SELECTOR:
         if ([delegate respondsToSelector:@selector(authenticationDidCancel)])
             [delegate authenticationDidCancel];
     }
+
+    [currentProvider release], currentProvider = nil;
 }
 
 - (void)triggerAuthenticationDidCancel:(id)sender
@@ -1874,8 +1853,6 @@ CALL_DELEGATE_SELECTOR:
 - (void)triggerAuthenticationDidTimeOutConfiguration
 {
     DLog (@"");
-    [currentProvider release];
-    currentProvider = nil;
 
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
@@ -1883,6 +1860,8 @@ CALL_DELEGATE_SELECTOR:
         if ([delegate respondsToSelector:@selector(authenticationDidCancel)])
             [delegate authenticationDidCancel];
     }
+
+    [currentProvider release], currentProvider = nil;
 }
 
 - (void)triggerAuthenticationDidStartOver:(id)sender
@@ -1900,8 +1879,6 @@ CALL_DELEGATE_SELECTOR:
 - (void)triggerPublishingDidCancel
 {
     DLog (@"");
-    [currentProvider release];
-    currentProvider = nil;
 
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
@@ -1910,6 +1887,7 @@ CALL_DELEGATE_SELECTOR:
             [delegate publishingDidCancel];
     }
 
+    [currentProvider release], currentProvider = nil;
     socialSharing = NO;
 }
 
@@ -1921,8 +1899,6 @@ CALL_DELEGATE_SELECTOR:
 - (void)triggerPublishingDidTimeOutConfiguration
 {
     DLog (@"");
-   [currentProvider release];
-    currentProvider = nil;
 
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
@@ -1931,14 +1907,12 @@ CALL_DELEGATE_SELECTOR:
             [delegate publishingDidCancel];
     }
 
+    [currentProvider release], currentProvider = nil;
     socialSharing = NO;
 }
 
 - (void)triggerPublishingDidComplete
 {
-    [currentProvider release];
-    currentProvider = nil;
-
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
     {
@@ -1946,6 +1920,7 @@ CALL_DELEGATE_SELECTOR:
             [delegate publishingDidComplete];
     }
 
+    [currentProvider release], currentProvider = nil;
     socialSharing = NO;
 }
 
@@ -1956,13 +1931,14 @@ CALL_DELEGATE_SELECTOR:
 
 - (void)triggerPublishingDidFailWithError:(NSError*)pubError
 {
-    // QTS: When will this ever be called and what do we do when it happens?
     NSArray *delegatesCopy = [NSArray arrayWithArray:delegates];
     for (id<JRSessionDelegate> delegate in delegatesCopy)
     {
         if ([delegate respondsToSelector:@selector(publishingActivity:didFailWithError:forProvider:)])
             [delegate publishingActivity:activity didFailWithError:pubError forProvider:currentProvider.name];
     }
+
+    // TODO: Do we want to set currentProvider to nil?
 }
 
 - (void)triggerPublishingDidStartOver:(id)sender

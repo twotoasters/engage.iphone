@@ -123,7 +123,14 @@ static void handleCustomInterfaceException(NSException* exception, NSString* kJR
         [self presentModalViewController:myNavigationController animated:YES];
 
         myNavigationController.view.superview.frame = CGRectMake(0, 0, 320, 460);
-        myNavigationController.view.superview.center = self.view.center;
+
+        CGPoint viewCenter;
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+            viewCenter = self.view.center;
+        else
+            viewCenter = CGPointMake(self.view.center.y, self.view.center.x);
+
+        myNavigationController.view.superview.center = viewCenter;//self.view.center;
     }
     else
     {
@@ -338,7 +345,7 @@ static JRUserInterfaceMaestro* singleton = nil;
 
         @try
         {
-            if (customModalNavigationController && ![customModalNavigationController isViewLoaded])
+            if (customModalNavigationController)// && ![customModalNavigationController isViewLoaded])
                 usingCustomNav = YES;
             else
                 usingCustomNav = NO;
