@@ -45,6 +45,8 @@
 #define ILog(fmt, ...) NSLog((@"\n\n***    FYI    *** " fmt), ##__VA_ARGS__)
 
 #import "ConfigurationData.h"
+#import "JREngage.h"
+#import "JREngage+CustomInterface.h"
 
 @implementation ResultObject
 @synthesize timestamp;
@@ -824,15 +826,15 @@ This may have been intentional or this may have been caused by passing an invali
                                      ofType:LMInfo];
 
     if (activityTitle)
-        activity.title = activityTitle;
+        activity.resourceTitle = activityTitle;
     else if (activityAddDefaultTitle)
-        activity.title = defaultActivityTitle;
+        activity.resourceTitle = defaultActivityTitle;
     else ; // Do nothing
 
     if (activityDescription)
-        activity.description = activityDescription;
+        activity.resourceDescription = activityDescription;
     if (activityAddDefaultDescription)
-        activity.description = defaultActivityDescription;
+        activity.resourceDescription = defaultActivityDescription;
     else ; // Do nothing
 
     if (activityAddDefaultImage || activityAddDefaultSong || activityAddDefaultVideo)
@@ -941,7 +943,7 @@ This is a property off the providers."
     else ; // Do nothing
 
     if (activityActionLinksArray)
-        activity.action_links = activityActionLinksArray;
+        activity.actionLinks = activityActionLinksArray;
     else ; // Do nothing
 
     if (activityPropertiesDictionary)

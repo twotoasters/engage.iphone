@@ -117,6 +117,7 @@
 + (UIView*)providerTableSectionFooterView
 {
     DLog(@"");
+    UIView  *view  = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 36)] autorelease];
     UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 280, 36)] autorelease];
     label.backgroundColor = [UIColor blueColor];
     label.font = [UIFont fontWithName:@"MarkerFelt-Wide" size:16.0];
@@ -124,8 +125,11 @@
     label.textAlignment = UITextAlignmentLeft;
     label.textColor = [UIColor whiteColor];
     label.text = @"Custom Section Footer View";
+    label.autoresizingMask = UIViewAutoresizingNone;
 
-	return label;
+    [view addSubview:label];
+
+    return view;
 }
 
 + (NSString*)providerTableSectionHeaderTitleString
