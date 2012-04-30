@@ -382,7 +382,7 @@ typedef enum CaptureInterfaceStatEnum
      [captureInterface startGetCaptureUser];
 }
 
-- (void)connectionDidFinishLoadingWithPayload:(NSString*)payload request:(NSURLRequest*)request andTag:(NSObject*)userdata
+- (void)connectionDidFinishLoadingWithPayload:(NSString*)payload request:(NSURLRequest*)request andTag:(id)userdata
 {
     DLog(@"%@", payload);
 
@@ -450,12 +450,12 @@ typedef enum CaptureInterfaceStatEnum
 - (void)connectionDidFinishLoadingWithFullResponse:(NSURLResponse*)fullResponse
                                   unencodedPayload:(NSData*)payload
                                            request:(NSURLRequest*)request
-                                            andTag:(NSObject*)userdata
+                                            andTag:(id)userdata
 {
 
 }
 
-- (void)connectionDidFailWithError:(NSError*)error request:(NSURLRequest*)request andTag:(NSObject*)userdata
+- (void)connectionDidFailWithError:(NSError*)error request:(NSURLRequest*)request andTag:(id)userdata
 {
     DLog(@"");
 
@@ -467,6 +467,7 @@ typedef enum CaptureInterfaceStatEnum
 
     if ([action isEqualToString:@"createUser"])
     {
+        // ...
         [self finishCreateCaptureUserWithStat:StatFail andResult:result];
     }
     else if ([action isEqualToString:@"updateUser"])
@@ -483,7 +484,7 @@ typedef enum CaptureInterfaceStatEnum
     }
 }
 
-- (void)connectionWasStoppedWithTag:(NSObject*)userdata { }
+- (void)connectionWasStoppedWithTag:(id)userdata { }
 
 - (void)dealloc
 {

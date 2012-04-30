@@ -37,7 +37,6 @@
 #import "JREngage.h"
 #import "JRCaptureInterface.h"
 #import "JREngage+CustomInterface.h"
-#import "JRConnectionManager.h"
 #import "QuickSignInAppDelegate.h"
 #import "EmbeddedNativeSignInViewController.h"
 
