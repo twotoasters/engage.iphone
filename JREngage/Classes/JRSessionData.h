@@ -40,7 +40,7 @@
 #ifdef PHONEGAP_FRAMEWORK
 #import <PhoneGap/JSONKit.h>
 #else
-#import "JSONKit.h"
+#import <RestKit/JSONKit.h>
 #endif
 #endif
 
